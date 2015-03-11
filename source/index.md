@@ -9,7 +9,7 @@ language_tabs:
 search: true
 ---
 
-# Introdução
+# Integração Checkout Cielo
 
 O objetivo desta documentação é orientar o desenvolvedor sobre como integrar com a API Cielo, descrevendo as
 funcionalidades, os métodos a serem utilizados, listando informações a serem enviadas e recebidas, e provendo exemplos.

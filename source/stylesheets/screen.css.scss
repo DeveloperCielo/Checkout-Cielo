@@ -353,8 +353,6 @@ html, body {
     @extend %left-col;
   }
 
-  &>h1 {color: $sub-title;}
-
   &>ul, &>ol {
     padding-left: $main-padding + 15px;
   }
@@ -366,6 +364,7 @@ html, body {
 
   h1 {
     @extend %header-font;
+    color: $main-title;
     font-size: 30px;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
@@ -385,6 +384,7 @@ html, body {
 
   h2 {
     @extend %header-font;
+    color: $sub-title;
     font-size: 20px;
     margin-top: 4em;
     margin-bottom: 0;
