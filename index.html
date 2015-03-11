@@ -1,0 +1,1201 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Integração Checkout Cielo</title>
+
+    <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script src="javascripts/all.js" type="text/javascript"></script>
+
+      <script>
+        $(function() {
+          setupLanguages(["json","shell","php"]);
+        });
+      </script>
+  </head>
+
+  <body class="index">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="json">JSON</a>
+              <a href="#" data-language-name="shell">Shell</a>
+              <a href="#" data-language-name="php">PHP</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="introdução">Introdução</h1>
+
+<p>O objetivo desta documentação é orientar o desenvolvedor sobre como integrar com a API Cielo, descrevendo as
+funcionalidades, os métodos a serem utilizados, listando informações a serem enviadas e recebidas, e provendo exemplos.</p>
+
+<p>O webservice Cielo utiliza uma tecnologia REST que deve ser usada sempre que houver um “carrinho de compras” a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a venda.</p>
+
+<h1 id="integração">Integração</h1>
+
+<h2 id="endpoint">Endpoint</h2>
+
+<p>Todas as requisições serão enviadas para o webservice da Cielo utilizando o método POST para o endpoint <code class="prettyprint">https://cieloecommerce.cielo.com.br/api/public/v1/orders</code>.</p>
+
+<h2 id="authentication">Authentication</h2>
+
+<p>Por se tratar de transações, todas as requisições enviadas para a Cielo deverão ser autenticadas. A autenticação consiste no envio do MerchantId, que é o identificador único da loja, através do campo de cabeçalho HTTP MerchantId.</p>
+
+<blockquote>
+<p>Para autenticar você deve enviar o campo de cabeçalho MerchantId:</p>
+</blockquote>
+
+<p><code class="prettyprint">MerchantId: 00000000-0000-0000-0000-000000000000</code></p>
+<pre><code class="highlight shell">curl -X POST <span class="se">\</span>
+     -H <span class="s2">"MerchantId: 00000000-0000-0000-0000-000000000000"</span> <span class="se">\</span>
+     -H <span class="s2">"Content-Type: application/json"</span>
+     <span class="s2">"https://cieloecommerce.cielo.com.br/api/public/v1/orders"</span>
+</code></pre>
+
+<aside class="notice">
+Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu MerchantId.
+</aside>
+
+<h2 id="requisição">Requisição</h2>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"OrderNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12344"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"SoftDescriptor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nome que aparecerá na fatura"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Cart"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"Discount"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Percent"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"Value"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"Items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nome do produto"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"Description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Descrição do produto"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"UnitPrice"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"Quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Asset"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"Sku"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sku do item no carrinho"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"Weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"Shipping"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"SourceZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14400000"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"TargetZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11000000"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"Street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Endereço de entrega"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"Number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"Complement"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"District"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bairro da entrega"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"City"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cidade de entrega"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"State"</span><span class="p">:</span><span class="w"> </span><span class="s2">"São Paulo"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"Services"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Serviço de frete"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"Price"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"Deadline"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"Payment"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"BoletoDiscount"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"DebitDiscount"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"Customer"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"Identity"</span><span class="p">:</span><span class="w"> </span><span class="mi">11111111111</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"FullName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fulano Comprador da Silva"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fulano@email.com"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11999999999"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"Options"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"AntifraudEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<pre><code class="highlight shell">curl -X POST <span class="s2">"https://cieloecommerce.cielo.com.br/api/public/v1/orders"</span> <span class="se">\</span>
+     -H <span class="s2">"MerchantId: 00000000-0000-0000-0000-000000000000"</span> <span class="se">\</span>
+     -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+     -d <span class="s1">'{
+             "OrderNumber": "12344",
+             "SoftDescriptor": "Nome que aparecerá na fatura",
+             "Cart": {
+                  "Discount": {
+                      "Type": "Percent",
+                      "Value": 10
+                  },
+                  "Items": [
+                      {
+                          "Name": "Nome do produto",
+                          "Description": "Descrição do produto",
+                          "UnitPrice": 100,
+                          "Quantity": 2,
+                          "Type": "Asset",
+                          "Sku": "Sku do item no carrinho",
+                          "Weight": 200
+                      }
+                  ]
+             },
+             "Shipping": {
+                  "Type": "Correios",
+                  "SourceZipCode": "14400000",
+                  "TargetZipCode": "11000000",
+                  "Address": {
+                      "Street": "Endereço de entrega",
+                      "Number": "123",
+                      "Complement": "",
+                      "District": "Bairro da entrega",
+                      "City": "Cidade de entrega",
+                      "State": "São Paulo"
+                  },
+                  "Services": [
+                      {
+                          "Name": "Serviço de frete",
+                          "Price": 123,
+                          "Deadline": 15
+                      }
+                  ]
+             },
+             "Payment": {
+                  "BoletoDiscount": 0,
+                  "DebitDiscount": 10
+             },
+             "Customer": {
+                  "Identity": 11111111111,
+                  "FullName": "Fulano Comprador da Silva",
+                  "Email": "fulano@email.com",
+                  "Phone": "11999999999"
+             },
+             "Options": {
+                  "AntifraudEnabled": false
+             }
+         }'</span>
+</code></pre>
+<pre><code class="highlight php"><span class="cp">&lt;?php</span>
+<span class="nv">$order</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">OrderNumber</span> <span class="o">=</span> <span class="s1">'1234'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">SoftDescriptor</span> <span class="o">=</span> <span class="s1">'Nome que aparecerá na fatura'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Discount</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Discount</span><span class="o">-&gt;</span><span class="na">Type</span> <span class="o">=</span> <span class="s1">'Percent'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Discount</span><span class="o">-&gt;</span><span class="na">Value</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Name</span> <span class="o">=</span> <span class="s1">'Nome do produto'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Description</span> <span class="o">=</span> <span class="s1">'Descrição do produto'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">UnitPrice</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Quantity</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Type</span> <span class="o">=</span> <span class="s1">'Asset'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Sku</span> <span class="o">=</span> <span class="s1">'Sku do item no carrinho'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Weight</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Type</span> <span class="o">=</span> <span class="s1">'Correios'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">SourceZipCode</span> <span class="o">=</span> <span class="s1">'14400000'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">TargetZipCode</span> <span class="o">=</span> <span class="s1">'11000000'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Address</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Address</span><span class="o">-&gt;</span><span class="na">Street</span> <span class="o">=</span> <span class="s1">'Endereço de entrega'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Address</span><span class="o">-&gt;</span><span class="na">Number</span> <span class="o">=</span> <span class="s1">'123'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Address</span><span class="o">-&gt;</span><span class="na">Complement</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Address</span><span class="o">-&gt;</span><span class="na">District</span> <span class="o">=</span> <span class="s1">'Bairro da entrega'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Address</span><span class="o">-&gt;</span><span class="na">City</span> <span class="o">=</span> <span class="s1">'Cidade da entrega'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Address</span><span class="o">-&gt;</span><span class="na">State</span> <span class="o">=</span> <span class="s1">'São Paulo'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Services</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Services</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Services</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Name</span> <span class="o">=</span> <span class="s1">'Serviço de frete'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Services</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Price</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Services</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">DeadLine</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Payment</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Payment</span><span class="o">-&gt;</span><span class="na">BoletoDiscount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Payment</span><span class="o">-&gt;</span><span class="na">DebitDiscount</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Customer</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Customer</span><span class="o">-&gt;</span><span class="na">Identity</span> <span class="o">=</span> <span class="mi">11111111111</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Customer</span><span class="o">-&gt;</span><span class="na">FullName</span> <span class="o">=</span> <span class="s1">'Fulano Comprador da Silva'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Customer</span><span class="o">-&gt;</span><span class="na">Email</span> <span class="o">=</span> <span class="s1">'fulano@email.com'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Customer</span><span class="o">-&gt;</span><span class="na">Phone</span> <span class="o">=</span> <span class="s1">'11999999999'</span><span class="p">;</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Options</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
+<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Options</span><span class="o">-&gt;</span><span class="na">AntifraudEnabled</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+<span class="nv">$curl</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">();</span>
+
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_URL</span><span class="p">,</span> <span class="s1">'https://cieloecommerce.cielo.com.br/api/public/v1/orders'</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_SSL_VERIFYPEER</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_POST</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$order</span><span class="p">));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+    <span class="s1">'MerchantId: 00000000-0000-0000-0000-000000000000'</span><span class="p">,</span>
+    <span class="s1">'Content-Type: application/json'</span>
+<span class="p">));</span>
+
+<span class="nv">$response</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$curl</span><span class="p">);</span>
+
+<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$curl</span><span class="p">);</span>
+
+<span class="nv">$json</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$response</span><span class="p">);</span>
+</code></pre>
+
+<h3 id="cabeçalho-http">Cabeçalho HTTP</h3>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>MerchantId</td>
+<td>Guid</td>
+<td>Sim</td>
+<td>36</td>
+<td>Identificador único da loja. <strong>Formato:</strong> 00000000-0000-0000-0000-000000000000</td>
+</tr>
+<tr>
+<td>Content-type</td>
+<td>Alphanumeric</td>
+<td>Sim</td>
+<td>n/a</td>
+<td>Tipo do conteúdo da mensagem a ser enviada. <strong>Utilizar:</strong> &ldquo;application/json&rdquo;</td>
+</tr>
+</tbody></table>
+
+<h3 id="objeto-raiz-da-requisição">Objeto raiz da requisição</h3>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>OrderNumber</td>
+<td>Alphanumeric</td>
+<td>Opcional</td>
+<td>0..64</td>
+<td>Número do pedido da loja.</td>
+</tr>
+<tr>
+<td>SoftDescriptor</td>
+<td>Alphanumeric</td>
+<td>Opcional</td>
+<td>0..13</td>
+<td>Texto para ser exibido na fatura do portador, após o nome do estabelecimento comercial.</td>
+</tr>
+<tr>
+<td>Cart</td>
+<td><a href="#cart">Cart</a></td>
+<td>Sim</td>
+<td>n/a</td>
+<td>Informações sobre o carrinho de compras.</td>
+</tr>
+<tr>
+<td>Shipping</td>
+<td><a href="#shipping">Shipping</a></td>
+<td>Sim</td>
+<td>n/a</td>
+<td>Informações sobre a entrega do pedido.&ldquo;</td>
+</tr>
+<tr>
+<td>Payment</td>
+<td><a href="#payment">Payment</a></td>
+<td>Conditional</td>
+<td>n/a</td>
+<td>Informações sobre o pagamento do pedido.</td>
+</tr>
+<tr>
+<td>Customer</td>
+<td><a href="#customer">Customer</a></td>
+<td>Condicional</td>
+<td>n/a</td>
+<td>Informações sobre dados pessoais do comprador.</td>
+</tr>
+<tr>
+<td>Options</td>
+<td><a href="#options">Options</a></td>
+<td>Conditional</td>
+<td>n/a</td>
+<td>Informações sobre opções configuráveis do pedido.</td>
+</tr>
+</tbody></table>
+
+<h2 id="resposta">Resposta</h2>
+
+<h3 id="em-caso-de-sucesso">Em caso de sucesso</h3>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"Settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"CheckoutUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://cieloecommerce.cielo.com.br/transacional/order/index?id=123"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CheckoutCielo"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> 
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Settings</td>
+<td><a href="#settings">Settings</a></td>
+<td>Sim</td>
+<td>n/a</td>
+<td>Informações da resposta sobre a criação do pedido.</td>
+</tr>
+</tbody></table>
+
+<h3 id="em-caso-de-erro">Em caso de erro</h3>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="s2">"An error has occurred."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Message</td>
+<td>String</td>
+<td>Sim</td>
+<td>1..254</td>
+<td>Mensagem descritiva do erro</td>
+</tr>
+</tbody></table>
+
+<h1 id="referência-de-tipos">Referência de tipos</h1>
+
+<h2 id="cart">Cart</h2>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"Discount"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+    </span><span class="s2">"Items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Informações sobre o carrinho de compras.</p>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Discount</td>
+<td><a href="#discount">Discount</a></td>
+<td>Opcional</td>
+<td>n/a</td>
+<td>Informações do desconto sobre o carrinho de compras.</td>
+</tr>
+<tr>
+<td>Items</td>
+<td><a href="#item">Item[]</a></td>
+<td>Sim</td>
+<td>n/a</td>
+<td>Lista de itens do carrinho de compras <em>(deve conter no mínimo 1 item)</em>.</td>
+</tr>
+</tbody></table>
+
+<h3 id="discount">Discount</h3>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Percent"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Value"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<aside class="notice">Independentemente do tipo do desconto, ele deverá ser calculado antes da soma do valor do frete.</aside>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Type</td>
+<td>Alphanumeric</td>
+<td>Condicional</td>
+<td>n/a</td>
+<td>Tipo do desconto a ser aplicado: &quot;Amount&rdquo;, &ldquo;Percent&rdquo;. Obrigatório caso <code class="prettyprint">Value</code> for maior ou igual a zero.</td>
+</tr>
+<tr>
+<td>Value</td>
+<td>Numeric</td>
+<td>Condicional</td>
+<td>0..18</td>
+<td>Valor do desconto a ser aplicado <em>(pode ser valor absoluto ou percentual)</em>. Obrigatório caso <code class="prettyprint">Type</code> for &ldquo;Amount&rdquo; ou &ldquo;Percent&rdquo;.</td>
+</tr>
+</tbody></table>
+
+<h4 id="discount.type-=-amount">Discount.Type = Amount</h4>
+
+<p>Caso o tipo de desconto escolhido seja o <code class="prettyprint">Amount</code>, deverá ser inserido o <strong>valor em centavos</strong>.
+Ex.: 100 = 1,00.</p>
+
+<h4 id="discount.type-percent">Discount.Type Percent</h4>
+
+<p>Caso o tipo de desconto escolhido seja o <code class="prettyprint">Percentual</code>, deverá ser inserido o <strong>valor em número inteiro</strong>.
+Ex.: 10 = 10%.</p>
+
+<h3 id="item">Item</h3>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nome do produto"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Descrição do produto"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"UnitPrice"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Asset"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Sku"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sku do item no carrinho"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Name</td>
+<td>Alphanumeric</td>
+<td>Sim</td>
+<td>1..128</td>
+<td>Nome do item no carrinho.</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Alphanumeric</td>
+<td>Opcional</td>
+<td>0.256</td>
+<td>Descrição do item no carrinho.</td>
+</tr>
+<tr>
+<td>UnitPrice</td>
+<td>Numeric</td>
+<td>Sim</td>
+<td>1..18</td>
+<td>Preço unitário do item no carrinho <em>(</em><em>em centavos.</em>* Ex: R$ 1,00 = 100)*.</td>
+</tr>
+<tr>
+<td>Quantity</td>
+<td>Numeric</td>
+<td>Sim</td>
+<td>1..9</td>
+<td>Quantidade do item no carrinho.</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Alphanumeric</td>
+<td>Sim</td>
+<td>n/a</td>
+<td>Tipo do item no carrinho.</td>
+</tr>
+<tr>
+<td>Sku</td>
+<td>Alphanumeric</td>
+<td>Opcional</td>
+<td>0..32</td>
+<td>Sku do item no carrinho.</td>
+</tr>
+<tr>
+<td>Weight</td>
+<td>Numeric</td>
+<td>Condicional</td>
+<td>0..9</td>
+<td>Peso em gramas do item no carrinho.</td>
+</tr>
+</tbody></table>
+
+<h4 id="tipos-de-item">Tipos de item</h4>
+
+<table><thead>
+<tr>
+<th>Tipo</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Asset</td>
+<td>Material Físico</td>
+</tr>
+<tr>
+<td>Digital</td>
+<td>Produtos Digitais</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Serviços</td>
+</tr>
+<tr>
+<td>Payment</td>
+<td>Outros pagamentos</td>
+</tr>
+</tbody></table>
+
+<h2 id="shipping">Shipping</h2>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"SourceZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14400000"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"TargetZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11000000"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Address"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+    </span><span class="s2">"Services"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Type</td>
+<td>Alphanumeric</td>
+<td>Sim</td>
+<td>n/a</td>
+<td>Tipo do frete: &ldquo;Correios&rdquo;, &ldquo;FixedAmount&rdquo;, &ldquo;Free&rdquo;, &ldquo;WithoutShippingPickUp&rdquo;, &ldquo;WithoutShipping&rdquo;.</td>
+</tr>
+<tr>
+<td>SourceZipCode</td>
+<td>Numeric</td>
+<td>Condicional</td>
+<td>8</td>
+<td>CEP de origem do carrinho de compras.</td>
+</tr>
+<tr>
+<td>TargetZipCode</td>
+<td>Numeric</td>
+<td>Opcional</td>
+<td>8</td>
+<td>CEP do endereço de entrega do comprador.</td>
+</tr>
+<tr>
+<td>Address</td>
+<td><a href="#address">Address</a></td>
+<td>Opcional</td>
+<td>n/a</td>
+<td>Informações sobre o endereço de entrega do comprador.</td>
+</tr>
+<tr>
+<td>Services</td>
+<td><a href="#service">Service[]</a></td>
+<td>Condicional</td>
+<td>n/a</td>
+<td>Lista de serviços de frete.</td>
+</tr>
+</tbody></table>
+
+<h3 id="address">Address</h3>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"Street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Endereço de entrega"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Complement"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"District"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bairro da entrega"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"City"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cidade de entrega"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"State"</span><span class="p">:</span><span class="w"> </span><span class="s2">"São Paulo"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Street</td>
+<td>Alphanumeric</td>
+<td>Sim</td>
+<td>1..256</td>
+<td>Rua, avenida, travessa, etc, do endereço de entrega do comprador.</td>
+</tr>
+<tr>
+<td>Number</td>
+<td>Alphanumeric</td>
+<td>Sim</td>
+<td>1..8</td>
+<td>Número do endereço de entrega do comprador.</td>
+</tr>
+<tr>
+<td>Complement</td>
+<td>Alphanumeric</td>
+<td>Opcional</td>
+<td>0..256</td>
+<td>Complemento do endereço de entrega do comprador.</td>
+</tr>
+<tr>
+<td>District</td>
+<td>Alphanumeric</td>
+<td>Sim</td>
+<td>1..64</td>
+<td>Bairro do endereço de entrega do comprador.</td>
+</tr>
+<tr>
+<td>City</td>
+<td>Alphanumeric</td>
+<td>Sim</td>
+<td>1..64</td>
+<td>Cidade do endereço de entrega do comprador.</td>
+</tr>
+<tr>
+<td>State</td>
+<td>Alphanumeric</td>
+<td>Sim</td>
+<td>2</td>
+<td>Estado (UF) do endereço de entrega do comprador.</td>
+</tr>
+</tbody></table>
+
+<h3 id="service">Service</h3>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Serviço de frete"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Price"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Deadline"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Name</td>
+<td>Alphanumeric</td>
+<td>Sim</td>
+<td>1..128</td>
+<td>Nome do serviço de frete.</td>
+</tr>
+<tr>
+<td>Price</td>
+<td>Numeric</td>
+<td>Sim</td>
+<td>1..18</td>
+<td>Preço do serviço de frete (em centavos. Ex: R$ 1,00 = 100).</td>
+</tr>
+<tr>
+<td>Deadline</td>
+<td>Numeric</td>
+<td>Condicional</td>
+<td>0..9</td>
+<td>Prazo de entrega (em dias).</td>
+</tr>
+</tbody></table>
+
+<h2 id="payment">Payment</h2>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"BoletoDiscount"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"DebitDiscount"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>BoletoDiscount</td>
+<td>Numeric</td>
+<td>Condicional</td>
+<td>0..3</td>
+<td>Desconto, em porcentagem, para pagamentos a serem realizados com boleto.</td>
+</tr>
+<tr>
+<td>DebitDiscount</td>
+<td>Numeric</td>
+<td>Condicional</td>
+<td>0..3</td>
+<td>Desconto, em porcentagem, para pagamentos a serem realizados com débito online.</td>
+</tr>
+</tbody></table>
+
+<h2 id="customer">Customer</h2>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"Identity"</span><span class="p">:</span><span class="w"> </span><span class="mi">11111111111</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"FullName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fulano Comprador da Silva"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fulano@email.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11999999999"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Identity</td>
+<td>Numeric</td>
+<td>Condicional</td>
+<td>0..14</td>
+<td>CPF ou CNPJ do comprador.</td>
+</tr>
+<tr>
+<td>FullName</td>
+<td>Alphanumeric</td>
+<td>Condicional</td>
+<td>0..288</td>
+<td>Nome completo do comprador.</td>
+</tr>
+<tr>
+<td>Email</td>
+<td>Alphanumeric</td>
+<td>Condicional</td>
+<td>0..64</td>
+<td>Email do comprador.</td>
+</tr>
+<tr>
+<td>Phone</td>
+<td>Numeric</td>
+<td>Condicional</td>
+<td>0..11</td>
+<td>Telefone do comprador.</td>
+</tr>
+</tbody></table>
+
+<h2 id="options">Options</h2>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"AntifraudEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>AntifraudEnabled</td>
+<td>Boolean</td>
+<td>Conditional</td>
+<td>n/a</td>
+<td>Habilitar ou não a análise de fraude para o pedido.</td>
+</tr>
+</tbody></table>
+
+<h2 id="settings">Settings</h2>
+<pre><code class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"CheckoutUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://cieloecommerce.cielo.com.br/transacional/order/index?id=123"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CheckoutCielo"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> 
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>CheckoutUrl</td>
+<td>Alphanumeric</td>
+<td>Sim</td>
+<td>1..128</td>
+<td>URL de checkout do pedido. <strong>Formato:</strong> <code class="prettyprint">https://cieloecommerce.cielo.com.br/transacional/order/index?id={id}</code></td>
+</tr>
+<tr>
+<td>Profile</td>
+<td>Alphanumeric</td>
+<td>Sim</td>
+<td>1..16</td>
+<td>Perfil do lojista: fixo &ldquo;CheckoutCielo&rdquo;.</td>
+</tr>
+<tr>
+<td>Version</td>
+<td>Alphanumeric</td>
+<td>Sim</td>
+<td>1</td>
+<td>Versão do serviço de criação de pedido <em>(versão: 1)</em>.</td>
+</tr>
+</tbody></table>
+
+<h1 id="perguntas-frequentes">Perguntas frequentes</h1>
+
+<h2 id="dúvidas-técnicas">Dúvidas técnicas</h2>
+
+<h3 id="aonde-eu-cadastro-meus-produtos?">Aonde eu cadastro meus produtos?</h3>
+
+<p>A inclusão dos produtos é feita dentro do Backoffice, no menu de Produtos/Cadastrar Produto.</p>
+
+<h3 id="existe-limite-de-produtos-a-serem-cadastrados-no-checkout-cielo?">Existe limite de produtos a serem cadastrados no CHECKOUT CIELO?</h3>
+
+<p>Não, você pode cadastrar quantos produtos desejar.</p>
+
+<h3 id="É-necessario-cadastrar-todos-os-meus-produtos-no-checkout-cielo-para-que-eu-possa-transacionar?">É necessario cadastrar todos os meus produtos no CHECKOUT CIELO para que eu possa transacionar?</h3>
+
+<p>Não, o cadastro de produtos é opcional. Ele é realizado para a criação de um “botão”, que pode ser utilizado para a venda de um produto especifico.</p>
+
+<h3 id="quais-informações-eu-preciso-para-montar-o-post?">Quais informações eu preciso para montar o Post?</h3>
+
+<p>Os dados a serem preenchidos no post se referem basicamente a 4 grupos:</p>
+
+<ol>
+<li>Dados do Pedido</li>
+<li>Carrinho de Compras</li>
+<li>Dados de Frete</li>
+<li>Dados do Consumidor.</li>
+</ol>
+
+<p>Todas as informações para auxiliar nesse processo, encontram-se no manual de desenvolvimento.</p>
+
+<h3 id="posso-enviar-um-e-mail-como-forma-de-cobrança?">Posso enviar um e-mail como forma de cobrança?</h3>
+
+<p>Sim, através da integração via botão você pode usar para enviar um e-mail marketing, ou uma cobrança por e-mail, adicionando ao HTML do e-mail, o botão referente ao produto/serviço sendo comprado/pago. Ou sempre que se desejar disponibilizar uma transação rápida sem desenvolvimento algum.</p>
+
+<h3 id="o-comprador-precisa-ser-cliente-do-checkout-cielo-para-fechar-a-transação?">O comprador precisa ser cliente do CHECKOUT CIELO para fechar a transação?</h3>
+
+<p>Não. A solução de checkout é simples e não exige que o cliente esteja logado ou se cadastre. No entanto todas as informações solicitadas para fechar a compra são salvas no pedido. E o lojista terá acesso a todas elas.</p>
+
+<h3 id="para-que-serve-a-url-de-retorno?">Para que serve a URL de retorno?</h3>
+
+<p>Para que ao finalizar a compra, o consumidor final tenha a opção de voltar ao site do lojista. O Consumidor é redirecionado automaticamente a pagina definida nesta opção.</p>
+
+<h3 id="para-que-serve-a-url-de-notificação?">Para que serve a URL de Notificação?</h3>
+
+<p>Ao finalizar a compra é enviando um post contendo informações sobre a transação. A utilização dessa URL é indicada para clientes que entregam através de uma Plataforma de E-commerce. Dessa maneira os dados do pedido ficam atualizados no Backoffice do CHECKOUT CIELO e no Backoffice junto a Plataforma.</p>
+
+<h3 id="para-que-serve-a-url-de-notificação?">Para que serve a URL de Notificação?</h3>
+
+<p>Ao finalizar a compra é enviando um post contendo informações sobre a transação. A utilização dessa URL é indicada para clientes que entregam através de uma Plataforma de E-commerce. Dessa maneira os dados do pedido ficam atualizados no Backoffice do CHECKOUT CIELO e no Backoffice junto a Plataforma.</p>
+
+<h3 id="onde-é-feito-o-cadastro-dessas-urls?">Onde é feito o cadastro dessas URLs?</h3>
+
+<p>No seu backoffice, aba configurações -&gt; configurações da loja.</p>
+
+<h3 id="posso-dar-desconto-ao-meu-cliente?">Posso dar desconto ao meu cliente?</h3>
+
+<p>Sim. É possível enviar um parâmetro com o valor ou a Porcentagem (%) do desconto a ser oferecido naquela transação. Esse parametro é valido para todos os meios de pagamento, não sendo aplicado a meios especificos e o desconto é sobre o valor total da transação.</p>
+
+<p>Tambem é possivel definir um valor de desconto para pagamento com Debito online ou boleto, ambos podendo ser enviados via Post ou definidos no Backoffice. O desconto de boleto/débito pode ser acumulado ao desconto total.</p>
+
+<h3 id="como-são-os-posts-para-lojas-que-utilizam-carrinhos?">Como são os Posts para lojas que utilizam carrinhos?</h3>
+
+<p>O tipo de post a ser utilizado em sua loja dependerá do produto e de como esse é comercializado na sua loja.</p>
+
+<p>Os Posts serão formados por parametros que devem ser enviados a URL, <code class="prettyprint">https://cieloecommmerce.cielo.com.br/transactional/order/index</code>, onde serão processados. Veja a seção <a href="#integraco">Integração</a> dessa documentação para mais informações.</p>
+
+<aside class="notice">É importante entender que apesar de alguns parametros descritos no manual de integração não serem obrigatorios para um determinado produto, isso não significa que eles não serão obrigatorios a outros tipos.</aside>
+
+<h3 id="qual-a-relação-entre-os-tipos-de-produtos-e-os-tipos-de-fretes?">Qual a relação entre os tipos de produtos e os tipos de fretes?</h3>
+
+<p>O tipo de produto a ser vendido no CHECKOUT CIELO influencia diretamente qual o tipo de frete e a informação a ser enviada para o processamento da transação. O tipo de frete a ser utilizado dependerá do tipo de produto que a sua loja comercializa. No CHECKOUT CIELO você pode comercializar 3 tipos de produtos:</p>
+
+<ul>
+<li>Bens Fisicos</li>
+<li>Bens digitais</li>
+<li>Serviços</li>
+</ul>
+
+<p>Os tipos de frete que podem ser usados são:</p>
+
+<ul>
+<li>Correios</li>
+<li>Frete Fixo</li>
+<li>Frete Grátis</li>
+<li>Sem Frete (Retirada em mãos)</li>
+<li>Sem cobrança de frete (Usada para bens Digitais ou Serviços)</li>
+</ul>
+
+<p>Se Produtos do tipo “Bens fisicos” necessitam de algum tipo de frete para serem enviados, obrigatoriamente será preciso a inclusão de informações como do peso do produto, Cep de origem e Cep de entrega, para o calculo do frete. Veja a seção <a href="#integraco">Integração</a> dessa documentação para mais informações.</p>
+
+<aside class="notice">Diferentemente, “Bens digitais” ou “Serviços” não necessitam desse tipo de informação.</aside>
+
+<h2 id="dúvidas-comerciais">Dúvidas comerciais</h2>
+
+<h3 id="quais-são-os-meios-de-pagamento-disponíveis-no-checkout-cielo?">Quais são os meios de pagamento disponíveis no CHECKOUT CIELO?</h3>
+
+<p>Cartões de Crédito (Bandeiras: Visa, Mastercard, Diners, Amex e Elo), Boleto Bancário
+e Débito Online (Banco do Brasil e Bradesco).</p>
+
+<h3 id="quais-são-as-diferenças-entre-o-checkout-cielo-e-os-facilitadores-de-pagamento,-como-pagseguro-e-paypal?">Quais são as diferenças entre o CHECKOUT CIELO e os Facilitadores de Pagamento, como Pagseguro e Paypal?</h3>
+
+<ul>
+<li>Não intermediamos o dinheiro referente a suas transações. Isso significa que o lojista vende com suas afiliações. Seu dinheiro será depositado diretamente na sua conta corrente pela Cielo.</li>
+<li>Controle sobre os recebimentos. O lojista negocia diretamente com Cielo se deseja antecipar seus recebíveis</li>
+<li>Possibilidade de capturar transações imediatamente. O lojista decide se captura manualmente ou libera a captura automatica para transações de baixo risco.</li>
+<li>O lojista decide para quem quer vender com apoio de ferramenta antifraude. O Lojista decide se assume o risco informado (“Baixo, Moderado ou Alto”) em relação a um pedido, capturando ou cancelando a transação (conclui a transação ou não).</li>
+</ul>
+
+<h3 id="É-preciso-ter-contas-nos-bancos-para-adquirir-as-afiliações-de-boleto-e-débito?">É preciso ter contas nos bancos para adquirir as afiliações de boleto e Débito?</h3>
+
+<p>Sim. Para maiores informações sobre esse processo entre em contato com <a href="mailto:cieloecommerce@cielo.com.br">cieloecommerce@cielo.com.br</a>.</p>
+
+<p>O CHECKOUT CIELO não gera boletos para cooperativas de crédito, mesmo que estas sejam vinculadas aos bancos utilizados.</p>
+
+<h3 id="quando-o-valor-da-transações-é-depositado-em-minha-conta-corrente?">Quando o valor da transações é depositado em minha conta corrente?</h3>
+
+<p>O valor transacionado será depositado em sua conta corrente de acordo com os prazos estabelecidos em cada meio de pagamento. Para maiores informações sugerimos que entre em contato direto com cada meio que a sua loja utiliza.</p>
+
+<h3 id="É-possivel-realizar-parcelamentos-no-checkout-cielo?">É possivel realizar parcelamentos no CHECKOUT CIELO?</h3>
+
+<p>Sim, o CHECKOUT CIELO pode parcelar compras com cartão de crédito em até 12x. As parcelas do CHECKOUT CIELO não incluem juros, sendo uma divisão do valor comprado pelo prazo do pagamento.</p>
+
+<aside class="notice">O numero maximo de parcelas é definido na afiliação da loja. Caso a sua afiliação tenha liberado 6x na afiliação e 12X no CHECKOUT CIELO, a transação não será autorizada. A alteração do numero maximo de parcelas da afiliação pode ser realizada diretamente com a Cielo.</aside>
+
+<h3 id="saio-do-ambiente-da-minha-loja-durante-a-transação?">Saio do ambiente da minha loja durante a transação?</h3>
+
+<p>Sim, quando o comprador decidir realizar o checkout ele será redirecionado para a tela do CHECKOUT CIELO. Nessa tela segura, o comprador irá inserir os dados do meio de pagamento e o meio de entrega/frete (caso a loja permita) de sua preferencia.</p>
+
+<h3 id="o-checkout-cielo-detém-informações-sobre-prazo-de-entrega-do-produto?">O CHECKOUT CIELO detém informações sobre prazo de entrega do produto?</h3>
+
+<p>Não , o CHECKOUT CIELO tem acesso somente a informações da transação de pagamento. Caso um cliente do lojista CHECKOUT CIELO entre em contato com duvidas a respeito do prazo de entrega ou solicitações a respeito do mesmo assunto, será sugerido a ele que entre em contato com a loja responsavel pela venda.</p>
+
+<p>A equipe CHECKOUT CIELO não fornece os dados de contato do Lojista ao comprador em hipótese alguma.</p>
+
+<h2 id="dúvidas-operacionais">Dúvidas operacionais</h2>
+
+<h3 id="quando-esquecer-a-senha-de-acesso-ao-backoffice,-como-proceder?">Quando esquecer a senha de acesso ao Backoffice, como proceder?</h3>
+
+<ol>
+<li>Acesse o site do backoffice, e clique em “Esqueci Minha Senha”</li>
+<li>Preencha com o e-mail cadastrado. Um e-mail para redefinição de senha será enviado.</li>
+</ol>
+
+<h3 id="não-consigo-visualizar-o-pedido-no-backoffice,-como-resolver?">Não consigo visualizar o pedido no backoffice, como resolver?</h3>
+
+<p>Primeiramente, verifique se na integração foi utilizado o MID correto. MID é o Merchant_Id de sua loja, e deve ser utilizado na integração com CHECKOUT CIELO, coforme o Manual de Desenvolvimento.</p>
+
+<h3 id="o-que-devo-fazer-quando-o-pedido-estiver-com-o-status-“autorizado”?">O que devo fazer quando o pedido estiver com o status “Autorizado”?</h3>
+
+<p>Deverá conferir o status do antifraude e decidir por capturar (aceitar) ou cancelar a transação. Ressaltamos que o risco e a responsabilidade sempre serão do lojista caso venha a sofrer uma fraude e/ou um chargeback.</p>
+
+<h3 id="durante-quanto-tempo-o-pedido-pode-permanecer-com-o-status-“autorizado”?">Durante quanto tempo o pedido pode permanecer com o status “Autorizado”?</h3>
+
+<p>O pedido poderá ficar “Autorizado” por 5 dias corridos, após esse prazo não pode mais ser capturado junto a operadora de cartão de crédito/adquirente (Cielo). Recomendamos que Capture ou Cancele o pedido o quanto antes, agilizando a entrega da mercadoria ou liberando o limite de crédito do seu cliente.</p>
+
+<h3 id="qual-é-a-diferença-entre-os-status-“autorizado”-e-“pago”-em-um-pedido-de-cartão-de">Qual é a diferença entre os status “Autorizado” e “Pago” em um pedido de cartão de</h3>
+
+<p>crédito?</p>
+
+<ul>
+<li><strong>Autorizado</strong> – o valor da transação fica reservado no limite do cartão do cliente, aguardando a captura (efetivação do pagamento) ou o cancelamento ( o retorno do limite ao cliente). Significa que a transação ainda NÃO foi concluída.</li>
+<li><strong>Pago</strong> – o valor foi efetivado e será cobrado na fatura do cliente. Significa que a transação foi concluída </li>
+</ul>
+
+<aside class="warning">ATENÇÃO, para pedidos feitos com cartão de crédito o status “Pago” não significa que o dinheiro estará disponível na sua conta corrente imediatamente. A operadora de cartão de crédito (Cielo) efetiva o depósito dos valores referente à suas transações 30 dias após a captura. É possível receber antes dos 30 dias negociando diretamente com a Cielo ou com o seu banco a (Antecipação de recebíveis de cartão de crédito).</aside>
+
+<h3 id="o-que-devo-fazer-quando-o-pedido-estiver-com-o-status-“expirado”?">O que devo fazer quando o pedido estiver com o status “Expirado”?</h3>
+
+<ul>
+<li>Para pedidos com Cartão de Crédito, não será possível capturar a transação. O pedido foi automaticamente cancelado pela operadora de cartão de crédito/adquirente (Cielo).</li>
+<li>Para pedidos com Boleto Bancário, é necessário consultar no seu extrato bancário se valor foi creditado e alterar o status para PAGO.</li>
+</ul>
+
+<h3 id="o-que-acontece-se-eu-não-alterar-os-status-dos-meus-boletos-que-foram-pagos?">O que acontece se eu não alterar os status dos meus boletos que foram pagos?</h3>
+
+<p>Não haverá nenhum impacto em suas vendas, porém a visão da sua operação nos relatórios e gráficos do Dashboard ficará prejudicada por não refletir exatamente o status de sua operação.</p>
+
+<h3 id="o-que-significa-o-status-“pendente”-para-cartões-de-crédito?">O que significa o status “Pendente” para cartões de crédito?</h3>
+
+<p>Significa que não foi repassada até o momento nenhuma resposta do Banco ou da Cielo.
+Os pedidos serão sondados juntos as operadoras de cartão de crédito/Adquirentes, e seu status atualizado.</p>
+
+<h3 id="quais-os-possíveis-status-em-cada-meio-de-pagamento?">Quais os possíveis status em cada meio de pagamento?</h3>
+
+<ul>
+<li><strong>Cartão de Crédito</strong>:
+
+<ul>
+<li><strong>Não Finalizado</strong> - Falha de conexão no processamento da transação é possível recuperar a transação solicitando que o cliente refaça a transação.</li>
+<li><strong>Pendente</strong> - Status intermediário.</li>
+<li><strong>Autorizado</strong> - Quando um pedido foi aprovado e está pendente de captura. É necessário Capturar ou Cancelar a transação conforme a analise de risco.</li>
+<li><strong>Não Autorizado</strong> - pedido não foi aprovado pela Cielo/Banco Emissor Pago - status após a Captura manual ou automática da transação.</li>
+<li><strong>Cancelado</strong> - Quando é solicitado um cancelamento junto a operadora de cartão de crédito/adquirente.</li>
+<li><strong>Chargeback</strong> - Quando o comprador solicita o estorno junto ao banco emissor, o lojista pode utilizar esse status para seu controle.</li>
+<li><strong>Expirado</strong> - Não foi Capturado ou cancelado no prazo de 5 dias.</li>
+</ul></li>
+<li><strong>Boleto Bancário</strong>:
+
+<ul>
+<li><strong>Pendente</strong> - Aguardando pagamento</li>
+<li><strong>Não Finalizado</strong> - Falha de conexão no processamento da transação é possível recuperar a transação solicitando que o cliente refaça a transação.</li>
+<li><strong>Expirado</strong> - Não foi alterado o status no prazo de 5 dias após a data de vencimento, se o pagamento for confirmado no seu extrato bancário é possível alterar o status da transação para PAGO.</li>
+<li><strong>Pago</strong> - Confirmação de Pagamento após verificação no seu extrato bancário</li>
+</ul></li>
+<li><strong>Débito Online</strong>:
+
+<ul>
+<li> <strong>Não Autorizado</strong> - pedido não aprovado pelo banco.</li>
+<li> <strong>Pago</strong> - Pedido confirmado pelo banco, valor debitado da conta do comprador.</li>
+<li> <strong>Não Finalizado</strong> - Falha de conexão no processamento da transação. É necessário solicitar ao cliente que refaça a transação.</li>
+<li> <strong>Pendente</strong> - Status intermediário.</li>
+</ul></li>
+</ul>
+
+<h3 id="cliquei-errado-no-botão-“cancelar”.-perdi-a-transação?">Cliquei errado no botão “Cancelar”. Perdi a transação?</h3>
+
+<p>Sim, a transação foi cancelada junto a Cielo. Não sendo possível desfazer um cancelamento.</p>
+
+<h3 id="qual-a-diferença-de-cancelamento-e-estorno?">Qual a diferença de Cancelamento e Estorno?</h3>
+
+<ul>
+<li><strong>Cancelamento</strong> - é feito no mesmo dia da captura, devolvendo o limite ao cartão do comprador em até 72h conforme regras do banco emissor do cartão.</li>
+<li><strong>Estorno</strong> - a partir do dia seguinte da captura, o valor é “devolvido” na fatura do comprador em até 120 dias.</li>
+</ul>
+
+<aside class="warning">ATENÇÃO, o cancelamento e o estorno são realizamos através do “botão” cancelar. Seguindo as regras acima.</aside>
+
+<h3 id="quanto-tempo-depois-da-transação-eu-posso-efetuar-um-estorno?">Quanto tempo depois da transação eu posso efetuar um estorno?</h3>
+
+<p>Você tem até 120 dias após a data de captura do pedido.</p>
+
+<h3 id="É-possivel-definir-um-valor-minimo-de-parcelamento?">É possivel definir um valor minimo de parcelamento?</h3>
+
+<p>Sim, na aba configurações do CHECKOUT CIELO é possivel definir o valor minimo que uma parcela pode atingir. Dessa maneira, o valor da parcela não será inferior a um valor idal ao lojista.</p>
+
+<h3 id="É-possivel-definir-um-valor-minimo-de-boleto?">É possivel definir um valor minimo de boleto?</h3>
+
+<p>Sim, é possivel definir um valor minimo para que o boleto seja disponibilizado. Para maiores informações acesse BackOffice -&gt; Manuais -&gt; Tutorial do lojista.</p>
+
+<h3 id="É-possivel-dar-um-desconto-para-o-uso-de-boleto-ou-meio-de-pagamento?">É possivel dar um desconto para o uso de boleto ou meio de pagamento?</h3>
+
+<p>Sim, é possivel definir um valor de desconto para que o boleto seja disponibilizado. Isso pode ser feito de duas maneiras: Backoffice ou via API de integração - descrita na seção <a href="integraco">Integração</a>.</p>
+
+<h3 id="o-que-é-antifraude?-e-para-que-serve?">O que é antifraude? E para que serve?</h3>
+
+<p>“Anti-Fraudes” são ferramentas de Análise e Avaliação de Risco. Essas ferramentas verificam e apontam a possibilidade de uma transação incorrer em fraude, protegendo o empreendedor virtual de eventuais golpes.</p>
+
+<p>Ao vender pela internet não existe a possibilidade de utilizar a segurança dos dispositivos físicos do cartão tais como o chip e a tarja magnética e por isso os lojistas virtuais são alvos constantes de tentativas de fraude.</p>
+
+<p>Diante desse cenário, surgiram no mercado ferramentas específicas que buscam combater e inibir tais iniciativas, ou seja, os “anti-fraudes”.</p>
+
+<p>Todas as transações de cartão de crédito autorizadas na Cielo no CHECKOUT CIELO são
+processadas no antifraude Decision Manager da Cybersource.</p>
+
+<h3 id="para-capturar-minhas-transações,-necessito-entrar-no-backoffice">Para capturar minhas transações, necessito entrar no Backoffice</h3>
+
+<p>Depende. Caso deseje visualizar o status de cada transação e acompanhar pessoalmente o processo de venda, você pode mantar a captura manual.</p>
+
+<p>Caso, prefira que o processo de captura seja automatizado, há na aba configurações opções de captura e rejeição de pedidos automaticamente.</p>
+
+<h3 id="qual-a-diferença-de-captuta-automática-e-captura-manual?">Qual a diferença de Captuta Automática e Captura Manual?</h3>
+
+<ul>
+<li><strong>Captura Automática</strong> – a decisão da venda é feita automaticamente após analise de fraude. Onde todos os pedidos autorizados e com “Baixo Risco” serão marcados como PAGO.</li>
+<li><strong>Captura Manual</strong> – a decisão de venda é feita manualmente pelo lojista no backoffice. Analisando a resposta do antifraude.</li>
+</ul>
+
+<h3 id="o-que-devo-fazer-quando-o-status-do-antifraude-estiver-como-“baixo-risco”-e-a-minha-captura-é-manual?">O que devo fazer quando o status do antifraude estiver como “Baixo Risco” e a minha captura é manual?</h3>
+
+<p>Recomendamos que capture o pedido e conclua a transação. Lembrando que não existe risco zero em transações online pois os mecanismos de segurança, tais como tarja magnética, chip e senhas não funcionam para transações online.</p>
+
+<h3 id="o-que-devo-fazer-quando-o-status-do-antifraude-estiver-como-“alto-risco”-e-a-minha-captura-é-manual?">O que devo fazer quando o status do antifraude estiver como “Alto Risco” e a minha captura é manual?</h3>
+
+<p>Neste caso recomendamos o cancelamento da autorização, porém você ainda pode optar por fazer uma análise manual do pedido e decidir por capturar a autorização e concluir a transação ignorando a orientação do antifraude e assumindo o risco.</p>
+
+<h3 id="o-que-é-um-chargeback?">O que é um Chargeback?</h3>
+
+<p>Chargeback é o cancelamento feito pelo comprador de uma transação realizada com cartão de crédito. Que pode acontecer por dois motivos:</p>
+
+<ol>
+<li>O não reconhecimento da compra por parte do titular do cartão</li>
+<li>Ou a transação não obedecer às regras previstas entre o comprador e o lojista.</li>
+</ol>
+
+<p>Caso um ChargeBack ocorra, o lojista não recebe o valor da compra ou seja, caso seja uma fraude, o fraudador, pode realizar uma compra com dados falsos.</p>
+
+<h3 id="quais-a-opções-de-frete-eu-posso-utilizar?">Quais a opções de frete eu posso utilizar?</h3>
+
+<ul>
+<li>Correios</li>
+<li>Frete Fixo</li>
+<li>Frete Grátis</li>
+<li>Sem Frete (Retirada em mãos)</li>
+<li>Sem cobrança de frete (Usada para bens Digitais ou Serviços)</li>
+</ul>
+
+<h3 id="para-utilizar-o-frete-dos-correios-o-que-eu-devo-fazer?">Para utilizar o frete dos Correios o que eu devo fazer?</h3>
+
+<ul>
+<li>Se você tem um contrato com o correio basta cadastrar seu usuário e senha no menu Configurações -&gt; Configurações de loja do seu Backoffice.</li>
+<li>Se não tiver contrato, será necessario inserir CEP de origem, o CEP de destino e o peso do produto, calculando o frete do produto a ser enviado.</li>
+</ul>
+
+<h3 id="como-o-comprador-final-escolhe-o-frete?">Como o comprador final escolhe o frete?</h3>
+
+<p>O frete é escolhido na tela de finalização de compra, onde serão exibidas as opções cadastradas pelo vendedor.</p>
+
+<aside class="notice">OBS: O lojista tambem tem a opção de calcular o valor do frete dentro de sua loja.</aside>
+
+<h3 id="como-o-valor-do-frete-é-repassado-ao-lojista?">Como o valor do frete é repassado ao lojista?</h3>
+
+<p>O frete é incluso no valor da transação (valor do pedido + frete = Valor da transação).</p>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="json">JSON</a>
+                <a href="#" data-language-name="shell">Shell</a>
+                <a href="#" data-language-name="php">PHP</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
