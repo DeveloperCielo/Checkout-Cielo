@@ -353,6 +353,8 @@ html, body {
     @extend %left-col;
   }
 
+  &>h1 {color: $sub-title;}
+
   &>ul, &>ol {
     padding-left: $main-padding + 15px;
   }
