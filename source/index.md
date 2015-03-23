@@ -18,6 +18,7 @@ O webservice Cielo utiliza uma tecnologia REST que deve ser usada sempre que hou
 
 # Integração
 
+
 ## Endpoint
 
 Todas as requisições serão enviadas para o webservice da Cielo utilizando o método POST para o endpoint `https://cieloecommerce.cielo.com.br/api/public/v1/orders`.
