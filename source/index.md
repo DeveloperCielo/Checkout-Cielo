@@ -1044,7 +1044,7 @@ Há a opção de definir um valor minimo de parcelamento. O valor definido faz c
 
 ##### URLs principais do Checkout Cielo
 
-As URL’s devem ser cadastradas pelo próprio lojista no seu Backoffice, na aba “configurações  Configurações
+As URL’s devem ser cadastradas pelo próprio lojista no seu Backoffice, na aba “configurações / Configurações
 da loja”.
 
 * **URL de Retorno** - Ao finalizar a transação o comprador final poderá ser redirecionado para a URL de retorno. Ao clicar no botão “VOLTAR” na tela de comprovante de vendas, o comprador será direcionando para a URL de retorno previamente cadastrada no BackOffice.
