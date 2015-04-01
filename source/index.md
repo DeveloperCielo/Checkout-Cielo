@@ -16,7 +16,7 @@ funcionalidades, os métodos a serem utilizados, listando informações a serem 
 
 O webservice Cielo utiliza uma tecnologia REST que deve ser usada sempre que houver um “carrinho de compras” a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a venda.
 
-# Orientações ao lojista
+# Orientações gerais
 
 Após a integração com o Checkout estar concluída, processos funcionais farão parte do cotidiano da loja, como a verificação e acompanhamento das movimentações financeiras ocorridas. Veja a seção sobre o [BackOffice do Checkout Cielo](#backoffice-cielo), que contém orientações para o lojista sobre como vender com o Checkout Cielo, descrevendo as funcionalidades, os métodos a serem utilizados, listando informações necessarias e provendo exemplos.
 
