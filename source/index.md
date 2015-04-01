@@ -16,6 +16,145 @@ funcionalidades, os métodos a serem utilizados, listando informações a serem 
 
 O webservice Cielo utiliza uma tecnologia REST que deve ser usada sempre que houver um “carrinho de compras” a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a venda.
 
+# Orientações ao lojista
+
+Após a integração com o Checkout estar concluída, processos funcionais farão parte do cotidiano da loja, como a verificação e acompanhamento das movimentações financeiras ocorridas. Veja a seção sobre o [BackOffice do Checkout Cielo](#backoffice-cielo), que contém orientações para o lojista sobre como vender com o Checkout Cielo, descrevendo as funcionalidades, os métodos a serem utilizados, listando informações necessarias e provendo exemplos.
+
+## Botão Comprar
+
+Integração via Botão é um método de compra usada sempre que não houver um “carrinho de compras” em sua loja ou quando se deseja associar uma compra rápida direta a um produto, como uma promoção numa homepage pulando a etapa do carrinho.
+
+A integração via botão também pode ser usada para enviar um e-mail marketing, ou uma cobrança via e-mail, ou seja, adicionando o botão (HTML) referente ao produto/serviço a ser comprado/pago. Ou sempre que desejar disponibilizar uma venda rápida.
+
+Para utilizar este recurso, é necessário cadastrar o produto que deseja vender, suas informações, e depois simplesmente copiar o código fonte gerado para este botão. A inclusão dos produtos é feita dentro do Backoffice, no menu de Produtos/Cadastrar Produto.
+
+### Características do Botão
+
+* Cada botão gerado serve somente para um determinado produto.
+* O preço do produto não pode ser alterado na tela de Checkout
+* Não é necessário o desenvolvimento de um carrinho
+* O cadastro do produto é obrigatório para a criação do botão.
+
+Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter à compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do Backoffice, e valerão os dados do cadastro.
+
+## Boleto
+
+Todo boleto gerado (emitido) aparece com o status de “PENDENTE” no Relatório de Pedidos. Sua troca de status vai depender de ações manuais do proprio lojista.
+
+### Possiveis Status do Boleto
+
+* **PENDENTE** – boleto emitido pelo processo de transação. Status continua até alteração manual pelo lojista.
+* **PAGO** – Status usado quando o botão "Conciliar” é ativado pelo lojista. Esse status pode ser revertido para pendente utiliando o Botão “Desfazer conciliação”.
+* **EXPIRADO** – Status ativo após 10 dias da criação do boleto, caso esse não tenha sito conciliado nesse periodo. Boletos com status “EXPIRADO” podem ser conciliados.
+
+### Conciliando um Boleto
+
+Cabe ao lojista através de uma Conciliação Manual com seu extrato bancário, confirmar o pagamento do mesmo.
+
+![Conciliando um boleto](/images/checkout-cielo-conciliar-boleto.png)
+
+Para realizar a Conciliação você deve:
+
+1. Acessar o relatório de pedidos no Backoffice;
+2. Filtrar os pedidos por Meio de Pagamento “Boleto” e status “PENDENTE” e identificar o boleto em questão pelo Valor;
+3. Clicar no sinal de + no final da linha para acessar a página de “Detalhes”;
+4. Clicar no botão de “ Confirmar Pagamento ” e informar a data de pagamento, para seu futuro controle;
+
+O pedido passa para status **PAGO**.
+
+O Comprador também verá o pedido como **PAGO** no “Backoffice do Comprador”
+
+Desfazendo a conciliação (pagamento) de um Boleto. Caso a conciliação tenha sido feito errada, basta:
+
+1. Encontrar o Pedido;
+2. Entrar no seu detalhe e clicar no botão “Desfazer Pagamento”;
+3. O Pedido voltará para o Status de “PENDENTE”.
+
+### Boletos Expirados
+
+Se o boleto não for conciliado dentro de um prazo de 10 dias após seu vencimento, seu Status será alterado para **“EXPIRADO”**, para um melhor controle dos boletos vencidos. Boletos EXPIRADOS podem ser conciliados.
+
+<aside class="notice">Validade do Boleto – Caso o boleto expire em um dia não útil, como Sábado, ele será valido até o próximo dia útil.</aside>
+
+![Boleto](/images/checkout-cielo-boleto.png)
+
+## Cartão de Crédito
+
+O Checkout Cielo trabalha com diferentes bandeiras de crédito, como Visa, Mastercard, Diners, Amex e Elo.
+
+![Cartões de crédito](/images/checkout-cielo-cartao-credito.png)
+
+### Recebendo uma Venda de Cartão de Crédito
+
+Pedidos por meio de cartão de crédito serão incluídos no Backoffice como **“AUTORIZADO”** ou **“NÃO AUTORIZADO”**, dependendo do resultado da autorização na Cielo. Caso haja algum problema no processamento deste pedido (consumidor fechou a tela, por exemplo), ele constará como **“NÃO FINALIZADO”**.
+
+### Análise de Fraude
+
+Pedidos **“AUTORIZADOS”** serão enviados online, ainda no ato da venda, para ferramenta de Antifraude da Cybersource para análise. O resultado desta análise será traduzido no campo **“Indicação AF”** no Relatório de Pedido, para cada pedido.
+
+Esta análise indicará um **“BAIXO RISCO”** ou **“ALTO RISCO”** para a venda em questão. Esta sugestão é o que deve guiar a decisão de se confirmar a venda ou não. A analise será apresentada no “Detalhes do Pedido”, como abaixo:
+
+[!Análise de risco(/images/checkout-cielo-analise-risco.png)
+
+## Captura/Cancelamento manual
+
+Concluindo uma Venda (captura ou cancelamento)
+
+As vendas **“AUTORIZADAS”** aguardam uma decisão de confirmação ou cancelamento. E esta decisão deve vir em conformidade com a análise de fraude.
+
+A confirmação da venda deve ser feita pelo botão **CAPTURAR** no Detalhe do Pedido, e seu status mudará para **“PAGO”**. Esta venda será então confirmada (capturada) na Cielo.
+
+E o cancelamento deve ser feito pelo botão **CANCELAR** no Detalhe do Pedido, e seu status mudará para **“CANCELADO”**. Esta venda será então cancelada (desfeita) na Cielo.
+
+<aside class="warning">Atenção! Você tem até 5 dias pra confirmar a venda! Caso isso não seja feito ela não será mais válida na Cielo, e o limite reservado para sua loja/venda será liberado. Este é um procedimento padrão para todas as lojas.</aside>
+
+## Captura Automática
+
+As vendas **“AUTORIZADAS”**, e com **“BAIXO RISCO”** no antifraude serão **CAPTURADAS** automaticamente pelo sistema.
+
+O status apresentado será **“PAGO”**. Esta venda será então confirmada (capturada) na Cielo.
+
+## Cancelamento Automático
+
+As vendas **“AUTORIZADAS”**, e com **“ALTO RISCO”** no antifraude serão **CANCELADAS** automaticamente pelo sistema.
+
+O status apresentado será **“PAGO”**. Esta venda será então cancelada (desfeita) na Cielo.
+
+<aside class="warning">Atenção! Você tem a opção de escolher a melhor integração para o seu negócio, a captura/cancelamento manual ou automático é feito diretamente pelo seu backoffice.</aside>
+
+![Cancelamento e captura automáticos](/images/checkout-cielo-anti-fraude-cancelamento-captura.png)
+
+## Estornando uma Venda
+
+Caso a venda já tenha sido confirmada (status PAGO) ela pode ser ainda, futuramente, estornada. Para isso, basta clicar no botão no Detalhe do Pedido.
+
+### Diferença entre Cancelado e Estornado
+
+* **Cancelamento:** é feito no mesmo dia da captura, devolvendo o limite ao cartão do comprador em até 72h conforme regras do banco emissor do cartão. Não é apresentado na fatura do comprador;
+* **Estorno:** a partir do dia seguinte da captura, o valor é “devolvido” na fatura do comprador em até 120 dias. É apresentado na fatura do comprador.
+
+### Vendas de Cartões de Crédito Expiradas
+
+Conforme o prazo de confirmação da venda autorizada se acabar, seu pedido passará automaticamente para o status “EXPIRADO”. Isso acontecerá no sexto dia após a data de autorização (data do venda).
+
+## Chargeback
+
+Seu cliente pode por algum motivo cancelar a compra diretamente com o banco emissor de seu cartão de crédito. Caso isso ocorra você receberá da Cielo um aviso de Chargeback de “Não Reconhecimento de compra”. Ou caso tenha havido uma compra com cartão fraudado, você recebera um aviso de Chargeback por “Fraude”.
+
+Essa comunicação não é feita via o backoffice do Checkout Cielo, mas sim pelo extrato da própria Cielo. Após esse recebimento, você pode entrar no Backoffice e sinalizar o pedido como tendo recebido um Chargeback, pra seu melhor controle. Basta entrar no Detalhe do Pedido e clicar no botão “ChargeBack”, e seu status passará a ser **“CHARGEBACK”**.
+
+![Chargeback](/images/checkout-cielo-chargeback.png)
+
+## Débito Online
+
+Pedidos vendidos por meio de Débito online serão incluídos no Backoffice como PENDENTE, PAGO, NÃO AUTORIZADO ou NÃO FINALIZADO, dependendo do resultado da autorização junto ao Banco.
+
+* **Pendente** - Corresponde quando o comprador ao finalizar o pedido e não obtem resposta por parte do Banco, ou seja, não conseguir nem carregar a página do Banco para inserir os dados para o Débito.
+* **Pago** - Corresponde quando o comprador conseguir realizar o pagamento do débito com sucesso.
+* **Não Autorizado** - Apresentado para o Lojista quando o comprador tentar realizar uma transação via débito e não ter saldo para a transação.
+* **Não Finalizado** - Apresentado para o Lojista caso o comprador tenha algum problema para finalizar o pagamento do meio Débito, seja fechando a janela do banco ou simplesmente nem chegando à tela do banco.
+
+
 # Integração
 
 
@@ -744,3 +883,222 @@ O frete é escolhido na tela de finalização de compra, onde serão exibidas as
 ### Como o valor do frete é repassado ao lojista?
 
 O frete é incluso no valor da transação (valor do pedido + frete = Valor da transação).
+
+# Backoffice Cielo
+
+Na tela inicial do Checkout Cielo é possivel se logar, se cadastrar ou fazer o login voltado para a Consulta a um
+determinado pedido. Essa tela é acessada via a URL: [https://cieloecommerce.cielo.com.br/backoffice](https://cieloecommerce.cielo.com.br/backoffice)
+
+![Backoffice Cielo - página inicial](/images/checkout-cielo-login.png)
+
+### Páginas do Backoffice Cielo
+
+O Backoffice é formado por 6 paginas diferentes de administração do Checkout Cielo. Elas são:
+
+1. [DashBoard](#dashboard) - Pagina inicial onde são apresentadas informações sobre a sua conta e sobre o volume e tipo de transações que sua loja vem realizando vio Checkout Cielo.
+2. [Pedidos](#pedidos) - Nessa pagina fica contida toda a listagem de transações realizadas por um determinado periodo de tempo no Checkout Cielo.
+3. [Produtos](#produtos) - Nessa pagina são listados todos os produtos cadastrados no Checkout Cielo. Tambem é possivel fazer uma busca pelo nome do produto nesta pagina.
+4. [Relatórios](#relatórios) - Nesta pagina é possivel gerar 03 tipos de relatorios: Relatório financeiro, Detalhado de vendas e Listagem de clientes.
+5. [Manuais](#manuais) - Nesta pagina constam os manuais do Checkout Cielo, assim como a pagina de FAQ e de “Duvidas”, onde o lojista pode entrar em contato com a equipe de suporte Checkout Cielo.
+6. [Configurações](#configurações) - Página onde é possivel fazer alterações nas configurações da Loja, dos seus dados cadastrais e Alterar sua Senha.
+
+## DashBoard
+
+Pagina inicial onde são apresentadas informações sobre a sua conta e sobre o volume e tipo de transações que sua
+loja vem realizando vio Checkout Cielo.
+
+### Nessa tela você encontra 2 tipos de informações.
+
+* **Alertas** – Indica se há pedidos a expirar na data presente.
+* **Volume financeiro e transacional** - São gráficos interativos que demonstram em porcentagem (e em valores totais) qual a participação de cada meio de pagamento no total de transações realizadas e o volume total de acordo com o status das transações.
+
+![DashBoard](/images/checkout-cielo-dashboard.png)
+
+## Pedidos
+
+Nessa pagina fica contida toda a listagem de transações realizadas por um determinado periodo de tempo no Checkout Cielo. Nessa pagina é possivel pesquisar um determinado pedido , via a colocação de um determinado parametro de busca nos campos la existentes ou desmarcando os “checkbox” dos “Meios de pagamento” ou “Status de pagamento” e apertando o botão “Buscar”.
+
+O resultado da pesquisa é exposta em forma de uma listagem de operações. Essa listagem pode ser exportada como forma de excel.
+
+![Pedidos](/images/checkout-cielo-pedidos.png)
+
+## Produtos
+
+Nessa pagina são listados todos os produtos cadastrados no Checkout Cielo. Tambem é possivel fazer uma busca pelo nome do produto nesta pagina. A lista de produtos pode ser exportada no formato Excel.
+
+No menu Produtos, há também outras duas áreas: **Cadastrar de produtos** e **Listar Produtos Cadastrados**.
+
+### Listar Produtos Cadastrados
+
+![Produtos cadastrador](/images/checkout-cielo-produtos-cadastrados.png)
+
+Clicando no Titulo ou SKU do produto, você será redirecionado a página de informações de Produto, onde todas as caracteristicas do produto são informadas e onde você pode definir o padrão do Botão (caso a sua integração seja com base no Botão Checkout Cielo) a ser usado na venda desse produto.
+
+![Detalhes do produto](/images/checkout-cielo-detalhes-produto.png)
+
+### Cadastrar de Produtos
+
+Nessa pagina é possivel cadastrar seus produtos com base no tipo de produto em si. O Checkout Cielo considera 3 tipos de produtos: Material Fisico, Digital e Serviço.
+
+* **Material Fisico** – Produtos Fisicos que necessitam ser enviados pelos lojistas. Ex: Roupas, Brinquedos, etc.
+* **Digital** – Bems digitais vendidos pela internet. Ex: Software, Jogos , Musicas, etc.
+* **Serviço** – Serviços a serem prestados. Ex: Entrega delivery, projetos e orçamentos.
+
+![Cadastrar produtos](/images/checkout-cielo-cadastrar-produtos.png)
+
+<aside class="notice">Material Fisico exige que um tipo de frete seja cadastrado.</aside>
+
+<aside class="notice">O campo “SoftDescriptor” permite que lojista insira uma mensagem que será exibida na fatura do cartão de crédito do comprador. Essa funcionalidade é indicada para lojas que tem o nome fantasia muito diferente em relação a Razão social.</aside>
+
+<aside class="notice">A mensagem inclusa no campo “SoftDescriptor” deve ser limitada a 13 letras e não pode conter espaços. Exemplo: “Loja X” (errado) “Loja_X” (correto)</aside>
+
+<aside class="notice">O cadastro de produtos não é obrigatório para lojistas que utilizem a integração via carrinho</aside>
+
+## Relatórios
+
+Nesta pagina é possivel gerar 03 tipos de relatorios: Relatório financeiro, Detalhado de vendas e Listagem de clientes.
+
+### Relatorio Financeiro
+
+Esse relatorio apresenta as vendas pagas em um determinado periodo de tempo, sendo separadas por meio de pagamento. Selecionando o periodo e tipo de pagamento, após pressionar “Buscar” o resultado será apresentado.
+
+![Relatório financeiro](/images/checkout-cielo-relatorio-financeiro.png)
+
+### Relatório detalhado de vendas.
+
+Esse relatorio informa o valor de cada pedido assim como dados sobre o produto e o comprador. O relatorio somente informa dados dos pedidos considerados com status “PAGO”.
+
+<aside class="notice">Pedidos realizados no Modo de teste não são apresentados nesse relatório, mesmo que estejam com o status “PAGO”</aside>
+
+![Relatório detalhado de vendas](/images/checkout-cielo-relatorio-detalhado-de-venda.png)
+
+### Listagem de clientes
+
+A listagem de clientes gera um arquivo excel contendo os dados dos clientes que realizaram compras em sua loja.
+
+#### Os dados apresentados são:
+
+1. Nome
+2. E-mail
+3. Telefone
+4. CPF
+5. Endereço (como descrito pelo cliente ou como retornado pela informação do CEP)
+6. Numero
+7. Complemento (se houver)
+8. Bairro
+9. Cidade
+10. Estado
+11. CEP
+
+### Extrato de cobrança
+
+A lista do valor cobrado pelos serviços oferecidos pela Cielo será apresentada neste relatório. Todos os dados dos planos e custos transacionais serão apresentados aqui:
+
+![Extrato de cobrança](/images/checkout-cielo-relatorio-extrato-cobranca.png)
+
+## Manuais
+
+Nesta pagina constam os manuais do Checkout Cielo, assim como a pagina de FAQ e de “Duvidas”, onde o lojista pode entrar em contato com a equipe de suporte Checkout Cielo.
+
+![Dúvidas](/images/checkout-cielo-manuais-duvidas.png)
+
+Nessa pagina é possivel entrar em contato a respeito de duvidas Operacionais, tecnicas e Comerciais e ter acesso aos documentos técnicos e de suporte do Checkout Cielo.
+
+* **Manual do Desenvolvedor** – Contém os procedimentos e diretrizes de integração do Checkout Cielo ao seu site.
+* **Tutorial do Lojista** – Principal fonte de informação sobre a utilização do Checkout Cielo do ponto de vista do Lojista
+* **FAQ** – Perguntas mais comuns a respeito do Checkout Cielo. Contem informações sobre questões Comerciais, Técnicas, Operacionais e sobre o Modo de teste.
+
+## Configurações
+
+Página onde é possivel fazer alterações nas **configurações da Loja**, dos seus **dados cadastrais** e **Alterar sua Senha**.
+
+### Configurações da Loja
+
+Nesta pagina é possivel fazer configurações em diferentes mecanismos dentro do Checkout Cielo. Essa área é dividida em 4 partes diferentes: Exibição, Pagamentos, Antifraude, Frete de Correios & serviços.
+
+#### Exibição
+
+Aqui é possivel alterar o logo do meio de pagamento disponível em sua loja e a cor de fundo do site via o uso da caixa de opções ou digitando o código relativo a cor escolhida (As cores estão no padrão RGB).
+
+![Configuração Exibição](/images/checkout-cielo-configuracao-exibicao.png)
+
+<aside class="notice">O logo de sua loja será exibido na tela de Checkout centralizado.</aside>
+
+#### Pagamentos
+
+Nesta tela é possivel alterar as configurações dos meios de pagamento disponiveis em sua loja , os definindo como ativos ou não, e configurar a URL de retorno, notificação e Mudança de Status.
+
+![Configuração Pagamentos](/images/checkout-cielo-configuracao-pagamentos.png)
+
+##### Cartões de crédito e Parcelamento
+
+Basta marcar a caixa de seleção do cartão que deseja disponibilizar no momento do pagamento. Para desabilita-lo, basta desmarcar a caixa de seleção O parcelamento é definido por bandeira de cartão. O numero de parcelas maximas disponibilizadas para cada cartão passa a ser definida pelo Lojista. O Checkout Cielo permite parcelamento até 12 vezes sem juros.
+
+Há a opção de definir um valor minimo de parcelamento. O valor definido faz com que independentemente do valor da compra, o comprador somente possa fazer parcelamentos com valor acima do Valor Minimo.
+
+**Exemplo:** Caso o valor minimo de parcelamento seja de R$10,00, uma compra de R$100,00 poderá ser parcelada máximo em 10x, mesmo que na configuração da loja o parcelamento em 12x esteja habilitado.
+
+<aside class="warning">O numero maximo de parcelamento da loja depende do limite definido na Afiliação. Por padrão toda afiliação tem limite de 3 vezes.</aside>
+
+<aside class="warning">O cartão American Express tem limite de parcelamento em 3 vezes por padrão. Essa configuração é standart da bandeira AMEX, logo , não é possivel aumentar o numero de parcelas alem deste limite.</aside>
+
+##### URLs principais do Checkout Cielo
+
+As URL’s devem ser cadastradas pelo próprio lojista no seu Backoffice, na aba “configurações  Configurações
+da loja”.
+
+* **URL de Retorno** - Ao finalizar a transação o comprador final poderá ser redirecionado para a URL de retorno. Ao clicar no botão “VOLTAR” na tela de comprovante de vendas, o comprador será direcionando para a URL de retorno previamente cadastrada no BackOffice.
+* **URL de Notificação** - Ao finalizar uma transação é enviado um post com todos os dados da venda para a URL de Notificação, previamente cadastrada no BackOffice. O POST de notificação é enviado apenas no momento que a transação é finalizada, independentemente se houve alteração do status da transação.
+* **URL de Mudança de Status** - Quando um pedido tiver seu status alterado, será enviando um post para a URL de Mudança de Status, previamente cadastrada no BackOffice. O POST de mudança de status não contem dados do carrinho, apenas dados de identificação do pedido.
+
+Na tela de pedidos, dentro de cada transação, há a opção de reenvio do POST de mudança de status. Basta clicar nos botões azuis, marcados na imagem abaixo:
+
+![Detalhes do pedido](/images/checkout-cielo-detalhe-pedidos.png)
+
+##### Desconto para Boletos e débito online
+
+É possivel realizar oferecer descontos nos meios de pagamento boleto e débito online. Esse desconto pode ser definido de duas maneiras.
+
+* **Via Backoffice:** Basta selecionar o valor em (%) que o meio de pagamento virá a oferecer.
+* **Via POST:** é possivel enviar o no POST do carrinho um parametro contendo o desconto (%) que o meio de pagamento virá a oferecer.
+
+##### Valor Minimo de boleto
+
+É possivel definir um valor minimo para que o boleto seja apresentado. Compras em valor inferior ao definido não tem o boleto disponibilizado na tela de checkout.
+
+<aside class="warning">Se valor da compra for inferior, caso não haja outro meio de pagamento disponivel, não haverá opção para o comprador, obrigando-o a retornar a loja criar um carrinho com o valor acima do minimo.</aside>
+
+Para evitar a situação descrita no alerta acima, sugerimos:
+
+* Caso sua loja não tenha outros meios de pagamento, informe ao comprador sobre o valor minimo do boleto.
+* Adquira outros meios de pagamento como Cartões de crédito (procedimento realizado pelo Checkout Cielo) ou débito online.
+
+<aside class="warning">O valor minimo do boleto não funciona em caso de descontos definidos pelo lojista. Caso o lojista defina valor minimo de boleto de R$100,00 e um desconto de 10%, será gerado um boleto de R$90,00 (inferior ao minimo)</aside>
+
+##### Antifraude
+
+Aqui é possivel definir a automação dos processos de captura e cancelamento de pedidos com base no resultado da analise de anti-fraude.
+
+<aside class="notice">Se o lojista não tem habilitado o antifraude em seu contrato junto a Cielo ou não enviar no POST a solicitação de analise de fraude, a captura automática não será executada. Caberá ao lojista a captura manual do pedido.</aside>
+
+![Anti fraude](/images/checkout-cielo-anti-fraude.png)
+
+##### Frete de Correios & Serviços
+
+Nesta área você configura as opções de frete disponiveis em sua Loja.
+
+Na seção sobre informações sobre frete há uma explicação mais detalhada sobre os tipos de fretes disponiveis no Checkout Cielo. Há tambem na área de fretes de Correiros, uma calculadora de frete para consultas (essa calculadora dá o valor de frete de cada tipo de frete cadastrado para um determinado peso e localidade)
+
+![Frete Correios](/images/checkout-cielo-frete-correios.png)
+
+##### Dados Cadastrais
+
+Nesta seção, ficam listados os dados da loja cadastrada e do Lojista.
+
+![Dados cadastrais](/images/checkout-cielo-dados-cadastrais.png)
+
+##### Alterar sua Senha
+
+Aqui é possivel alterar a senha de acesso ao Checkout Cielo.
+
+![Alterar senha](/images/checkout-cielo-alterar-senha.png)
