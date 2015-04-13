@@ -6,6 +6,12 @@ language_tabs:
   - shell: Shell
   - php: PHP
 
+toc_footers:
+  - <a href='/Checkout-Orientacoes-Gerais/'>Orientações Gerais</a>
+  - <a href='/Checkout-Backoffice/'>Backoffice Cielo</a>
+  - <a href='/Checkout-FAQ/'>FAQ</a>
+  
+
 search: true
 ---
 
