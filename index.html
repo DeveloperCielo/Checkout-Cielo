@@ -60,11 +60,11 @@ Nesta documentação são descritas <strong>todas as funcionalidades</strong> de
 
 <p>O Checkout Cielo utiliza uma <strong>tecnologia REST</strong> que deve ser usada <strong>quando houver um *“carrinho de compras”</strong>* a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a compra. Há também opção de <strong>integração via botão</strong> usada <strong>sempre que não houver um *“carrinho de compras”</strong>* em sua loja ou quando se deseja associar uma <strong>compra rápida direta a um produto</strong>.</p>
 
-<h2 id="orientações-gerais">Orientações gerais</h2>
+<h3 id="orientações-gerais">Orientações gerais</h3>
 
 <p>Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento <strong>dos processos</strong> funcionais que farão parte do <strong>cotidiano da loja</strong>, como o <strong>acompanhamento das movimentações financeiras</strong>, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  <strong>extrato de cobrança</strong>, entre outros. Veja a seção sobre o <a href="#backoffice-cielo">BackOffice Checkout Cielo</a>. Lá você encontra <strong>orientações importantes</strong> sobre como <strong>administrar o e-Commerce</strong> aproveitando ao máximo as funcionalidades  do Checkout Cielo</p>
 
-<h2 id="histórico-de-versões">Histórico de versões</h2>
+<h3 id="histórico-de-versões">Histórico de versões</h3>
 
 <ul>
 <li><strong>Versão 1.3</strong> - 21/01/2015
@@ -90,176 +90,17 @@ Nesta documentação são descritas <strong>todas as funcionalidades</strong> de
 </ul></li>
 </ul>
 
-<h2 id="botão-comprar">Botão Comprar</h2>
+<h2 id="integração-carrinho-de-compras">Integração Carrinho de Compras</h2>
 
-<p>Integração via Botão é um método de compra usada sempre que não houver um “carrinho de compras” em sua loja ou quando se deseja associar uma compra rápida direta a um produto, como uma promoção numa homepage pulando a etapa do carrinho.</p>
-
-<p>A integração via botão também pode ser usada para enviar um e-mail marketing, ou uma cobrança via e-mail, ou seja, adicionando o botão (HTML) referente ao produto/serviço a ser comprado/pago. Ou sempre que desejar disponibilizar uma venda rápida.</p>
-
-<p>Para utilizar este recurso, é necessário cadastrar o produto que deseja vender, suas informações, e depois simplesmente copiar o código fonte gerado para este botão. A inclusão dos produtos é feita dentro do Backoffice, no menu de Produtos/Cadastrar Produto.</p>
-
-<h3 id="características-do-botão">Características do Botão</h3>
-
-<ul>
-<li>Cada botão gerado serve somente para um determinado produto.</li>
-<li>O preço do produto não pode ser alterado na tela de Checkout</li>
-<li>Não é necessário o desenvolvimento de um carrinho</li>
-<li>O cadastro do produto é obrigatório para a criação do botão.</li>
-</ul>
-
-<p>Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter à compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do Backoffice, e valerão os dados do cadastro.</p>
-
-<h2 id="boleto">Boleto</h2>
-
-<p>Todo boleto gerado (emitido) aparece com o status de “PENDENTE” no Relatório de Pedidos. Sua troca de status vai depender de ações manuais do proprio lojista.</p>
-
-<h3 id="possiveis-status-do-boleto">Possiveis Status do Boleto</h3>
-
-<ul>
-<li><strong>PENDENTE</strong> – boleto emitido pelo processo de transação. Status continua até alteração manual pelo lojista.</li>
-<li><strong>PAGO</strong> – Status usado quando o botão &ldquo;Conciliar” é ativado pelo lojista. Esse status pode ser revertido para pendente utiliando o Botão “Desfazer conciliação”.</li>
-<li><strong>EXPIRADO</strong> – Status ativo após 10 dias da criação do boleto, caso esse não tenha sito conciliado nesse periodo. Boletos com status “EXPIRADO” podem ser conciliados.</li>
-</ul>
-
-<h3 id="conciliando-um-boleto">Conciliando um Boleto</h3>
-
-<p>Cabe ao lojista através de uma Conciliação Manual com seu extrato bancário, confirmar o pagamento do mesmo.</p>
-
-<p><img alt="Conciliando um boleto" src="images/checkout-cielo-conciliar-boleto.png" /></p>
-
-<p>Para realizar a Conciliação você deve:</p>
-
-<ol>
-<li>Acessar o relatório de pedidos no Backoffice;</li>
-<li>Filtrar os pedidos por Meio de Pagamento “Boleto” e status “PENDENTE” e identificar o boleto em questão pelo Valor;</li>
-<li>Clicar no sinal de + no final da linha para acessar a página de “Detalhes”;</li>
-<li>Clicar no botão de “ Confirmar Pagamento ” e informar a data de pagamento, para seu futuro controle;</li>
-</ol>
-
-<p>O pedido passa para status <strong>PAGO</strong>.</p>
-
-<p>O Comprador também verá o pedido como <strong>PAGO</strong> no “Backoffice do Comprador”</p>
-
-<p>Desfazendo a conciliação (pagamento) de um Boleto. Caso a conciliação tenha sido feito errada, basta:</p>
-
-<ol>
-<li>Encontrar o Pedido;</li>
-<li>Entrar no seu detalhe e clicar no botão “Desfazer Pagamento”;</li>
-<li>O Pedido voltará para o Status de “PENDENTE”.</li>
-</ol>
-
-<h3 id="boletos-expirados">Boletos Expirados</h3>
-
-<p>Se o boleto não for conciliado dentro de um prazo de 10 dias após seu vencimento, seu Status será alterado para <strong>“EXPIRADO”</strong>, para um melhor controle dos boletos vencidos. Boletos EXPIRADOS podem ser conciliados.</p>
-
-<aside class="notice">Validade do Boleto – Caso o boleto expire em um dia não útil, como Sábado, ele será valido até o próximo dia útil.</aside>
-
-<p><img alt="Boleto" src="images/checkout-cielo-boleto.png" /></p>
-
-<h2 id="cartão-de-crédito">Cartão de Crédito</h2>
-
-<p>O Checkout Cielo trabalha com diferentes bandeiras de crédito, como Visa, Mastercard, Diners, Amex e Elo.</p>
-
-<p><img alt="Cartões de crédito" src="images/checkout-cielo-cartao-credito.png" /></p>
-
-<h3 id="recebendo-uma-venda-de-cartão-de-crédito">Recebendo uma Venda de Cartão de Crédito</h3>
-
-<p>Pedidos por meio de cartão de crédito serão incluídos no Backoffice como <strong>“AUTORIZADO”</strong> ou <strong>“NÃO AUTORIZADO”</strong>, dependendo do resultado da autorização na Cielo. Caso haja algum problema no processamento deste pedido (consumidor fechou a tela, por exemplo), ele constará como <strong>“NÃO FINALIZADO”</strong>.</p>
-
-<h3 id="análise-de-fraude">Análise de Fraude</h3>
-
-<p>Pedidos <strong>“AUTORIZADOS”</strong> serão enviados online, ainda no ato da venda, para ferramenta de Antifraude da Cybersource para análise. O resultado desta análise será traduzido no campo <strong>“Indicação AF”</strong> no Relatório de Pedido, para cada pedido.</p>
-
-<p>Esta análise indicará um <strong>“BAIXO RISCO”</strong> ou <strong>“ALTO RISCO”</strong> para a venda em questão. Esta sugestão é o que deve guiar a decisão de se confirmar a venda ou não. A analise será apresentada no “Detalhes do Pedido”, como abaixo:</p>
-
-<p>[!Análise de risco(/images/checkout-cielo-analise-risco.png)</p>
-
-<h2 id="captura/cancelamento-manual">Captura/Cancelamento manual</h2>
-
-<p>Concluindo uma Venda (captura ou cancelamento)</p>
-
-<p>As vendas <strong>“AUTORIZADAS”</strong> aguardam uma decisão de confirmação ou cancelamento. E esta decisão deve vir em conformidade com a análise de fraude.</p>
-
-<p>A confirmação da venda deve ser feita pelo botão <strong>CAPTURAR</strong> no Detalhe do Pedido, e seu status mudará para <strong>“PAGO”</strong>. Esta venda será então confirmada (capturada) na Cielo.</p>
-
-<p>E o cancelamento deve ser feito pelo botão <strong>CANCELAR</strong> no Detalhe do Pedido, e seu status mudará para <strong>“CANCELADO”</strong>. Esta venda será então cancelada (desfeita) na Cielo.</p>
-
-<aside class="warning">Atenção! Você tem até 5 dias pra confirmar a venda! Caso isso não seja feito ela não será mais válida na Cielo, e o limite reservado para sua loja/venda será liberado. Este é um procedimento padrão para todas as lojas.</aside>
-
-<h2 id="captura-automática">Captura Automática</h2>
-
-<p>As vendas <strong>“AUTORIZADAS”</strong>, e com <strong>“BAIXO RISCO”</strong> no antifraude serão <strong>CAPTURADAS</strong> automaticamente pelo sistema.</p>
-
-<p>O status apresentado será <strong>“PAGO”</strong>. Esta venda será então confirmada (capturada) na Cielo.</p>
-
-<h2 id="cancelamento-automático">Cancelamento Automático</h2>
-
-<p>As vendas <strong>“AUTORIZADAS”</strong>, e com <strong>“ALTO RISCO”</strong> no antifraude serão <strong>CANCELADAS</strong> automaticamente pelo sistema.</p>
-
-<p>O status apresentado será <strong>“PAGO”</strong>. Esta venda será então cancelada (desfeita) na Cielo.</p>
-
-<aside class="warning">Atenção! Você tem a opção de escolher a melhor integração para o seu negócio, a captura/cancelamento manual ou automático é feito diretamente pelo seu backoffice.</aside>
-
-<p><img alt="Cancelamento e captura automáticos" src="images/checkout-cielo-anti-fraude-cancelamento-captura.png" /></p>
-
-<h2 id="estornando-uma-venda">Estornando uma Venda</h2>
-
-<p>Caso a venda já tenha sido confirmada (status PAGO) ela pode ser ainda, futuramente, estornada. Para isso, basta clicar no botão no Detalhe do Pedido.</p>
-
-<h3 id="diferença-entre-cancelado-e-estornado">Diferença entre Cancelado e Estornado</h3>
-
-<ul>
-<li><strong>Cancelamento:</strong> é feito no mesmo dia da captura, devolvendo o limite ao cartão do comprador em até 72h conforme regras do banco emissor do cartão. Não é apresentado na fatura do comprador;</li>
-<li><strong>Estorno:</strong> a partir do dia seguinte da captura, o valor é “devolvido” na fatura do comprador em até 120 dias. É apresentado na fatura do comprador.</li>
-</ul>
-
-<h3 id="vendas-de-cartões-de-crédito-expiradas">Vendas de Cartões de Crédito Expiradas</h3>
-
-<p>Conforme o prazo de confirmação da venda autorizada se acabar, seu pedido passará automaticamente para o status “EXPIRADO”. Isso acontecerá no sexto dia após a data de autorização (data do venda).</p>
-
-<h2 id="chargeback">Chargeback</h2>
-
-<p>Seu cliente pode por algum motivo cancelar a compra diretamente com o banco emissor de seu cartão de crédito. Caso isso ocorra você receberá da Cielo um aviso de Chargeback de “Não Reconhecimento de compra”. Ou caso tenha havido uma compra com cartão fraudado, você recebera um aviso de Chargeback por “Fraude”.</p>
-
-<p>Essa comunicação não é feita via o backoffice do Checkout Cielo, mas sim pelo extrato da própria Cielo. Após esse recebimento, você pode entrar no Backoffice e sinalizar o pedido como tendo recebido um Chargeback, pra seu melhor controle. Basta entrar no Detalhe do Pedido e clicar no botão “ChargeBack”, e seu status passará a ser <strong>“CHARGEBACK”</strong>.</p>
-
-<p><img alt="Chargeback" src="images/checkout-cielo-chargeback.png" /></p>
-
-<h2 id="débito-online">Débito Online</h2>
-
-<p>Pedidos vendidos por meio de Débito online serão incluídos no Backoffice como PENDENTE, PAGO, NÃO AUTORIZADO ou NÃO FINALIZADO, dependendo do resultado da autorização junto ao Banco.</p>
-
-<ul>
-<li><strong>Pendente</strong> - Corresponde quando o comprador ao finalizar o pedido e não obtem resposta por parte do Banco, ou seja, não conseguir nem carregar a página do Banco para inserir os dados para o Débito.</li>
-<li><strong>Pago</strong> - Corresponde quando o comprador conseguir realizar o pagamento do débito com sucesso.</li>
-<li><strong>Não Autorizado</strong> - Apresentado para o Lojista quando o comprador tentar realizar uma transação via débito e não ter saldo para a transação.</li>
-<li><strong>Não Finalizado</strong> - Apresentado para o Lojista caso o comprador tenha algum problema para finalizar o pagamento do meio Débito, seja fechando a janela do banco ou simplesmente nem chegando à tela do banco.</li>
-</ul>
-
-<h2 id="endpoint">Endpoint</h2>
+<h3 id="endpoint">Endpoint</h3>
 
 <p>Todas as requisições serão enviadas para o webservice da Cielo utilizando o método POST para o endpoint <code class="prettyprint">https://cieloecommerce.cielo.com.br/api/public/v1/orders</code>.</p>
 
-<h2 id="authentication">Authentication</h2>
-
-<p>Por se tratar de transações, todas as requisições enviadas para a Cielo deverão ser autenticadas. A autenticação consiste no envio do MerchantId, que é o identificador único da loja, através do campo de cabeçalho HTTP MerchantId.</p>
-
-<blockquote>
-<p>Para autenticar você deve enviar o campo de cabeçalho MerchantId:</p>
-</blockquote>
-
-<p><code class="prettyprint">MerchantId: 00000000-0000-0000-0000-000000000000</code></p>
-<pre><code class="highlight shell">curl -X POST <span class="se">\</span>
-     -H <span class="s2">"MerchantId: 00000000-0000-0000-0000-000000000000"</span> <span class="se">\</span>
-     -H <span class="s2">"Content-Type: application/json"</span>
-     <span class="s2">"https://cieloecommerce.cielo.com.br/api/public/v1/orders"</span>
+<h3 id="autenticação">Autenticação</h3>
+<pre><code class="highlight shell">-H <span class="s2">"MerchantId: 00000000-0000-0000-0000-000000000000"</span> <span class="se">\</span>
 </code></pre>
 <pre><code class="highlight php"><span class="cp">&lt;?php</span>
-<span class="c1">//...
-</span><span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">'MerchantId: 00000000-0000-0000-0000-000000000000'</span><span class="p">,</span>
-    <span class="s1">'Content-Type: application/json'</span>
-<span class="p">));</span>
+<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'MerchantId: 00000000-0000-0000-0000-000000000000'</span><span class="p">));</span>
 </code></pre>
 <pre><code class="highlight ruby"><span class="n">headers</span>  <span class="o">=</span> <span class="p">{</span><span class="ss">:content_type</span> <span class="o">=&gt;</span> <span class="s2">"application/json"</span><span class="p">,</span><span class="ss">:merchantid</span> <span class="o">=&gt;</span> <span class="s2">"00000000-0000-0000-0000-000000000000"</span><span class="p">}</span>
 </code></pre>
@@ -270,11 +111,13 @@ Nesta documentação são descritas <strong>todas as funcionalidades</strong> de
 <pre><code class="highlight csharp"><span class="n">request</span><span class="p">.</span><span class="n">Headers</span><span class="p">[</span><span class="s">"MerchantId"</span><span class="p">]</span> <span class="p">=</span> <span class="s">"00000000-0000-0000-0000-000000000000"</span><span class="p">;</span>
 </code></pre>
 
+<p>Por se tratar de transações, todas as requisições enviadas para a Cielo deverão ser autenticadas. A autenticação consiste no envio do MerchantId, que é o identificador único da loja, através do campo de cabeçalho HTTP MerchantId.</p>
+
 <aside class="notice">
 Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu MerchantId.
 </aside>
 
-<h2 id="requisição">Requisição</h2>
+<h3 id="requisição">Requisição</h3>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"OrderNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12344"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"SoftDescriptor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nome que aparecerá na fatura"</span><span class="p">,</span><span class="w">
@@ -741,7 +584,7 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 <span class="n">HttpWebRequest</span> <span class="n">response</span> <span class="p">=</span> <span class="p">(</span><span class="n">HttpWebResponse</span><span class="p">)</span> <span class="n">request</span><span class="p">.</span><span class="nf">GetResponse</span><span class="p">();</span>
 </code></pre>
 
-<h3 id="cabeçalho-http">Cabeçalho HTTP</h3>
+<h4 id="cabeçalho-http">Cabeçalho HTTP</h4>
 
 <table><thead>
 <tr>
@@ -764,11 +607,11 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 <td>Alphanumeric</td>
 <td>Sim</td>
 <td>n/a</td>
-<td>Tipo do conteúdo da mensagem a ser enviada. <strong>Utilizar:</strong> &quot;application/json&rdquo;</td>
+<td>Tipo do conteúdo da mensagem a ser enviada. <strong>Utilizar:</strong> &ldquo;application/json&rdquo;</td>
 </tr>
 </tbody></table>
 
-<h3 id="objeto-raiz-da-requisição">Objeto raiz da requisição</h3>
+<h4 id="objeto-raiz-da-requisição">Objeto raiz da requisição</h4>
 
 <table><thead>
 <tr>
@@ -830,9 +673,9 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 </tr>
 </tbody></table>
 
-<h2 id="resposta">Resposta</h2>
+<h3 id="resposta">Resposta</h3>
 
-<h3 id="em-caso-de-sucesso">Em caso de sucesso</h3>
+<h4 id="em-caso-de-sucesso">Em caso de sucesso</h4>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"Settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"CheckoutUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://cieloecommerce.cielo.com.br/transacional/order/index?id=123"</span><span class="p">,</span><span class="w">
@@ -860,7 +703,7 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 </tr>
 </tbody></table>
 
-<h3 id="em-caso-de-erro">Em caso de erro</h3>
+<h4 id="em-caso-de-erro">Em caso de erro</h4>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"message"</span><span class="p">:</span><span class="s2">"An error has occurred."</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -883,6 +726,156 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 <td>Mensagem descritiva do erro</td>
 </tr>
 </tbody></table>
+
+<h2 id="integração-via-botão">Integração via Botão</h2>
+
+<p>Integração via Botão é um método de compra usada sempre que não houver um “carrinho de compras” em sua loja ou quando se deseja associar uma compra rápida direta a um produto, como uma promoção numa homepage pulando a etapa do carrinho.</p>
+
+<p>A integração via botão também pode ser usada para enviar um e-mail marketing, ou uma cobrança via e-mail, ou seja, adicionando o botão (HTML) referente ao produto/serviço a ser comprado/pago. Ou sempre que desejar disponibilizar uma venda rápida.</p>
+
+<p>Para utilizar este recurso, é necessário cadastrar o produto que deseja vender, suas informações, e depois simplesmente copiar o código fonte gerado para este botão. A inclusão dos produtos é feita dentro do Backoffice, no menu de Produtos/Cadastrar Produto.</p>
+
+<h3 id="características-do-botão">Características do Botão</h3>
+
+<ul>
+<li>Cada botão gerado serve somente para um determinado produto.</li>
+<li>O preço do produto não pode ser alterado na tela de Checkout</li>
+<li>Não é necessário o desenvolvimento de um carrinho</li>
+<li>O cadastro do produto é obrigatório para a criação do botão.</li>
+</ul>
+
+<p>Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter à compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do Backoffice, e valerão os dados do cadastro.</p>
+
+<h1 id="configurações-de-pagamento">Configurações de Pagamento</h1>
+
+<h2 id="cartão-de-crédito">Cartão de Crédito</h2>
+
+<p>O Checkout Cielo trabalha com diferentes bandeiras de crédito, como Visa, Mastercard, Diners, Amex e Elo.</p>
+
+<p><img alt="Cartões de crédito" src="images/checkout-cielo-cartao-credito.png" /></p>
+
+<h3 id="recebendo-uma-venda-de-cartão-de-crédito">Recebendo uma Venda de Cartão de Crédito</h3>
+
+<p>Pedidos por meio de cartão de crédito serão incluídos no Backoffice como <strong>“AUTORIZADO”</strong> ou <strong>“NÃO AUTORIZADO”</strong>, dependendo do resultado da autorização na Cielo. Caso haja algum problema no processamento deste pedido (consumidor fechou a tela, por exemplo), ele constará como <strong>“NÃO FINALIZADO”</strong>.</p>
+
+<h2 id="boleto">Boleto</h2>
+
+<p>Todo boleto gerado (emitido) aparece com o status de “PENDENTE” no Relatório de Pedidos. Sua troca de status vai depender de ações manuais do proprio lojista.</p>
+
+<h3 id="possiveis-status-do-boleto">Possiveis Status do Boleto</h3>
+
+<ul>
+<li><strong>PENDENTE</strong> – boleto emitido pelo processo de transação. Status continua até alteração manual pelo lojista.</li>
+<li><strong>PAGO</strong> – Status usado quando o botão &quot;Conciliar” é ativado pelo lojista. Esse status pode ser revertido para pendente utiliando o Botão “Desfazer conciliação”.</li>
+<li><strong>EXPIRADO</strong> – Status ativo após 10 dias da criação do boleto, caso esse não tenha sito conciliado nesse periodo. Boletos com status “EXPIRADO” podem ser conciliados.</li>
+</ul>
+
+<h3 id="conciliando-um-boleto">Conciliando um Boleto</h3>
+
+<p>Cabe ao lojista através de uma Conciliação Manual com seu extrato bancário, confirmar o pagamento do mesmo.</p>
+
+<p><img alt="Conciliando um boleto" src="images/checkout-cielo-conciliar-boleto.png" /></p>
+
+<p>Para realizar a Conciliação você deve:</p>
+
+<ol>
+<li>Acessar o relatório de pedidos no Backoffice;</li>
+<li>Filtrar os pedidos por Meio de Pagamento “Boleto” e status “PENDENTE” e identificar o boleto em questão pelo Valor;</li>
+<li>Clicar no sinal de + no final da linha para acessar a página de “Detalhes”;</li>
+<li>Clicar no botão de “ Confirmar Pagamento ” e informar a data de pagamento, para seu futuro controle;</li>
+</ol>
+
+<p>O pedido passa para status <strong>PAGO</strong>.</p>
+
+<p>O Comprador também verá o pedido como <strong>PAGO</strong> no “Backoffice do Comprador”</p>
+
+<p>Desfazendo a conciliação (pagamento) de um Boleto. Caso a conciliação tenha sido feito errada, basta:</p>
+
+<ol>
+<li>Encontrar o Pedido;</li>
+<li>Entrar no seu detalhe e clicar no botão “Desfazer Pagamento”;</li>
+<li>O Pedido voltará para o Status de “PENDENTE”.</li>
+</ol>
+
+<h3 id="boletos-expirados">Boletos Expirados</h3>
+
+<p>Se o boleto não for conciliado dentro de um prazo de 10 dias após seu vencimento, seu Status será alterado para <strong>“EXPIRADO”</strong>, para um melhor controle dos boletos vencidos. Boletos EXPIRADOS podem ser conciliados.</p>
+
+<aside class="notice">Validade do Boleto – Caso o boleto expire em um dia não útil, como Sábado, ele será valido até o próximo dia útil.</aside>
+
+<p><img alt="Boleto" src="images/checkout-cielo-boleto.png" /></p>
+
+<h2 id="débito-online">Débito Online</h2>
+
+<p>Pedidos vendidos por meio de Débito online serão incluídos no Backoffice como PENDENTE, PAGO, NÃO AUTORIZADO ou NÃO FINALIZADO, dependendo do resultado da autorização junto ao Banco.</p>
+
+<ul>
+<li><strong>Pendente</strong> - Corresponde quando o comprador ao finalizar o pedido e não obtem resposta por parte do Banco, ou seja, não conseguir nem carregar a página do Banco para inserir os dados para o Débito.</li>
+<li><strong>Pago</strong> - Corresponde quando o comprador conseguir realizar o pagamento do débito com sucesso.</li>
+<li><strong>Não Autorizado</strong> - Apresentado para o Lojista quando o comprador tentar realizar uma transação via débito e não ter saldo para a transação.</li>
+<li><strong>Não Finalizado</strong> - Apresentado para o Lojista caso o comprador tenha algum problema para finalizar o pagamento do meio Débito, seja fechando a janela do banco ou simplesmente nem chegando à tela do banco.</li>
+</ul>
+
+<h2 id="captura/cancelamento-automático">Captura/Cancelamento Automático</h2>
+
+<h3 id="captura-automática">Captura automática</h3>
+
+<p>As vendas <strong>“AUTORIZADAS”</strong>, e com <strong>“BAIXO RISCO”</strong> no antifraude serão <strong>CAPTURADAS</strong> automaticamente pelo sistema.</p>
+
+<p>O status apresentado será <strong>“PAGO”</strong>. Esta venda será então confirmada (capturada) na Cielo.</p>
+
+<h3 id="cancelamento-automático">Cancelamento Automático</h3>
+
+<p>As vendas <strong>“AUTORIZADAS”</strong>, e com <strong>“ALTO RISCO”</strong> no antifraude serão <strong>CANCELADAS</strong> automaticamente pelo sistema.</p>
+
+<p>O status apresentado será <strong>“PAGO”</strong>. Esta venda será então cancelada (desfeita) na Cielo.</p>
+
+<aside class="warning">Atenção! Você tem a opção de escolher a melhor integração para o seu negócio, a captura/cancelamento manual ou automático é feito diretamente pelo seu backoffice.</aside>
+
+<p><img alt="Cancelamento e captura automáticos" src="images/checkout-cielo-anti-fraude-cancelamento-captura.png" /></p>
+
+<h2 id="captura/cancelamento-manual">Captura/Cancelamento manual</h2>
+
+<p>Concluindo uma Venda (captura ou cancelamento)</p>
+
+<p>As vendas <strong>“AUTORIZADAS”</strong> aguardam uma decisão de confirmação ou cancelamento. E esta decisão deve vir em conformidade com a análise de fraude.</p>
+
+<p>A confirmação da venda deve ser feita pelo botão <strong>CAPTURAR</strong> no Detalhe do Pedido, e seu status mudará para <strong>“PAGO”</strong>. Esta venda será então confirmada (capturada) na Cielo.</p>
+
+<p>E o cancelamento deve ser feito pelo botão <strong>CANCELAR</strong> no Detalhe do Pedido, e seu status mudará para <strong>“CANCELADO”</strong>. Esta venda será então cancelada (desfeita) na Cielo.</p>
+
+<aside class="warning">Atenção! Você tem até 5 dias pra confirmar a venda! Caso isso não seja feito ela não será mais válida na Cielo, e o limite reservado para sua loja/venda será liberado. Este é um procedimento padrão para todas as lojas.</aside>
+
+<h2 id="estorno-de-venda">Estorno de Venda</h2>
+
+<p>Caso a venda já tenha sido confirmada (status PAGO) ela pode ser ainda, futuramente, estornada. Para isso, basta clicar no botão no Detalhe do Pedido.</p>
+
+<h3 id="diferença-entre-cancelado-e-estornado">Diferença entre Cancelado e Estornado</h3>
+
+<ul>
+<li><strong>Cancelamento:</strong> é feito no mesmo dia da captura, devolvendo o limite ao cartão do comprador em até 72h conforme regras do banco emissor do cartão. Não é apresentado na fatura do comprador;</li>
+<li><strong>Estorno:</strong> a partir do dia seguinte da captura, o valor é “devolvido” na fatura do comprador em até 120 dias. É apresentado na fatura do comprador.</li>
+</ul>
+
+<h3 id="vendas-de-cartões-de-crédito-expiradas">Vendas de Cartões de Crédito Expiradas</h3>
+
+<p>Conforme o prazo de confirmação da venda autorizada se acabar, seu pedido passará automaticamente para o status “EXPIRADO”. Isso acontecerá no sexto dia após a data de autorização (data do venda).</p>
+
+<h2 id="chargeback">Chargeback</h2>
+
+<p>Seu cliente pode por algum motivo cancelar a compra diretamente com o banco emissor de seu cartão de crédito. Caso isso ocorra você receberá da Cielo um aviso de Chargeback de “Não Reconhecimento de compra”. Ou caso tenha havido uma compra com cartão fraudado, você recebera um aviso de Chargeback por “Fraude”.</p>
+
+<p>Essa comunicação não é feita via o backoffice do Checkout Cielo, mas sim pelo extrato da própria Cielo. Após esse recebimento, você pode entrar no Backoffice e sinalizar o pedido como tendo recebido um Chargeback, pra seu melhor controle. Basta entrar no Detalhe do Pedido e clicar no botão “ChargeBack”, e seu status passará a ser <strong>“CHARGEBACK”</strong>.</p>
+
+<p><img alt="Chargeback" src="images/checkout-cielo-chargeback.png" /></p>
+
+<h3 id="análise-de-fraude">Análise de Fraude</h3>
+
+<p>Pedidos <strong>“AUTORIZADOS”</strong> serão enviados online, ainda no ato da venda, para ferramenta de Antifraude da Cybersource para análise. O resultado desta análise será traduzido no campo <strong>“Indicação AF”</strong> no Relatório de Pedido, para cada pedido.</p>
+
+<p>Esta análise indicará um <strong>“BAIXO RISCO”</strong> ou <strong>“ALTO RISCO”</strong> para a venda em questão. Esta sugestão é o que deve guiar a decisão de se confirmar a venda ou não. A analise será apresentada no “Detalhes do Pedido”, como abaixo:</p>
+
+<p>[!Análise de risco(/images/checkout-cielo-analise-risco.png)</p>
 
 <h1 id="referência-de-tipos">Referência de tipos</h1>
 
