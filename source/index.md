@@ -5,26 +5,41 @@ language_tabs:
   - json: JSON
   - shell: Shell
   - php: PHP
+  - ruby: Ruby
+  - python: Python
+  - java: Java
+  - csharp: C#
 
 toc_footers:
   - <a href='/Checkout-Orientacoes-Gerais/'>Orientações Gerais</a>
   - <a href='/Checkout-Backoffice/'>Backoffice Cielo</a>
   - <a href='/Checkout-FAQ/'>FAQ</a>
-  
 
 search: true
 ---
 
-# Integração Checkout Cielo
+# Manual Checkout Cielo
 
-O objetivo desta documentação é orientar o desenvolvedor sobre como integrar com a API Cielo, descrevendo as
-funcionalidades, os métodos a serem utilizados, listando informações a serem enviadas e recebidas, e provendo exemplos.
+O objetivo desta documentação é orientar o desenvolvedor sobre como integrar com a **API Checkout Cielo**, solução de integração simples  no qual o consumidor é direcionado para uma **página de pagamento online segura da Cielo**, proporcionando um **alto nível de confiança**, dentro das mais rígidas normas de **segurança (PCI)**.
+Nesta documentação são descritas **todas as funcionalidades** desta integração, os métodos a serem utilizados, listas com as informações a serem enviadas e recebidas e principalmente **códigos de exemplos** para facilitar o seu desenvolvimento. Em linhas gerais, o **Checkout Cielo** é uma solução de checkout projetada para aumentar a conversão, simplificar o processo de compra, reduzir fraudes e custos operacionais.
 
-O webservice Cielo utiliza uma tecnologia REST que deve ser usada sempre que houver um “carrinho de compras” a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a venda.
+O Checkout Cielo utiliza uma **tecnologia REST** que deve ser usada **quando houver um *“carrinho de compras”*** a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a compra. Há também opção de **integração via botão** usada **sempre que não houver um *“carrinho de compras”*** em sua loja ou quando se deseja associar uma **compra rápida direta a um produto**.
 
-# Orientações gerais
+## Orientações gerais
 
-Após a integração com o Checkout estar concluída, processos funcionais farão parte do cotidiano da loja, como a verificação e acompanhamento das movimentações financeiras ocorridas. Veja a seção sobre o [BackOffice do Checkout Cielo](#backoffice-cielo), que contém orientações para o lojista sobre como vender com o Checkout Cielo, descrevendo as funcionalidades, os métodos a serem utilizados, listando informações necessarias e provendo exemplos.
+Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento **dos processos** funcionais que farão parte do **cotidiano da loja**, como o **acompanhamento das movimentações financeiras**, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  **extrato de cobrança**, entre outros. Veja a seção sobre o [BackOffice Checkout Cielo](#backoffice-cielo). Lá você encontra **orientações importantes** sobre como **administrar o e-Commerce** aproveitando ao máximo as funcionalidades  do Checkout Cielo
+
+## Histórico de versões
+
+* **Versão 1.3** - 21/01/2015
+    - Troca de nomes – Solução Integrada para CHECKOUT CIELO
+* **Versão 1.2** - 09/01/2015
+    - Inclusão dos seguintes parâmetros no Post de notificação: `discount_amount`, `shipping_address_state`, `payment_boleto`, `number`, `tid`;
+    - Alteração do parâmetro numero do pedido no Post de Mudança de Status
+* **Versão 1.1** - 08/01/2015
+    - Alinhamento dos fluxos de pagamento; inclusão de informações sobre os meios de pagamento; inclusão da tela de configurações do Backoffice
+* **Versão 1.0** - 24/11/2014
+    - Versão inicial
 
 ## Botão Comprar
 
@@ -160,10 +175,6 @@ Pedidos vendidos por meio de Débito online serão incluídos no Backoffice como
 * **Não Autorizado** - Apresentado para o Lojista quando o comprador tentar realizar uma transação via débito e não ter saldo para a transação.
 * **Não Finalizado** - Apresentado para o Lojista caso o comprador tenha algum problema para finalizar o pagamento do meio Débito, seja fechando a janela do banco ou simplesmente nem chegando à tela do banco.
 
-
-# Integração
-
-
 ## Endpoint
 
 Todas as requisições serão enviadas para o webservice da Cielo utilizando o método POST para o endpoint `https://cieloecommerce.cielo.com.br/api/public/v1/orders`.
@@ -181,6 +192,31 @@ curl -X POST \
      -H "MerchantId: 00000000-0000-0000-0000-000000000000" \
      -H "Content-Type: application/json"
      "https://cieloecommerce.cielo.com.br/api/public/v1/orders"
+```
+
+```php
+<?php
+//...
+curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+    'MerchantId: 00000000-0000-0000-0000-000000000000',
+    'Content-Type: application/json'
+));
+```
+
+```ruby
+headers  = {:content_type => "application/json",:merchantid => "00000000-0000-0000-0000-000000000000"}
+```
+
+```python
+headers = {"Content-Type": "application/json", "MerchantId": "00000000-0000-0000-0000-000000000000"}
+```
+
+```java
+connection.addRequestProperty("MerchantId", "0000000-0000-0000-0000-000000000000");
+```
+
+```csharp
+request.Headers["MerchantId"] = "00000000-0000-0000-0000-000000000000";
 ```
 
 <aside class="notice">
@@ -368,6 +404,304 @@ $response = curl_exec($curl);
 curl_close($curl);
 
 $json = json_decode($response);
+```
+
+```python
+from urllib2 import Request, urlopen
+from json import dumps
+
+json = dumps({
+    "OrderNumber": "12344",
+    "SoftDescriptor": "Nome que aparecerá na fatura",
+    "Cart": {
+        "Discount": {
+            "Type": "Percent",
+            "Value": 10
+        },
+        "Items": [
+            {
+                "Name": "Nome do produto",
+                "Description": "Descrição do produto",
+                "UnitPrice": 100,
+                "Quantity": 2,
+                "Type": "Asset",
+                "Sku": "Sku do item no carrinho",
+                "Weight": 200
+            }
+        ]
+    },
+    "Shipping": {
+        "Type": "Correios",
+        "SourceZipCode": "14400000",
+        "TargetZipCode": "11000000",
+        "Address": {
+            "Street": "Endereço de entrega",
+            "Number": "123",
+            "Complement": "",
+            "District": "Bairro da entrega",
+            "City": "Cidade de entrega",
+            "State": "São Paulo"
+        },
+        "Services": [
+            {
+                "Name": "Serviço de frete",
+                "Price": 123,
+                "Deadline": 15
+            }
+        ]
+    },
+    "Payment": {
+        "BoletoDiscount": 0,
+        "DebitDiscount": 10
+    },
+    "Customer": {
+        "Identity": 11111111111,
+        "FullName": "Fulano Comprador da Silva",
+        "Email": "fulano@email.com",
+        "Phone": "11999999999"
+    },
+    "Options": {
+        "AntifraudEnabled": false
+    }
+})
+
+headers = {"Content-Type": "application/json", "MerchantId": "00000000-0000-0000-0000-000000000000"}
+request = Request("https://cieloecommerce.cielo.com.br/api/public/v1/orders", data=json, headers=headers)
+response = urlopen(request).read()
+
+print response
+```
+
+```ruby
+require 'rubygems' if RUBY_VERSION < '1.9'
+require 'rest-client'
+require 'json'
+
+request = JSON.generate({
+    "OrderNumber" => "12344",
+    "SoftDescriptor" => "Nome que aparecerá na fatura",
+    "Cart" => {
+        "Discount" => {
+            "Type" => "Percent",
+            "Value" => 10
+        },
+        "Items" => [
+            {
+                "Name" => "Nome do produto",
+                "Description" => "Descrição do produto",
+                "UnitPrice" => 100,
+                "Quantity" => 2,
+                "Type" => "Asset",
+                "Sku" => "Sku do item no carrinho",
+                "Weight" => 200
+            }
+        ]
+    },
+    "Shipping" => {
+        "Type" => "Correios",
+        "SourceZipCode" => "14400000",
+        "TargetZipCode" => "11000000",
+        "Address" => {
+            "Street" => "Endereço de entrega",
+            "Number" => "123",
+            "Complement" => "",
+            "District" => "Bairro da entrega",
+            "City" => "Cidade de entrega",
+            "State" => "São Paulo"
+        },
+        "Services" => [
+            {
+                "Name" => "Serviço de frete",
+                "Price" => 123,
+                "Deadline" => 15
+            }
+        ]
+    },
+    "Payment" => {
+        "BoletoDiscount" => 0,
+        "DebitDiscount" => 10
+    },
+    "Customer" => {
+        "Identity" => 11111111111,
+        "FullName" => "Fulano Comprador da Silva",
+        "Email" => "fulano@email.com",
+        "Phone" => "11999999999"
+    },
+    "Options" => {
+        "AntifraudEnabled" => false
+    }
+})
+
+headers  = {:content_type => "application/json",:merchantid => "00000000-0000-0000-0000-000000000000"}
+response = RestClient.post "https://cieloecommerce.cielo.com.br/api/public/v1/orders", request, headers
+
+puts response
+```
+
+```java
+String json = "{"
+            + "    \"OrderNumber\": \"12344\","
+            + "    \"SoftDescriptor\": \"Nome que aparecerá na fatura\","
+            + "    \"Cart\": {"
+            + "        \"Discount\": {"
+            + "            \"Type\": \"Percent\","
+            + "            \"Value\": 10"
+            + "        },"
+            + "        \"Items\": ["
+            + "            {"
+            + "                \"Name\": \"Nome do produto\","
+            + "                \"Description\": \"Descrição do produto\","
+            + "                \"UnitPrice\": 100,"
+            + "                \"Quantity\": 2,"
+            + "                \"Type\": \"Asset\","
+            + "                \"Sku\": \"Sku do item no carrinho\","
+            + "                \"Weight\": 200"
+            + "            }"
+            + "        ]"
+            + "    },"
+            + "    \"Shipping\": {"
+            + "        \"Type\": \"Correios\","
+            + "        \"SourceZipCode\": \"14400000\","
+            + "        \"TargetZipCode\": \"11000000\","
+            + "        \"Address\": {"
+            + "            \"Street\": \"Endereço de entrega\","
+            + "            \"Number\": \"123\","
+            + "            \"Complement\": \"\","
+            + "            \"District\": \"Bairro da entrega\","
+            + "            \"City\": \"Cidade de entrega\","
+            + "            \"State\": \"São Paulo\""
+            + "        },"
+            + "        \"Services\": ["
+            + "            {"
+            + "                \"Name\": \"Serviço de frete\","
+            + "                \"Price\": 123,"
+            + "                \"Deadline\": 15"
+            + "            }"
+            + "        ]"
+            + "    },"
+            + "    \"Payment\": {"
+            + "        \"BoletoDiscount\": 0,"
+            + "        \"DebitDiscount\": 10"
+            + "     },"
+            + "     \"Customer\": {"
+            + "         \"Identity\": 11111111111,"
+            + "         \"FullName\": \"Fulano Comprador da Silva\","
+            + "         \"Email\": \"fulano@email.com\","
+            + "         \"Phone\": \"11999999999\""
+            + "     },"
+            + "     \"Options\": {"
+            + "         \"AntifraudEnabled\": false"
+            + "     }"
+            + "}";
+
+URL url;
+HttpURLConnection connection;
+BufferedReader bufferedReader;
+
+try {
+    url = new URL("https://cieloecommerce.cielo.com.br/api/public/v1/orders");
+
+    connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestMethod("POST");
+    connection.addRequestProperty("MerchantId", "0000000-0000-0000-0000-000000000000");
+    connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+    connection.setDoOutput(true);
+
+    DataOutputStream jsonRequest = new DataOutputStream(
+                connection.getOutputStream());
+
+    jsonRequest.writeBytes(json);
+    jsonRequest.flush();
+    jsonRequest.close();
+
+    bufferedReader = new BufferedReader(new InputStreamReader(
+                connection.getInputStream()));
+
+    String responseLine;
+    StringBuffer jsonResponse = new StringBuffer();
+
+    while ((responseLine = bufferedReader.readLine()) != null) {
+        jsonResponse.append(responseLine);
+    }
+
+    bufferedReader.close();
+
+    connection.disconnect();
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+```csharp
+HttpWebRequest request = (HttpWebRequest)
+                         WebRequest.Create("https://cieloecommerce.cielo.com.br/api/public/v1/orders");
+
+request.Method = "POST";
+request.Headers["Content-Type"] = "text/json";
+request.Headers["MerchantKey"] = "06eadc0b-2e32-449b-be61-6fd4f1811708";
+
+string json = "{"
+            + "    \"OrderNumber\": \"12344\","
+            + "    \"SoftDescriptor\": \"Nome que aparecerá na fatura\","
+            + "    \"Cart\": {"
+            + "        \"Discount\": {"
+            + "            \"Type\": \"Percent\","
+            + "            \"Value\": 10"
+            + "        },"
+            + "        \"Items\": ["
+            + "            {"
+            + "                \"Name\": \"Nome do produto\","
+            + "                \"Description\": \"Descrição do produto\","
+            + "                \"UnitPrice\": 100,"
+            + "                \"Quantity\": 2,"
+            + "                \"Type\": \"Asset\","
+            + "                \"Sku\": \"Sku do item no carrinho\","
+            + "                \"Weight\": 200"
+            + "            }"
+            + "        ]"
+            + "    },"
+            + "    \"Shipping\": {"
+            + "        \"Type\": \"Correios\","
+            + "        \"SourceZipCode\": \"14400000\","
+            + "        \"TargetZipCode\": \"11000000\","
+            + "        \"Address\": {"
+            + "            \"Street\": \"Endereço de entrega\","
+            + "            \"Number\": \"123\","
+            + "            \"Complement\": \"\","
+            + "            \"District\": \"Bairro da entrega\","
+            + "            \"City\": \"Cidade de entrega\","
+            + "            \"State\": \"São Paulo\""
+            + "        },"
+            + "        \"Services\": ["
+            + "            {"
+            + "                \"Name\": \"Serviço de frete\","
+            + "                \"Price\": 123,"
+            + "                \"Deadline\": 15"
+            + "            }"
+            + "        ]"
+            + "    },"
+            + "    \"Payment\": {"
+            + "        \"BoletoDiscount\": 0,"
+            + "        \"DebitDiscount\": 10"
+            + "     },"
+            + "     \"Customer\": {"
+            + "         \"Identity\": 11111111111,"
+            + "         \"FullName\": \"Fulano Comprador da Silva\","
+            + "         \"Email\": \"fulano@email.com\","
+            + "         \"Phone\": \"11999999999\""
+            + "     },"
+            + "     \"Options\": {"
+            + "         \"AntifraudEnabled\": false"
+            + "     }"
+            + "}";
+
+using (var writer = new StreamWriter(request.GetRequestStream()))
+{
+    writer.Write(json);
+	writer.Close();
+}
+
+HttpWebRequest response = (HttpWebResponse) request.GetResponse();
 ```
 
 ### Cabeçalho HTTP
