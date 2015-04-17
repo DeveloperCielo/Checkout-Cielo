@@ -656,7 +656,7 @@ HttpWebRequest response = (HttpWebResponse) request.GetResponse();
 Há dois tipos de erro que poderão ocorrer durante o processo de integração com o Checkout Cielo. São eles:
 
 * **Antes da exibição da tela de Checkout** - Significa que houve algum dado erra do no envio da transação. Dados obrigatórios podem estar faltando ou no formato invalido. Aqui o lojista sempre vai receber um e-mail informando o que deu errado;
-* ** Depois da Exibição da tela de Checkout (quando a venda é finalizada)** - Significa que há algum impedimento de cadastro que limita a venda. Coisas como afiliação bloqueada, erro nos dados salvos no cadastro ou até problemas no próprio checkout.
+* **Depois da Exibição da tela de Checkout (quando a venda é finalizada)** - Significa que há algum impedimento de cadastro que limita a venda. Coisas como afiliação bloqueada, erro nos dados salvos no cadastro ou até problemas no próprio checkout.
 
 ## Integração via Botão
 
