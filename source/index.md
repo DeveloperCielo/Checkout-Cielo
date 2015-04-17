@@ -26,7 +26,7 @@ O Checkout Cielo utiliza uma **tecnologia REST** que deve ser usada **quando hou
 
 ### Orientações gerais
 
-Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento **dos processos** funcionais que farão parte do **cotidiano da loja**, como o **acompanhamento das movimentações financeiras**, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  **extrato de cobrança**, entre outros. Veja a seção sobre o [BackOffice Checkout Cielo](#backoffice-cielo). Lá você encontra **orientações importantes** sobre como **administrar o e-Commerce** aproveitando ao máximo as funcionalidades  do Checkout Cielo.
+Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento **dos processos** funcionais que farão parte do **cotidiano da loja**, como o **acompanhamento das movimentações financeiras**, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  **extrato de cobrança**, entre outros. Veja o material complementar sobre o [BackOffice Checkout Cielo](http://developercielo.github.io/Checkout-Backoffice/). Lá você encontra **orientações importantes** sobre como **administrar o e-Commerce** aproveitando ao máximo as funcionalidades  do Checkout Cielo.
 
 ### Suporte de produtos e serviços
 
@@ -97,6 +97,30 @@ Por se tratar de transações, todas as requisições enviadas para a Cielo deve
 <aside class="notice">
 Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu MerchantId.
 </aside>
+
+## Certificado Extended Validation
+
+O Certificado Extended Validation para servidor web oferece autenticidade e integridade dos dados de um web site, proporcionando aos clientes das lojas virtuais a garantia de que estão realmente acessando o site que desejam, e não uma um site fraudador.
+
+Empresas especializadas são responsáveis por fazer a validação do domínio e, dependendo do tipo de certificado, também da entidade detentora do domínio.
+
+### O que é Certificado Extended Validation?
+
+O Certificado EV foi lançado no mercado recentemente e garante um nível de segurança maior para os clientes das lojas virtuais.
+
+Trata-se de um certificado de maior confiança e quando o https for acessado a barra de endereço ficará verde, dando mais confiabilidade aos visitantes do site.
+
+Como instalar o Certificado Extended Validation no servidor da Loja?
+
+Basta instalar os três arquivos a seguir na Trustedstore do servidor. A Cielo não oferece suporte para a instalação do Certificado. Caso não esteja seguro sobre como realizar a instalação do Certificado EV, então você deverá ser contatado o suporte do fornecedor do seu servidor.
+
+* [Certificado Raiz](/attachment/Raiz.cer.txt)
+* [Certificado Intermediária](/attachment/Intermediaria.cer.txt)
+* [Certificado E-Commerce Cielo](/attachment/ecommerce.cielo.com.br.cer.txt)
+
+<aside class="notice">Caso seu servidor seja uma distribuição Linux e você tenha familiaridade e acesso ssh, então o instalador abaixo o ajudará no processo de instalação.</aside>
+
+* [Instalador Linux - cielo.sh](/attachment/cielo.sh)
 
 ### Requisição
 
