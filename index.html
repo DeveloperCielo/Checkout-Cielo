@@ -55,7 +55,7 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id="manual-checkout-cielo">Manual Checkout Cielo</h1>
+        <h1 id="manual-de-integração-checkout-cielo">Manual de integração Checkout Cielo</h1>
 
 <p>O objetivo desta documentação é orientar o desenvolvedor sobre como integrar com a <strong>API Checkout Cielo</strong>, solução de integração simples  no qual o consumidor é direcionado para uma <strong>página de pagamento online segura da Cielo</strong>, proporcionando um <strong>alto nível de confiança</strong>, dentro das mais rígidas normas de <strong>segurança (PCI)</strong>.
 Nesta documentação são descritas <strong>todas as funcionalidades</strong> desta integração, os métodos a serem utilizados, listas com as informações a serem enviadas e recebidas e principalmente <strong>códigos de exemplos</strong> para facilitar o seu desenvolvimento. Em linhas gerais, o <strong>Checkout Cielo</strong> é uma solução de checkout projetada para aumentar a conversão, simplificar o processo de compra, reduzir fraudes e custos operacionais.</p>
@@ -66,9 +66,9 @@ Nesta documentação são descritas <strong>todas as funcionalidades</strong> de
 
 <p>Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento <strong>dos processos</strong> funcionais que farão parte do <strong>cotidiano da loja</strong>, como o <strong>acompanhamento das movimentações financeiras</strong>, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  <strong>extrato de cobrança</strong>, entre outros. Veja o material complementar sobre o <a href="http://developercielo.github.io/Checkout-Backoffice/">BackOffice Checkout Cielo</a>. Lá você encontra <strong>orientações importantes</strong> sobre como <strong>administrar o e-Commerce</strong> aproveitando ao máximo as funcionalidades  do Checkout Cielo.</p>
 
-<h3 id="suporte-de-produtos-e-serviços">Suporte de produtos e serviços</h3>
+<h3 id="produtos-e-serviços">Produtos e serviços</h3>
 
-<p>A versão atual do Webservice Cielo possui suporte às seguintes bandeiras e produtos:</p>
+<p>A versão atual do Checkout Cielo possui suporte às seguintes bandeiras e produtos:</p>
 
 <table><thead>
 <tr>
@@ -202,6 +202,117 @@ Nesta documentação são descritas <strong>todas as funcionalidades</strong> de
 
 <aside class="notice">Veja a seção <a href="#certificado-extended-validation">Certificado Extended Validation</a> para informações sobre os certificados Cielo</aside>
 
+<h2 id="certificado-extended-validation">Certificado Extended Validation</h2>
+
+<p>O Certificado Extended Validation para servidor web oferece autenticidade e integridade dos dados de um web site, proporcionando aos clientes das lojas virtuais a garantia de que estão realmente acessando o site que desejam, e não uma um site fraudador.</p>
+
+<p>Empresas especializadas são responsáveis por fazer a validação do domínio e, dependendo do tipo de certificado, também da entidade detentora do domínio.</p>
+
+<h3 id="o-que-é-certificado-extended-validation?">O que é Certificado Extended Validation?</h3>
+
+<p>O Certificado EV foi lançado no mercado recentemente e garante um nível de segurança maior para os clientes das lojas virtuais.</p>
+
+<p>Trata-se de um certificado de maior confiança e quando o https for acessado a barra de endereço ficará verde, dando mais confiabilidade aos visitantes do site.</p>
+
+<p>Como instalar o Certificado Extended Validation no servidor da Loja?</p>
+
+<p>Basta instalar os três arquivos a seguir na Trustedstore do servidor. A Cielo não oferece suporte para a instalação do Certificado. Caso não esteja seguro sobre como realizar a instalação do Certificado EV, então você deverá ser contatado o suporte do fornecedor do seu servidor.</p>
+
+<ul>
+<li><a href="attachment/Raiz.crt">Certificado Raiz</a></li>
+<li><a href="attachment/Intermediaria.crt">Certificado Intermediária</a></li>
+<li><a href="attachment/ecommerce.cielo.com.br.crt">Certificado E-Commerce Cielo</a></li>
+</ul>
+
+<aside class="notice">Caso seu servidor seja uma distribuição Linux e você tenha familiaridade e acesso ssh, então o <a href="/attachment/cielo.sh">Instalador Linux - cielo.sh</a> poderá ajudá-lo com a instalação. <strong>Apenas utilize o instalador se você souber o que está fazendo</strong>. Na dúvida, entre em contato com o suporte do fornecedor do seu servidor.</aside>
+
+<h2 id="modo-de-teste-do-checkout-cielo">Modo de teste do Checkout Cielo</h2>
+
+<p>O modo de teste CHECKOUT CIELO é método de fazer testes de integração do CHECKOUT CIELO com o seu site, sem o consumo de créditos. O modo de Teste CHECKOUT CIELO permite realizar transações, testando a integração utilizando diferentes meios de pagamento simulados.</p>
+
+<h3 id="ativação-do-modo-de-teste.">Ativação do Modo de Teste.</h3>
+
+<p>O modo de teste pode ser ativado na aba Configurações:</p>
+
+<p><img alt="Modo de teste" src="images/checkout-cielo-modo-teste.png" /></p>
+
+<p>Nessa área há um caixa de seleção, que quando marcada, habilitará o modo de teste do CHECKOUT CIELO. O modo somente se iniciará quando a seleção for salva.</p>
+
+<p><img alt="Ativação Modo de teste" src="images/checkout-cielo-modo-teste-ativacao.png" /></p>
+
+<p>Quando a opção for salva, uma tarja vermelha será exibida na parte superior da tela. Ela será exibida em todas as telas do Backoffice e na tela de checkout do CHECKOUT CIELO.</p>
+
+<p>Essa tarja indica que a sua loja CHECKOUT CIELO está agora operando em ambiente de teste, ou seja, toda a transação realizada nesse modo será considerada como teste.</p>
+
+<p><img alt="Modo de teste ativado" src="images/checkout-cielo-modo-teste-ativado.png" /></p>
+
+<h3 id="como-transacionar-no-modo-de-teste.">Como transacionar no Modo de teste.</h3>
+
+<p>A realização de transações no modo de teste ocorre de forma normal. As informações da transação são enviadas via POST, utilizando os parâmetros como descrito no tópico <a href="#integração-carrinho-de-compras">Integração com carrinho</a>, entretanto, os meios de pagamentos a serem usados serão meios simulados.</p>
+
+<p>Para realizar transações de teste com diferentes meios de pagamento, siga as seguintes regras:</p>
+
+<p><strong>a - Transações com Cartão de crédito:</strong></p>
+
+<p>Para testar cartões de crédito é necessário que dois dados importantes sejam definidos, o status da autorização do cartão e o retorno da analise de fraude.</p>
+
+<p><strong>Status da Autorização do Cartão de Crédito</strong></p>
+
+<table><thead>
+<tr>
+<th>Digito final do Cartão</th>
+<th>Status retornado</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>0, 1, 2, 3 ou 4</td>
+<td>Autorizado</td>
+</tr>
+<tr>
+<td>5, 6, 7, 8 ou 9</td>
+<td>Não autorizado</td>
+</tr>
+</tbody></table>
+
+<ul>
+<li><strong>Exemplo:</strong> Transação autorizada, Alto Risco;</li>
+<li><strong>Numero do Cartão de credito:</strong> 5404434242930107</li>
+<li><strong>Nome do Cliente:</strong> Maria Alto</li>
+</ul>
+
+<p><strong>b - Boleto Bancario</strong></p>
+
+<p>Basta realizar o processo de compra normalmente sem nenhuma alteração no procedimento. O boleto gerado no modo de teste sempre será um boleto simulado.</p>
+
+<p><strong>c - Debito online</strong></p>
+
+<p>É necessário informa o status da transação de Debito online para que seja retornado o status desejado. Esse processo ocorre como no antifraude do cartão de crédito descrito acima, com a alteração do nome do comprador.</p>
+
+<p><strong>Status do Débito</strong>
+|Sobre nome do cliente|Status|
+|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;|
+|Pago|Pago|
+|Qualquer nome.|Não autorizado|</p>
+
+<ul>
+<li><strong>Exemplo:</strong> Status não Autorizado.</li>
+<li><strong>Nome do Cliente:</strong> Maria Pereira</li>
+</ul>
+
+<p><strong>d - Transações de teste</strong></p>
+
+<p>Todas as transações realizadas no modo de teste serão exibidas como transações normais na aba Pedidos do CHECKOUT CIELO, entretanto, elas serão marcadas como transações de teste e não serão contabilizadas em conjunto com as transações realizadas fora do ambiente de teste.</p>
+
+<p><img alt="Transações de teste" src="images/checkout-cielo-modo-teste-transacoes-de-teste.png" /></p>
+
+<p>Essas transações terão o simbolo de teste as diferenciando de suas outras transações. Elas podem ser capturadas ou canceladas utilizando os mesmos procedimentos das transações reais.</p>
+
+<p><img alt="Transações de teste" src="images/checkout-cielo-modo-teste-transacoes-de-teste-cancelamento.png" /></p>
+
+<aside class="notice">É muito importante que ao liberar sua loja para a realização de vendas para seus clientes que ela não esteja em modo de teste. Transações realizadas nesse ambiente poderão ser finalizadas normalmente, mas não serão descontadas do cartão do cliente e não poderão ser “transferidas” para o ambiente de venda padrão.</aside>
+
+<h1 id="modos-de-integração">Modos de integração</h1>
+
 <h2 id="integração-carrinho-de-compras">Integração Carrinho de Compras</h2>
 
 <p>Este  tipo  de  integração deve  ser  usada sempre  que  houver  um  “carrinho  de  compras”  a  ser  enviado,  ou  seja,  no  caso  do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar a um carrinho e depois então finalizar a venda. Se você não possui um carrinho de compras implementado, veja a seção de <a href="#integração-via-botão">integração via botão</a> CHECKOUT CIELO.</p>
@@ -233,31 +344,7 @@ Nesta documentação são descritas <strong>todas as funcionalidades</strong> de
 Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu MerchantId.
 </aside>
 
-<h2 id="certificado-extended-validation">Certificado Extended Validation</h2>
-
-<p>O Certificado Extended Validation para servidor web oferece autenticidade e integridade dos dados de um web site, proporcionando aos clientes das lojas virtuais a garantia de que estão realmente acessando o site que desejam, e não uma um site fraudador.</p>
-
-<p>Empresas especializadas são responsáveis por fazer a validação do domínio e, dependendo do tipo de certificado, também da entidade detentora do domínio.</p>
-
-<h3 id="o-que-é-certificado-extended-validation?">O que é Certificado Extended Validation?</h3>
-
-<p>O Certificado EV foi lançado no mercado recentemente e garante um nível de segurança maior para os clientes das lojas virtuais.</p>
-
-<p>Trata-se de um certificado de maior confiança e quando o https for acessado a barra de endereço ficará verde, dando mais confiabilidade aos visitantes do site.</p>
-
-<p>Como instalar o Certificado Extended Validation no servidor da Loja?</p>
-
-<p>Basta instalar os três arquivos a seguir na Trustedstore do servidor. A Cielo não oferece suporte para a instalação do Certificado. Caso não esteja seguro sobre como realizar a instalação do Certificado EV, então você deverá ser contatado o suporte do fornecedor do seu servidor.</p>
-
-<ul>
-<li><a href="attachment/Raiz.crt">Certificado Raiz</a></li>
-<li><a href="attachment/Intermediaria.crt">Certificado Intermediária</a></li>
-<li><a href="attachment/ecommerce.cielo.com.br.crt">Certificado E-Commerce Cielo</a></li>
-</ul>
-
-<aside class="notice">Caso seu servidor seja uma distribuição Linux e você tenha familiaridade e acesso ssh, então o <a href="/attachment/cielo.sh">Instalador Linux - cielo.sh</a> poderá ajudá-lo com a instalação. <strong>Apenas utilize o instalador se você souber o que está fazendo</strong>. Na dúvida, entre em contato com o suporte do fornecedor do seu servidor.</aside>
-
-<h3 id="requisição">Requisição</h3>
+<h2 id="requisição">Requisição</h2>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"OrderNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12344"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"SoftDescriptor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nome que aparecerá na fatura"</span><span class="p">,</span><span class="w">
@@ -813,9 +900,9 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 </tr>
 </tbody></table>
 
-<h3 id="resposta">Resposta</h3>
+<h2 id="resposta">Resposta</h2>
 
-<h4 id="em-caso-de-sucesso">Em caso de sucesso</h4>
+<h3 id="em-caso-de-sucesso">Em caso de sucesso</h3>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"Settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"CheckoutUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://cieloecommerce.cielo.com.br/transacional/order/index?id=123"</span><span class="p">,</span><span class="w">
@@ -843,7 +930,7 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 </tr>
 </tbody></table>
 
-<h4 id="em-caso-de-erro">Em caso de erro</h4>
+<h3 id="em-caso-de-erro">Em caso de erro</h3>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"message"</span><span class="p">:</span><span class="s2">"An error has occurred."</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -1002,91 +1089,6 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 <aside class="notice">O código deve ser inserido dentro da área adequada no seu HTML.</aside>
 
 <p>Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter a compra, pois o CHECKOUT CIELO vai buscar todos os dados do produto no cadastro do Backoffice, e valerão os dados do cadastro.</p>
-
-<h2 id="modo-de-teste-do-checkout-cielo">Modo de teste do Checkout Cielo</h2>
-
-<p>O modo de teste CHECKOUT CIELO é método de fazer testes de integração do CHECKOUT CIELO com o seu site, sem o consumo de créditos. O modo de Teste CHECKOUT CIELO permite realizar transações, testando a integração utilizando diferentes meios de pagamento simulados.</p>
-
-<h3 id="ativação-do-modo-de-teste.">Ativação do Modo de Teste.</h3>
-
-<p>O modo de teste pode ser ativado na aba Configurações:</p>
-
-<p><img alt="Modo de teste" src="images/checkout-cielo-modo-teste.png" /></p>
-
-<p>Nessa área há um caixa de seleção, que quando marcada, habilitará o modo de teste do CHECKOUT CIELO. O modo somente se iniciará quando a seleção for salva.</p>
-
-<p><img alt="Ativação Modo de teste" src="images/checkout-cielo-modo-teste-ativacao.png" /></p>
-
-<p>Quando a opção for salva, uma tarja vermelha será exibida na parte superior da tela. Ela será exibida em todas as telas do Backoffice e na tela de checkout do CHECKOUT CIELO.</p>
-
-<p>Essa tarja indica que a sua loja CHECKOUT CIELO está agora operando em ambiente de teste, ou seja, toda a transação realizada nesse modo será considerada como teste.</p>
-
-<p><img alt="Modo de teste ativado" src="images/checkout-cielo-modo-teste-ativado.png" /></p>
-
-<h3 id="como-transacionar-no-modo-de-teste.">Como transacionar no Modo de teste.</h3>
-
-<p>A realização de transações no modo de teste ocorre de forma normal. As informações da transação são enviadas via POST, utilizando os parâmetros como descrito no tópico <a href="#integração-carrinho-de-compras">Integração com carrinho</a>, entretanto, os meios de pagamentos a serem usados serão meios simulados.</p>
-
-<p>Para realizar transações de teste com diferentes meios de pagamento, siga as seguintes regras:</p>
-
-<p><strong>a - Transações com Cartão de crédito:</strong></p>
-
-<p>Para testar cartões de crédito é necessário que dois dados importantes sejam definidos, o status da autorização do cartão e o retorno da analise de fraude.</p>
-
-<p><strong>Status da Autorização do Cartão de Crédito</strong></p>
-
-<table><thead>
-<tr>
-<th>Digito final do Cartão</th>
-<th>Status retornado</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>0, 1, 2, 3 ou 4</td>
-<td>Autorizado</td>
-</tr>
-<tr>
-<td>5, 6, 7, 8 ou 9</td>
-<td>Não autorizado</td>
-</tr>
-</tbody></table>
-
-<ul>
-<li><strong>Exemplo:</strong> Transação autorizada, Alto Risco;</li>
-<li><strong>Numero do Cartão de credito:</strong> 5404434242930107</li>
-<li><strong>Nome do Cliente:</strong> Maria Alto</li>
-</ul>
-
-<p><strong>b - Boleto Bancario</strong></p>
-
-<p>Basta realizar o processo de compra normalmente sem nenhuma alteração no procedimento. O boleto gerado no modo de teste sempre será um boleto simulado.</p>
-
-<p><strong>c - Debito online</strong></p>
-
-<p>É necessário informa o status da transação de Debito online para que seja retornado o status desejado. Esse processo ocorre como no antifraude do cartão de crédito descrito acima, com a alteração do nome do comprador.</p>
-
-<p><strong>Status do Débito</strong>
-|Sobre nome do cliente|Status|
-|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;|
-|Pago|Pago|
-|Qualquer nome.|Não autorizado|</p>
-
-<ul>
-<li><strong>Exemplo:</strong> Status não Autorizado.</li>
-<li><strong>Nome do Cliente:</strong> Maria Pereira</li>
-</ul>
-
-<p><strong>d - Transações de teste</strong></p>
-
-<p>Todas as transações realizadas no modo de teste serão exibidas como transações normais na aba Pedidos do CHECKOUT CIELO, entretanto, elas serão marcadas como transações de teste e não serão contabilizadas em conjunto com as transações realizadas fora do ambiente de teste.</p>
-
-<p><img alt="Transações de teste" src="images/checkout-cielo-modo-teste-transacoes-de-teste.png" /></p>
-
-<p>Essas transações terão o simbolo de teste as diferenciando de suas outras transações. Elas podem ser capturadas ou canceladas utilizando os mesmos procedimentos das transações reais.</p>
-
-<p><img alt="Transações de teste" src="images/checkout-cielo-modo-teste-transacoes-de-teste-cancelamento.png" /></p>
-
-<aside class="notice">É muito importante que ao liberar sua loja para a realização de vendas para seus clientes que ela não esteja em modo de teste. Transações realizadas nesse ambiente poderão ser finalizadas normalmente, mas não serão descontadas do cartão do cliente e não poderão ser “transferidas” para o ambiente de venda padrão.</aside>
 
 <h1 id="parâmetros-de-integração">Parâmetros de integração</h1>
 
