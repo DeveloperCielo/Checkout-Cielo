@@ -38,7 +38,7 @@ Para todo pedido de compra, a meta é efetivá-la em uma venda. Uma venda com ca
 
 #### Características da solução
 
-O CHECKOUT CIELO é uma solução de checkout projetada para aumentar a conversão, simplificar o processo de compra, reduzir fraudes e custos operacionais.
+O Checkout Cielo é uma solução de checkout projetada para aumentar a conversão, simplificar o processo de compra, reduzir fraudes e custos operacionais.
 
 #### Considerações sobre a integração
 
@@ -67,7 +67,7 @@ A versão atual do Checkout Cielo possui suporte às seguintes bandeiras e produ
 #### Histórico de versões
 
 * **Versão 1.3** - 21/01/2015
-    - Troca de nomes – Solução Integrada para CHECKOUT CIELO
+    - Troca de nomes – Solução Integrada para Checkout Cielo
 * **Versão 1.2** - 09/01/2015
     - Inclusão dos seguintes parâmetros no Post de notificação: `discount_amount`, `shipping_address_state`, `payment_boleto`, `number`, `tid`;
     - Alteração do parâmetro numero do pedido no Post de Mudança de Status
@@ -111,7 +111,7 @@ Basta instalar os três arquivos a seguir na Trustedstore do servidor. A Cielo n
 
 ## Modo de teste do Checkout Cielo
 
-O modo de teste CHECKOUT CIELO é método de fazer testes de integração do CHECKOUT CIELO com o seu site, sem o consumo de créditos. O modo de Teste CHECKOUT CIELO permite realizar transações, testando a integração utilizando diferentes meios de pagamento simulados.
+O modo de teste Checkout Cielo é método de fazer testes de integração do Checkout Cielo com o seu site, sem o consumo de créditos. O modo de Teste Checkout Cielo permite realizar transações, testando a integração utilizando diferentes meios de pagamento simulados.
 
 ### Ativação do Modo de Teste.
 
@@ -119,13 +119,13 @@ O modo de teste pode ser ativado na aba Configurações:
 
 ![Modo de teste](/images/checkout-cielo-modo-teste.png)
 
-Nessa área há um caixa de seleção, que quando marcada, habilitará o modo de teste do CHECKOUT CIELO. O modo somente se iniciará quando a seleção for salva.
+Nessa área há um caixa de seleção, que quando marcada, habilitará o modo de teste do Checkout Cielo. O modo somente se iniciará quando a seleção for salva.
 
 ![Ativação Modo de teste](/images/checkout-cielo-modo-teste-ativacao.png)
 
-Quando a opção for salva, uma tarja vermelha será exibida na parte superior da tela. Ela será exibida em todas as telas do Backoffice e na tela de checkout do CHECKOUT CIELO.
+Quando a opção for salva, uma tarja vermelha será exibida na parte superior da tela. Ela será exibida em todas as telas do Backoffice e na tela de checkout do Checkout Cielo.
 
-Essa tarja indica que a sua loja CHECKOUT CIELO está agora operando em ambiente de teste, ou seja, toda a transação realizada nesse modo será considerada como teste.
+Essa tarja indica que a sua loja Checkout Cielo está agora operando em ambiente de teste, ou seja, toda a transação realizada nesse modo será considerada como teste.
 
 ![Modo de teste ativado](/images/checkout-cielo-modo-teste-ativado.png)
 
@@ -169,7 +169,7 @@ Basta realizar o processo de compra normalmente sem nenhuma alteração no proce
 
 **d - Transações de teste**
 
-Todas as transações realizadas no modo de teste serão exibidas como transações normais na aba Pedidos do CHECKOUT CIELO, entretanto, elas serão marcadas como transações de teste e não serão contabilizadas em conjunto com as transações realizadas fora do ambiente de teste.
+Todas as transações realizadas no modo de teste serão exibidas como transações normais na aba Pedidos do Checkout Cielo, entretanto, elas serão marcadas como transações de teste e não serão contabilizadas em conjunto com as transações realizadas fora do ambiente de teste.
 
 ![Transações de teste](/images/checkout-cielo-modo-teste-transacoes-de-teste.png)
 
@@ -181,7 +181,7 @@ Essas transações terão o simbolo de teste as diferenciando de suas outras tra
 
 ## Integração Carrinho de Compras
 
-Este  tipo  de  integração deve  ser  usada sempre  que  houver  um  “carrinho  de  compras”  a  ser  enviado,  ou  seja,  no  caso  do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar a um carrinho e depois então finalizar a venda. Se você não possui um carrinho de compras implementado, veja a seção de [integração via botão](#integração-via-botão) CHECKOUT CIELO.
+Este  tipo  de  integração deve  ser  usada sempre  que  houver  um  “carrinho  de  compras”  a  ser  enviado,  ou  seja,  no  caso  do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar a um carrinho e depois então finalizar a venda. Se você não possui um carrinho de compras implementado, veja a seção de [integração via botão](#integração-via-botão) Checkout Cielo.
 
 ### Endpoint
 
@@ -810,7 +810,7 @@ Adicionando o botão na sua página HTML você deve copiar o código HTML do bot
 
 <aside class="notice">O código deve ser inserido dentro da área adequada no seu HTML.</aside>
 
-Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter a compra, pois o CHECKOUT CIELO vai buscar todos os dados do produto no cadastro do Backoffice, e valerão os dados do cadastro.
+Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter a compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do Backoffice, e valerão os dados do cadastro.
 
 # Parâmetros de integração
 
