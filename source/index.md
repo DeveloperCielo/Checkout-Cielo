@@ -55,6 +55,38 @@ A versão atual do Webservice Cielo possui suporte às seguintes bandeiras e pro
 * **Versão 1.0** - 24/11/2014
     - Versão inicial
 
+### Suporte Cielo
+
+Após a leitura deste manual, caso ainda persistam dúvidas (técnicas ou não), a Cielo disponibiliza o suporte técnico 24 horas por dia, 7 dias por semana em idiomas (Português e Inglês), nos seguintes contatos:
+
+* +55 4002-9700 – *Capitais e Regiões Metropolitanas*
+* +55 0800-570-1700 – *Demais Localidades*
+* +55 11 2860-1348 – *Internacionais*
+  * Opção 1 – *Suporte técnico;*
+  * Opção 2 – *Credenciamento E-commerce.*
+* Email: [cieloecommerce@cielo.com.br](mailto:cieloecommerce@cielo.com.br)
+
+## Visão Geral
+
+Neste manual será apresentado uma visão geral do Checkout Cielo e o mecanismo tecnológico da integração com carrinho ou com botão.
+
+Para todo pedido de compra, a meta é efetivá-la em uma venda. Uma venda com cartão pode ser caracterizado em uma transação autorizada e capturada.
+
+<aside class="warning">Uma transação autorizada somente gera o crédito para o lojista se ela for capturada (ou confirmada).</aside>
+
+### Características da solução
+
+O CHECKOUT CIELO é uma solução de checkout projetada para aumentar a conversão, simplificar o processo de compra, reduzir fraudes e custos operacionais.
+
+### Considerações sobre a integração
+
+* O cadastro da loja deve estar ativo junto à Cielo.
+* Deve-se definir um timeout adequado nas requisições HTTP à Cielo; recomendamos 30 segundos.
+* O certificado Root da entidade certificadora (CA) de nosso Web Service deve estar cadastrado na Truststore a ser utilizada. Como nossa certificadora é de ampla aceitação no mercado, é provável que ela já esteja registrada na Truststore do próprio sistema operacional. Veja a seção [Certificado Extended Validation](#certificado-extended-validation) para mais informações.
+* Os valores monetários são sempre tratados como valores inteiros, sem representação das casas decimais, sendo que os dois últimos dígitos são considerados como os centavos. Exemplo: R$ 1.286,87 é representado como 128687; R$ 1,00 é representado como 100.
+
+<aside class="notice">Veja a seção <a href="#certificado-extended-validation">Certificado Extended Validation</a> para informações sobre os certificados Cielo</aside>
+
 ## Integração Carrinho de Compras
 
 Este  tipo  de  integração deve  ser  usada sempre  que  houver  um  “carrinho  de  compras”  a  ser  enviado,  ou  seja,  no  caso  do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar a um carrinho e depois então finalizar a venda. Se você não possui um carrinho de compras implementado, veja a seção de [integração via botão](#integração-via-botão) CHECKOUT CIELO.
