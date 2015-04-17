@@ -1029,7 +1029,10 @@ Parâmetro de resposta, recebido em caso de sucesso.
 
 O Checkout Cielo aceita as principais bandeiras de crédito do Brasil e do mundo. São elas: Visa, MasterCard, American Express (Amex), Elo, Diners, Discover, JCB e Aura.
 
-![Cartões de crédito](/images/checkout-cielo-cartao-credito.png)
+A partir da criação de uma transação, ela pode assumir os seguintes status. As transições de status podem ser realizadas através da troca de mensagens entre a loja e a Cielo, ou de forma automática, por exemplo, quando o prazo para a captura de transação autorizada expirar.
+
+![Fluxos](/images/fluxo-status.png)
+
 
 ### Recebendo uma Venda de Cartão de Crédito
 
@@ -1041,7 +1044,7 @@ Pedidos **“AUTORIZADOS”** serão enviados online, ou seja, no ato da venda
 
 Esta análise indicará um **“BAIXO RISCO”** ou “ALTO RISCO” para a venda em questão. Esta sugestão é o que deve guiar a decisão de se confirmar  ou cancelar a venda. A analise será apresentada no “Detalhes do Pedido”, como abaixo:
 
-![Análise de risco(/images/checkout-cielo-analise-risco.png)
+![Análise de risco](/images/checkout-cielo-analise-risco.png)
 
 ## Boleto
 
