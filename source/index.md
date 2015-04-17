@@ -24,23 +24,19 @@ Nesta documentação são descritas todas as funcionalidades desta integração,
 
 O Checkout Cielo utiliza uma tecnologia REST que deve ser usada quando houver um *“carrinho de compras”* a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a compra. Há também opção de integração via botão usada sempre que não houver um *“carrinho de compras”* em sua loja ou quando se deseja associar uma compra rápida direta a um produto.
 
-## Orientações gerais
+# Visão Geral
+
+Neste manual será apresentado uma visão geral do Checkout Cielo e o mecanismo tecnológico da integração com carrinho ou com botão. Para todo pedido de compra, a meta é efetivá-la em uma venda. Uma venda com cartão pode ser caracterizado em uma transação autorizada e capturada.
 
 Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento dos processos funcionais que farão parte do cotidiano da loja, como o acompanhamento das movimentações financeiras, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  extrato de cobrança, entre outros. Veja o material complementar sobre o [BackOffice Checkout Cielo](http://developercielo.github.io/Checkout-Backoffice/). Lá você encontra orientações importantes sobre como administrar o e-Commerce aproveitando ao máximo as funcionalidades  do Checkout Cielo.
 
-### Visão Geral
-
-Neste manual será apresentado uma visão geral do Checkout Cielo e o mecanismo tecnológico da integração com carrinho ou com botão.
-
-Para todo pedido de compra, a meta é efetivá-la em uma venda. Uma venda com cartão pode ser caracterizado em uma transação autorizada e capturada.
-
 <aside class="warning">Uma transação autorizada somente gera o crédito para o lojista se ela for capturada (ou confirmada).</aside>
 
-#### Características da solução
+## Características da solução
 
 O Checkout Cielo é uma solução de checkout projetada para aumentar a conversão, simplificar o processo de compra, reduzir fraudes e custos operacionais.
 
-#### Considerações sobre a integração
+## Considerações sobre a integração
 
 * O cadastro da loja deve estar ativo junto à Cielo.
 * Deve-se definir um timeout adequado nas requisições HTTP à Cielo; recomendamos 30 segundos.
@@ -49,7 +45,7 @@ O Checkout Cielo é uma solução de checkout projetada para aumentar a convers�
 
 <aside class="notice">Veja a seção <a href="#certificado-extended-validation">Certificado Extended Validation</a> para informações sobre os certificados Cielo</aside>
 
-#### Produtos e serviços
+## Produtos e serviços
 
 A versão atual do Checkout Cielo possui suporte às seguintes bandeiras e produtos:
 
@@ -64,7 +60,7 @@ A versão atual do Checkout Cielo possui suporte às seguintes bandeiras e produ
 |JCB|Sim|Sim|Não|Não|
 |Aura|Sim|Sim|Não|Não|
 
-#### Histórico de versões
+## Histórico de versões
 
 * **Versão 1.3** - 21/01/2015
     - Troca de nomes – Solução Integrada para Checkout Cielo
@@ -76,7 +72,7 @@ A versão atual do Checkout Cielo possui suporte às seguintes bandeiras e produ
 * **Versão 1.0** - 24/11/2014
     - Versão inicial
 
-#### Suporte Cielo
+## Suporte Cielo
 
 Após a leitura deste manual, caso ainda persistam dúvidas (técnicas ou não), a Cielo disponibiliza o suporte técnico 24 horas por dia, 7 dias por semana em idiomas (Português e Inglês), nos seguintes contatos:
 
@@ -86,6 +82,8 @@ Após a leitura deste manual, caso ainda persistam dúvidas (técnicas ou não),
   * Opção 1 – *Suporte técnico;*
   * Opção 2 – *Credenciamento E-commerce.*
 * Email: [cieloecommerce@cielo.com.br](mailto:cieloecommerce@cielo.com.br)
+
+# Integração
 
 ## Certificado Extended Validation
 
