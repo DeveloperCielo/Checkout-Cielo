@@ -666,6 +666,10 @@ A integração via botão também pode ser usada para enviar um e-mail marketing
 
 Para utilizar este recurso, é necessário cadastrar o produto que deseja vender, suas informações, e depois simplesmente copiar o código fonte gerado para este botão. A inclusão dos produtos é feita dentro do Backoffice, no menu de Produtos/Cadastrar Produto.
 
+A inclusão dos produtos é feita dentro do Backoffice, no menu de Produtos/Cadastrar Produto.
+
+![Integração com botão](/images/checkout-cielo-integracao-botao.png)
+
 ### Características do Botão
 
 * Cada botão gerado serve somente para um determinado produto.
@@ -674,6 +678,38 @@ Para utilizar este recurso, é necessário cadastrar o produto que deseja vender
 * O cadastro do produto é obrigatório para a criação do botão.
 
 Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter à compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do Backoffice, e valerão os dados do cadastro.
+
+### Parâmetros para cadastro de produto
+
+Abaixo seguem as informações necessárias para cadastrar um produto.
+
+|Parâmetro|Descrição|Tamanho Min.|Tamanho Máx.|Obrigatório|
+|---------|---------|------------|------------|-----------|
+|Tipo do Produto|Indique se está vendendo um bem Material, um Serviço ou um bem Digital. Para bens Digitais, não será apresentada a opção de tipo de Frete.|n/a|n/a|Sim|
+|SKU|Código de identificação do produto|1|50|Não|
+|Título|Titulo do Produto|1|50|Sim|
+|Descrição|Descrição do Produto|1|255|Sim|
+|Preço|Valor total do pedido **em centavos** (ex.: R$1,00 =100).|11|14|Sim|
+|Frete|Escolher dentre uma das opções de Frete (Correios, Frete Fixo, Frete Grátis, Retirar na loja, Sem Cobrança).|n/a|n/a|Sim|
+|CEP de Origem|Esse campo só aparece para o frete tipo Correios, deve ser preenchido com o CEP de onde vai partir a mercadoria para fins de cálculo de frete.|9|9|Sim|
+|Peso(kg)|Esse campo só aparece para o frete tipo Correios, deve ser preenchido com o peso do produto em kg para fins de cálculo de frete|n/a|n/a|Sim|
+|Valor do Frete|Esse campo só aparece para o frete tipo Frete Fixo, e deve ser preenchido com o valor que o lojista especificar para seus produtos.|n/a|n/a|Sim|
+|Método de envio|Esse campo só aparece para Tipo Produto igual a Material Físico e Tipo de Frete igual a Frete Fixo.|n/a|n/a|Sim|
+|URL|Esse campo só aparece para Tipo Produto igual a Digital.|n/a|n/a|Sim|
+
+#### Exemplo de Botão:
+
+```html
+<form method='post' action='https://cieloecommerce.cielo.com.br/transactional/Checkout/BuyNow' target='blank'>
+    <input type='hidden' name='id' value=00000000-0000-0000-000000000000/><input type='image' name='submit' alt='Comprar' src='https://cieloecommerce.cielo.com.br /BackOffice/Content/images/botao_comprar_3.jpg' />
+</form>
+```
+
+Adicionando o botão na sua página HTML você deve copiar o código HTML do botão criado e colocar no código HTML do seu site, conforme o exemplo abaixo.
+
+<aside class="notice">O código deve ser inserido dentro da área adequada no seu HTML.</aside>
+
+Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter a compra, pois o CHECKOUT CIELO vai buscar todos os dados do produto no cadastro do Backoffice, e valerão os dados do cadastro.
 
 ## Modo de teste do Checkout Cielo
 
