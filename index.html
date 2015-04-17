@@ -845,6 +845,10 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 
 <p>Para utilizar este recurso, é necessário cadastrar o produto que deseja vender, suas informações, e depois simplesmente copiar o código fonte gerado para este botão. A inclusão dos produtos é feita dentro do Backoffice, no menu de Produtos/Cadastrar Produto.</p>
 
+<p>A inclusão dos produtos é feita dentro do Backoffice, no menu de Produtos/Cadastrar Produto.</p>
+
+<p><img alt="Integração com botão" src="images/checkout-cielo-integracao-botao.png" /></p>
+
 <h3 id="características-do-botão">Características do Botão</h3>
 
 <ul>
@@ -855,6 +859,110 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 </ul>
 
 <p>Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter à compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do Backoffice, e valerão os dados do cadastro.</p>
+
+<h3 id="parâmetros-para-cadastro-de-produto">Parâmetros para cadastro de produto</h3>
+
+<p>Abaixo seguem as informações necessárias para cadastrar um produto.</p>
+
+<table><thead>
+<tr>
+<th>Parâmetro</th>
+<th>Descrição</th>
+<th>Tamanho Min.</th>
+<th>Tamanho Máx.</th>
+<th>Obrigatório</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Tipo do Produto</td>
+<td>Indique se está vendendo um bem Material, um Serviço ou um bem Digital. Para bens Digitais, não será apresentada a opção de tipo de Frete.</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Sim</td>
+</tr>
+<tr>
+<td>SKU</td>
+<td>Código de identificação do produto</td>
+<td>1</td>
+<td>50</td>
+<td>Não</td>
+</tr>
+<tr>
+<td>Título</td>
+<td>Titulo do Produto</td>
+<td>1</td>
+<td>50</td>
+<td>Sim</td>
+</tr>
+<tr>
+<td>Descrição</td>
+<td>Descrição do Produto</td>
+<td>1</td>
+<td>255</td>
+<td>Sim</td>
+</tr>
+<tr>
+<td>Preço</td>
+<td>Valor total do pedido <strong>em centavos</strong> (ex.: R$1,00 =100).</td>
+<td>11</td>
+<td>14</td>
+<td>Sim</td>
+</tr>
+<tr>
+<td>Frete</td>
+<td>Escolher dentre uma das opções de Frete (Correios, Frete Fixo, Frete Grátis, Retirar na loja, Sem Cobrança).</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Sim</td>
+</tr>
+<tr>
+<td>CEP de Origem</td>
+<td>Esse campo só aparece para o frete tipo Correios, deve ser preenchido com o CEP de onde vai partir a mercadoria para fins de cálculo de frete.</td>
+<td>9</td>
+<td>9</td>
+<td>Sim</td>
+</tr>
+<tr>
+<td>Peso(kg)</td>
+<td>Esse campo só aparece para o frete tipo Correios, deve ser preenchido com o peso do produto em kg para fins de cálculo de frete</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Sim</td>
+</tr>
+<tr>
+<td>Valor do Frete</td>
+<td>Esse campo só aparece para o frete tipo Frete Fixo, e deve ser preenchido com o valor que o lojista especificar para seus produtos.</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Sim</td>
+</tr>
+<tr>
+<td>Método de envio</td>
+<td>Esse campo só aparece para Tipo Produto igual a Material Físico e Tipo de Frete igual a Frete Fixo.</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Sim</td>
+</tr>
+<tr>
+<td>URL</td>
+<td>Esse campo só aparece para Tipo Produto igual a Digital.</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Sim</td>
+</tr>
+</tbody></table>
+
+<h4 id="exemplo-de-botão:">Exemplo de Botão:</h4>
+<pre><code class="highlight html"><span class="nt">&lt;form</span> <span class="na">method=</span><span class="s">'post'</span> <span class="na">action=</span><span class="s">'https://cieloecommerce.cielo.com.br/transactional/Checkout/BuyNow'</span> <span class="na">target=</span><span class="s">'blank'</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">'hidden'</span> <span class="na">name=</span><span class="s">'id'</span> <span class="na">value=</span><span class="s">00000000-0000-0000-000000000000/</span><span class="nt">&gt;&lt;input</span> <span class="na">type=</span><span class="s">'image'</span> <span class="na">name=</span><span class="s">'submit'</span> <span class="na">alt=</span><span class="s">'Comprar'</span> <span class="na">src=</span><span class="s">'https://cieloecommerce.cielo.com.br /BackOffice/Content/images/botao_comprar_3.jpg'</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre>
+
+<p>Adicionando o botão na sua página HTML você deve copiar o código HTML do botão criado e colocar no código HTML do seu site, conforme o exemplo abaixo.</p>
+
+<aside class="notice">O código deve ser inserido dentro da área adequada no seu HTML.</aside>
+
+<p>Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter a compra, pois o CHECKOUT CIELO vai buscar todos os dados do produto no cadastro do Backoffice, e valerão os dados do cadastro.</p>
 
 <h2 id="modo-de-teste-do-checkout-cielo">Modo de teste do Checkout Cielo</h2>
 
