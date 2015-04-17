@@ -62,23 +62,19 @@ Nesta documentação são descritas todas as funcionalidades desta integração,
 
 <p>O Checkout Cielo utiliza uma tecnologia REST que deve ser usada quando houver um <em>“carrinho de compras”</em> a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a compra. Há também opção de integração via botão usada sempre que não houver um <em>“carrinho de compras”</em> em sua loja ou quando se deseja associar uma compra rápida direta a um produto.</p>
 
-<h2 id="orientações-gerais">Orientações gerais</h2>
+<h1 id="visão-geral">Visão Geral</h1>
+
+<p>Neste manual será apresentado uma visão geral do Checkout Cielo e o mecanismo tecnológico da integração com carrinho ou com botão. Para todo pedido de compra, a meta é efetivá-la em uma venda. Uma venda com cartão pode ser caracterizado em uma transação autorizada e capturada.</p>
 
 <p>Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento dos processos funcionais que farão parte do cotidiano da loja, como o acompanhamento das movimentações financeiras, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  extrato de cobrança, entre outros. Veja o material complementar sobre o <a href="http://developercielo.github.io/Checkout-Backoffice/">BackOffice Checkout Cielo</a>. Lá você encontra orientações importantes sobre como administrar o e-Commerce aproveitando ao máximo as funcionalidades  do Checkout Cielo.</p>
 
-<h3 id="visão-geral">Visão Geral</h3>
-
-<p>Neste manual será apresentado uma visão geral do Checkout Cielo e o mecanismo tecnológico da integração com carrinho ou com botão.</p>
-
-<p>Para todo pedido de compra, a meta é efetivá-la em uma venda. Uma venda com cartão pode ser caracterizado em uma transação autorizada e capturada.</p>
-
 <aside class="warning">Uma transação autorizada somente gera o crédito para o lojista se ela for capturada (ou confirmada).</aside>
 
-<h4 id="características-da-solução">Características da solução</h4>
+<h2 id="características-da-solução">Características da solução</h2>
 
 <p>O Checkout Cielo é uma solução de checkout projetada para aumentar a conversão, simplificar o processo de compra, reduzir fraudes e custos operacionais.</p>
 
-<h4 id="considerações-sobre-a-integração">Considerações sobre a integração</h4>
+<h2 id="considerações-sobre-a-integração">Considerações sobre a integração</h2>
 
 <ul>
 <li>O cadastro da loja deve estar ativo junto à Cielo.</li>
@@ -89,7 +85,7 @@ Nesta documentação são descritas todas as funcionalidades desta integração,
 
 <aside class="notice">Veja a seção <a href="#certificado-extended-validation">Certificado Extended Validation</a> para informações sobre os certificados Cielo</aside>
 
-<h4 id="produtos-e-serviços">Produtos e serviços</h4>
+<h2 id="produtos-e-serviços">Produtos e serviços</h2>
 
 <p>A versão atual do Checkout Cielo possui suporte às seguintes bandeiras e produtos:</p>
 
@@ -160,7 +156,7 @@ Nesta documentação são descritas todas as funcionalidades desta integração,
 </tr>
 </tbody></table>
 
-<h4 id="histórico-de-versões">Histórico de versões</h4>
+<h2 id="histórico-de-versões">Histórico de versões</h2>
 
 <ul>
 <li><strong>Versão 1.3</strong> - 21/01/2015
@@ -186,7 +182,7 @@ Nesta documentação são descritas todas as funcionalidades desta integração,
 </ul></li>
 </ul>
 
-<h4 id="suporte-cielo">Suporte Cielo</h4>
+<h2 id="suporte-cielo">Suporte Cielo</h2>
 
 <p>Após a leitura deste manual, caso ainda persistam dúvidas (técnicas ou não), a Cielo disponibiliza o suporte técnico 24 horas por dia, 7 dias por semana em idiomas (Português e Inglês), nos seguintes contatos:</p>
 
@@ -201,6 +197,8 @@ Nesta documentação são descritas todas as funcionalidades desta integração,
 </ul></li>
 <li>Email: <a href="mailto:cieloecommerce@cielo.com.br">cieloecommerce@cielo.com.br</a></li>
 </ul>
+
+<h1 id="integração">Integração</h1>
 
 <h2 id="certificado-extended-validation">Certificado Extended Validation</h2>
 
