@@ -64,18 +64,21 @@ under the License.
       <% end %>
       <% if current_page.data.search %>
         <div class="search">
-          <input type="text" class="search" id="input-search" placeholder="Search">
+          <input type="text" class="search" id="input-search" placeholder="Pesquisa">
         </div>
         <ul class="search-results"></ul>
       <% end %>
       <div id="toc">
       </div>
       <% if current_page.data.toc_footers %>
-        <ul class="toc-footer">
-          <% current_page.data.toc_footers.each do |footer| %>
-            <li><%= footer %></li>
-          <% end %>
-        </ul>
+        <div class="toc-footer">
+           <h2 class="footer-title">Materiais complementares</h2>
+           <ul>
+             <% current_page.data.toc_footers.each do |footer| %>
+                <li><%= footer %></li>
+             <% end %>
+           </ul>
+        </div>
       <% end %>
     </div>
     <div class="page-wrapper">
