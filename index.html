@@ -64,7 +64,7 @@ Nesta documentação são descritas <strong>todas as funcionalidades</strong> de
 
 <h3 id="orientações-gerais">Orientações gerais</h3>
 
-<p>Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento <strong>dos processos</strong> funcionais que farão parte do <strong>cotidiano da loja</strong>, como o <strong>acompanhamento das movimentações financeiras</strong>, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  <strong>extrato de cobrança</strong>, entre outros. Veja a seção sobre o <a href="#backoffice-cielo">BackOffice Checkout Cielo</a>. Lá você encontra <strong>orientações importantes</strong> sobre como <strong>administrar o e-Commerce</strong> aproveitando ao máximo as funcionalidades  do Checkout Cielo.</p>
+<p>Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento <strong>dos processos</strong> funcionais que farão parte do <strong>cotidiano da loja</strong>, como o <strong>acompanhamento das movimentações financeiras</strong>, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  <strong>extrato de cobrança</strong>, entre outros. Veja o material complementar sobre o <a href="http://developercielo.github.io/Checkout-Backoffice/">BackOffice Checkout Cielo</a>. Lá você encontra <strong>orientações importantes</strong> sobre como <strong>administrar o e-Commerce</strong> aproveitando ao máximo as funcionalidades  do Checkout Cielo.</p>
 
 <h3 id="suporte-de-produtos-e-serviços">Suporte de produtos e serviços</h3>
 
@@ -193,6 +193,34 @@ Nesta documentação são descritas <strong>todas as funcionalidades</strong> de
 <aside class="notice">
 Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu MerchantId.
 </aside>
+
+<h2 id="certificado-extended-validation">Certificado Extended Validation</h2>
+
+<p>O Certificado Extended Validation para servidor web oferece autenticidade e integridade dos dados de um web site, proporcionando aos clientes das lojas virtuais a garantia de que estão realmente acessando o site que desejam, e não uma um site fraudador.</p>
+
+<p>Empresas especializadas são responsáveis por fazer a validação do domínio e, dependendo do tipo de certificado, também da entidade detentora do domínio.</p>
+
+<h3 id="o-que-é-certificado-extended-validation?">O que é Certificado Extended Validation?</h3>
+
+<p>O Certificado EV foi lançado no mercado recentemente e garante um nível de segurança maior para os clientes das lojas virtuais.</p>
+
+<p>Trata-se de um certificado de maior confiança e quando o https for acessado a barra de endereço ficará verde, dando mais confiabilidade aos visitantes do site.</p>
+
+<p>Como instalar o Certificado Extended Validation no servidor da Loja?</p>
+
+<p>Basta instalar os três arquivos a seguir na Trustedstore do servidor. A Cielo não oferece suporte para a instalação do Certificado. Caso não esteja seguro sobre como realizar a instalação do Certificado EV, então você deverá ser contatado o suporte do fornecedor do seu servidor.</p>
+
+<ul>
+<li><a href="attachment/Raiz.cer.txt">Certificado Raiz</a></li>
+<li><a href="attachment/Intermediaria.cer.txt">Certificado Intermediária</a></li>
+<li><a href="attachment/ecommerce.cielo.com.br.cer.txt">Certificado E-Commerce Cielo</a></li>
+</ul>
+
+<aside class="notice">Caso seu servidor seja uma distribuição Linux e você tenha familiaridade e acesso ssh, então o instalador abaixo o ajudará no processo de instalação.</aside>
+
+<ul>
+<li><a href="attachment/cielo.sh">Instalador Linux - cielo.sh</a></li>
+</ul>
 
 <h3 id="requisição">Requisição</h3>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
