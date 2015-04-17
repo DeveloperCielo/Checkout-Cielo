@@ -727,6 +727,7 @@ Basta realizar o processo de compra normalmente sem nenhuma alteração no proce
 
 **Status do Débito**
 |Sobre nome do cliente|Status|
+|---------------------|------|
 |Pago|Pago|
 |Qualquer nome.|Não autorizado|
 
