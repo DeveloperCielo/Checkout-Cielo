@@ -114,9 +114,9 @@ Como instalar o Certificado Extended Validation no servidor da Loja?
 
 Basta instalar os três arquivos a seguir na Trustedstore do servidor. A Cielo não oferece suporte para a instalação do Certificado. Caso não esteja seguro sobre como realizar a instalação do Certificado EV, então você deverá ser contatado o suporte do fornecedor do seu servidor.
 
-* [Certificado Raiz](/attachment/Raiz.cer.txt)
-* [Certificado Intermediária](/attachment/Intermediaria.cer.txt)
-* [Certificado E-Commerce Cielo](/attachment/ecommerce.cielo.com.br.cer.txt)
+* [Certificado Raiz](/attachment/Raiz.crt)
+* [Certificado Intermediária](/attachment/Intermediaria.crt)
+* [Certificado E-Commerce Cielo](/attachment/ecommerce.cielo.com.br.crt)
 
 <aside class="notice">Caso seu servidor seja uma distribuição Linux e você tenha familiaridade e acesso ssh, então o instalador abaixo o ajudará no processo de instalação.</aside>
 
