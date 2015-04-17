@@ -68,7 +68,7 @@ A versão atual do Checkout Cielo possui suporte às seguintes bandeiras e produ
     - Inclusão dos seguintes parâmetros no Post de notificação: `discount_amount`, `shipping_address_state`, `payment_boleto`, `number`, `tid`;
     - Alteração do parâmetro numero do pedido no Post de Mudança de Status
 * **Versão 1.1** - 08/01/2015
-    - Alinhamento dos fluxos de pagamento; inclusão de informações sobre os meios de pagamento; inclusão da tela de configurações do Backoffice
+    - Alinhamento dos fluxos de pagamento; inclusão de informações sobre os meios de pagamento; inclusão da tela de configurações do [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/)
 * **Versão 1.0** - 24/11/2014
     - Versão inicial
 
@@ -671,9 +671,9 @@ Integração via Botão é um método de compra usada sempre que não houver um 
 
 A integração via botão também pode ser usada para enviar um e-mail marketing, ou uma cobrança via e-mail, ou seja, adicionando o botão (HTML) referente ao produto/serviço a ser comprado/pago. Ou sempre que desejar disponibilizar uma venda rápida.
 
-Para utilizar este recurso, é necessário cadastrar o produto que deseja vender, suas informações, e depois simplesmente copiar o código fonte gerado para este botão. A inclusão dos produtos é feita dentro do Backoffice, no menu de Produtos/Cadastrar Produto.
+Para utilizar este recurso, é necessário cadastrar o produto que deseja vender, suas informações, e depois simplesmente copiar o código fonte gerado para este botão. A inclusão dos produtos é feita dentro do [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/), no menu de Produtos/Cadastrar Produto.
 
-A inclusão dos produtos é feita dentro do Backoffice, no menu de Produtos/Cadastrar Produto.
+A inclusão dos produtos é feita dentro do [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/), no menu de Produtos/Cadastrar Produto.
 
 ![Integração com botão](/images/checkout-cielo-integracao-botao.png)
 
@@ -684,7 +684,7 @@ A inclusão dos produtos é feita dentro do Backoffice, no menu de Produtos/Cada
 * Não é necessário o desenvolvimento de um carrinho
 * O cadastro do produto é obrigatório para a criação do botão.
 
-Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter à compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do Backoffice, e valerão os dados do cadastro.
+Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter à compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/), e valerão os dados do cadastro.
 
 ### Parâmetros para cadastro de produto
 
@@ -716,7 +716,7 @@ Adicionando o botão na sua página HTML você deve copiar o código HTML do bot
 
 <aside class="notice">O código deve ser inserido dentro da área adequada no seu HTML.</aside>
 
-Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter a compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do Backoffice, e valerão os dados do cadastro.
+Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter a compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/), e valerão os dados do cadastro.
 
 ## Modo de teste do Checkout Cielo
 
@@ -732,7 +732,7 @@ Nessa área há um caixa de seleção, que quando marcada, habilitará o modo de
 
 ![Ativação Modo de teste](/images/checkout-cielo-modo-teste-ativacao.png)
 
-Quando a opção for salva, uma tarja vermelha será exibida na parte superior da tela. Ela será exibida em todas as telas do Backoffice e na tela de checkout do Checkout Cielo.
+Quando a opção for salva, uma tarja vermelha será exibida na parte superior da tela. Ela será exibida em todas as telas do [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/) e na tela de checkout do Checkout Cielo.
 
 Essa tarja indica que a sua loja Checkout Cielo está agora operando em ambiente de teste, ou seja, toda a transação realizada nesse modo será considerada como teste.
 
@@ -1036,7 +1036,7 @@ A partir da criação de uma transação, ela pode assumir os seguintes status. 
 
 ### Recebendo uma Venda de Cartão de Crédito
 
-Pedidos por meio de cartão de crédito serão incluídos no Backoffice como **“AUTORIZADO”** ou **“NÃO AUTORIZADO”**, dependendo do resultado da autorização na Cielo. Caso haja algum problema no processamento deste pedido (consumidor fechou a tela, por exemplo), ele constará como **“NÃO FINALIZADO”**.
+Pedidos por meio de cartão de crédito serão incluídos no [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/) como **“AUTORIZADO”** ou **“NÃO AUTORIZADO”**, dependendo do resultado da autorização na Cielo. Caso haja algum problema no processamento deste pedido (consumidor fechou a tela, por exemplo), ele constará como **“NÃO FINALIZADO”**.
 
 ### Análise de Fraude
 
@@ -1048,7 +1048,7 @@ Esta análise indicará um **“BAIXO RISCO”** ou “ALTO RISCO” para a 
 
 ## Boleto
 
-Todo boleto gerado (emitido) aparece com o status de “PENDENTE” no Relatório de Pedidos. Sua troca de status vai depender de ações manuais do proprio lojista. Para isso, acesse o Backoffice do Checkout Cielo (incluir link do manual) na seção Pedidos
+Todo boleto gerado (emitido) aparece com o status de “PENDENTE” no Relatório de Pedidos. Sua troca de status vai depender de ações manuais do proprio lojista. Para isso, acesse o [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/) (incluir link do manual) na seção Pedidos
 
 ### Possiveis Status do Boleto
 
@@ -1064,7 +1064,7 @@ Cabe ao lojista através de uma Conciliação Manual com seu extrato bancário, 
 
 Para realizar a Conciliação você deve:
 
-1. Acessar o relatório de pedidos no Backoffice;
+1. Acessar o relatório de pedidos no [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/);
 2. Filtrar os pedidos por Meio de Pagamento “Boleto” e status “PENDENTE” e identificar o boleto em questão pelo Valor;
 3. Clicar no sinal de + no final da linha para acessar a página de “Detalhes”;
 4. Clicar no botão de “ Confirmar Pagamento ” e informar a data de pagamento, para seu futuro controle;
@@ -1089,7 +1089,7 @@ Se o boleto não for conciliado dentro de um prazo de 10 dias após seu vencimen
 
 ## Débito Online
 
-Pedidos vendidos por meio de Débito online serão incluídos no Backoffice como PENDENTE, PAGO, NÃO AUTORIZADO ou NÃO FINALIZADO, dependendo do resultado da autorização junto ao Banco.
+Pedidos vendidos por meio de Débito online serão incluídos no [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/) como PENDENTE, PAGO, NÃO AUTORIZADO ou NÃO FINALIZADO, dependendo do resultado da autorização junto ao Banco.
 
 * **Pendente** - Corresponde quando o comprador ao finalizar o pedido e não obtem resposta por parte do Banco, ou seja, não conseguir nem carregar a página do Banco para inserir os dados para o Débito.
 * **Pago** - Corresponde quando o comprador conseguir realizar o pagamento do débito com sucesso.
@@ -1107,15 +1107,13 @@ Pedidos vendidos por meio de Débito online serão incluídos no Backoffice como
 
 ### Captura automática
 
-As vendas **“AUTORIZADAS”**, e com **“BAIXO RISCO”** na ferramenta de  antifraude poderão ser **CAPTURADAS** automaticamente pelo sistema. Para isso é preciso configurar no o Backoffice do Checkout Cielo (incluir link)
-Após essa configuração, o status apresentado será **“PAGO”**. Esta venda será então confirmada (capturada) na Cielo.
+As vendas **“AUTORIZADAS”**, e com **“BAIXO RISCO”** na ferramenta de  antifraude poderão ser **CAPTURADAS** automaticamente pelo sistema. Para isso é preciso configurar no o [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/). Após essa configuração, o status apresentado será **“PAGO”**. Esta venda será então confirmada (capturada) na Cielo.
 
 ![Cancelamento e captura automático](/images/checkout-cielo-cancelamento-captura-automatico.png)
 
 ### Cancelamento Automático
 
-As vendas “AUTORIZADAS”, e com “ALTO RISCO”  na ferramenta de  antifraude poderão ser CANCELADAS automaticamente pelo sistema. Para isso é preciso configurar no o Backoffice do Checkout Cielo (incluir link)
-Após essa configuração, o status apresentado será “CANCELADO”. Esta venda será então cancelada (desfeita) na Cielo.
+As vendas “AUTORIZADAS”, e com “ALTO RISCO”  na ferramenta de  antifraude poderão ser CANCELADAS automaticamente pelo sistema. Para isso é preciso configurar no o [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/). Após essa configuração, o status apresentado será “CANCELADO”. Esta venda será então cancelada (desfeita) na Cielo.
 
 ![Cancelamento e captura automático](/images/checkout-cielo-cancelamento-captura-automatico.png)
 
@@ -1129,9 +1127,9 @@ Após essa configuração, o status apresentado será “CANCELADO”. Esta ven
 
 As vendas **“AUTORIZADAS”** aguardam uma decisão de confirmação ou cancelamento. E esta decisão deve vir em conformidade com a análise de fraude, caso esta funcionalidade esteja devidamente parametrizada na integração.
 
-A confirmação da venda deve ser feita pelo botão **CAPTURAR**, na aba  **“Pedidos”**, no Backoffice do Checkout Cielo. Após a confirmação, o status mudará para **“PAGO”**. Esta venda será então confirmada (capturada) na Cielo.
+A confirmação da venda deve ser feita pelo botão **CAPTURAR**, na aba  **“Pedidos”**, no [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/). Após a confirmação, o status mudará para **“PAGO”**. Esta venda será então confirmada (capturada) na Cielo.
 
-Já o  cancelamento deve ser feito pelo botão **CANCELAR** na mesma seção No Backoffice do Checkout Cielo. Após o cancelamento, o status mudará para **“CANCELADO”**. Esta venda será então cancelada (desfeita) na Cielo.
+Já o  cancelamento deve ser feito pelo botão **CANCELAR** na mesma seção No [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/). Após o cancelamento, o status mudará para **“CANCELADO”**. Esta venda será então cancelada (desfeita) na Cielo.
 
 <aside class="warning">Atenção! Você tem até 5 dias pra confirmar a venda! Caso isso não seja feito ela não será mais válida na Cielo, e o limite reservado para sua loja/venda será liberado. Este é um procedimento padrão para todas as lojas.</aside>
 
@@ -1151,8 +1149,8 @@ O consumidor (comprador) pode por algum motivo cancelar a compra diretamente com
 
 ![Chargeback](/images/checkout-cielo-chargeback.png)
 
-Essa comunicação não é feita via o Backoffice do Checkout Cielo, mas sim pelo extrato de venda da Cielo, destacada como um ajuste financeiro. O extrato de vendas está disponivel no site da Cielo [www.cielo.com.br na aba “Acessar Minha conta”](https://www.cielo.com.br/minha-conta).
+Essa comunicação não é feita via o [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/), mas sim pelo extrato de venda da Cielo, destacada como um ajuste financeiro. O extrato de vendas está disponivel no site da Cielo [www.cielo.com.br na aba “Acessar Minha conta”](https://www.cielo.com.br/minha-conta).
 
 ![Acessar minha conta](/images/acessar-minha-conta.png)
 
-Após esse recebimento, no próprio site da Cielo  é possivel acessar o Backoffice e sinalizar o pedido como tendo recebido um Chargeback, pra seu melhor controle. Basta entrar no Detalhe do Pedido e clicar no botão “ChargeBack”, e seu status passará a ser “CHARGEBACK”.
+Após esse recebimento, no próprio site da Cielo  é possivel acessar o [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/) e sinalizar o pedido como tendo recebido um Chargeback, pra seu melhor controle. Basta entrar no Detalhe do Pedido e clicar no botão “ChargeBack”, e seu status passará a ser “CHARGEBACK”.
