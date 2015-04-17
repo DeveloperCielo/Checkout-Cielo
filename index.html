@@ -39,16 +39,18 @@
               <a href="#" data-language-name="csharp">C#</a>
         </div>
         <div class="search">
-          <input type="text" class="search" id="input-search" placeholder="Search">
+          <input type="text" class="search" id="input-search" placeholder="Pesquisa">
         </div>
         <ul class="search-results"></ul>
       <div id="toc">
       </div>
-        <ul class="toc-footer">
-            <li><a href='/Checkout-Orientacoes-Gerais/'>Orientações Gerais</a></li>
-            <li><a href='/Checkout-Backoffice/'>Backoffice Cielo</a></li>
-            <li><a href='/Checkout-FAQ/'>FAQ</a></li>
-        </ul>
+        <div class="toc-footer">
+           <h2 class="footer-title">Materiais complementares</h2>
+           <ul>
+                <li><a href='/Checkout-Backoffice/'>Backoffice Cielo</a></li>
+                <li><a href='/Checkout-FAQ/'>Perguntas Frequêntes</a></li>
+           </ul>
+        </div>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
@@ -62,7 +64,78 @@ Nesta documentação são descritas <strong>todas as funcionalidades</strong> de
 
 <h3 id="orientações-gerais">Orientações gerais</h3>
 
-<p>Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento <strong>dos processos</strong> funcionais que farão parte do <strong>cotidiano da loja</strong>, como o <strong>acompanhamento das movimentações financeiras</strong>, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  <strong>extrato de cobrança</strong>, entre outros. Veja a seção sobre o <a href="#backoffice-cielo">BackOffice Checkout Cielo</a>. Lá você encontra <strong>orientações importantes</strong> sobre como <strong>administrar o e-Commerce</strong> aproveitando ao máximo as funcionalidades  do Checkout Cielo</p>
+<p>Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento <strong>dos processos</strong> funcionais que farão parte do <strong>cotidiano da loja</strong>, como o <strong>acompanhamento das movimentações financeiras</strong>, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  <strong>extrato de cobrança</strong>, entre outros. Veja a seção sobre o <a href="#backoffice-cielo">BackOffice Checkout Cielo</a>. Lá você encontra <strong>orientações importantes</strong> sobre como <strong>administrar o e-Commerce</strong> aproveitando ao máximo as funcionalidades  do Checkout Cielo.</p>
+
+<h3 id="suporte-de-produtos-e-serviços">Suporte de produtos e serviços</h3>
+
+<p>A versão atual do Webservice Cielo possui suporte às seguintes bandeiras e produtos:</p>
+
+<table><thead>
+<tr>
+<th>Bandeira</th>
+<th>Crédito à vista</th>
+<th>Crédito parcelado Loja</th>
+<th>Débito</th>
+<th>Voucher</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Visa</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Não</td>
+</tr>
+<tr>
+<td>Master Card</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Não</td>
+</tr>
+<tr>
+<td>American Express</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Não</td>
+<td>Não</td>
+</tr>
+<tr>
+<td>Elo</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Não</td>
+<td>Não</td>
+</tr>
+<tr>
+<td>Diners Club</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Não</td>
+<td>Não</td>
+</tr>
+<tr>
+<td>Discover</td>
+<td>Sim</td>
+<td>Não</td>
+<td>Não</td>
+<td>Não</td>
+</tr>
+<tr>
+<td>JCB</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Não</td>
+<td>Não</td>
+</tr>
+<tr>
+<td>Aura</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Não</td>
+<td>Não</td>
+</tr>
+</tbody></table>
 
 <h3 id="histórico-de-versões">Histórico de versões</h3>
 
@@ -731,6 +804,15 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 </tr>
 </tbody></table>
 
+<h2 id="erros-de-integração">Erros de integração</h2>
+
+<p>Há dois tipos de erro que poderão ocorrer durante o processo de integração com o Checkout Cielo. São eles:</p>
+
+<ul>
+<li><strong>Antes da exibição da tela de Checkout</strong> - Significa que houve algum dado erra do no envio da transação. Dados obrigatórios podem estar faltando ou no formato invalido. Aqui o lojista sempre vai receber um e-mail informando o que deu errado;</li>
+<li>** Depois da Exibição da tela de Checkout (quando a venda é finalizada)** - Significa que há algum impedimento de cadastro que limita a venda. Coisas como afiliação bloqueada, erro nos dados salvos no cadastro ou até problemas no próprio checkout.</li>
+</ul>
+
 <h2 id="integração-via-botão">Integração via Botão</h2>
 
 <p>Integração via Botão é um método de compra usada sempre que não houver um “carrinho de compras” em sua loja ou quando se deseja associar uma compra rápida direta a um produto, como uma promoção numa homepage pulando a etapa do carrinho.</p>
@@ -749,6 +831,90 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 </ul>
 
 <p>Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter à compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do Backoffice, e valerão os dados do cadastro.</p>
+
+<h2 id="modo-de-teste-do-checkout-cielo">Modo de teste do Checkout Cielo</h2>
+
+<p>O modo de teste CHECKOUT CIELO é método de fazer testes de integração do CHECKOUT CIELO com o seu site, sem o consumo de créditos. O modo de Teste CHECKOUT CIELO permite realizar transações, testando a integração utilizando diferentes meios de pagamento simulados.</p>
+
+<h3 id="ativação-do-modo-de-teste.">Ativação do Modo de Teste.</h3>
+
+<p>O modo de teste pode ser ativado na aba Configurações:</p>
+
+<p><img alt="Modo de teste" src="images/checkout-cielo-modo-teste.png" /></p>
+
+<p>Nessa área há um caixa de seleção, que quando marcada, habilitará o modo de teste do CHECKOUT CIELO. O modo somente se iniciará quando a seleção for salva.</p>
+
+<p><img alt="Ativação Modo de teste" src="images/checkout-cielo-modo-teste-ativacao.png" /></p>
+
+<p>Quando a opção for salva, uma tarja vermelha será exibida na parte superior da tela. Ela será exibida em todas as telas do Backoffice e na tela de checkout do CHECKOUT CIELO.</p>
+
+<p>Essa tarja indica que a sua loja CHECKOUT CIELO está agora operando em ambiente de teste, ou seja, toda a transação realizada nesse modo será considerada como teste.</p>
+
+<p><img alt="Modo de teste ativado" src="images/checkout-cielo-modo-teste-ativado.png" /></p>
+
+<h3 id="como-transacionar-no-modo-de-teste.">Como transacionar no Modo de teste.</h3>
+
+<p>A realização de transações no modo de teste ocorre de forma normal. As informações da transação são enviadas via POST, utilizando os parâmetros como descrito no tópico <a href="#integração-carrinho-de-compras">Integração com carrinho</a>, entretanto, os meios de pagamentos a serem usados serão meios simulados.</p>
+
+<p>Para realizar transações de teste com diferentes meios de pagamento, siga as seguintes regras:</p>
+
+<p><strong>a - Transações com Cartão de crédito:</strong></p>
+
+<p>Para testar cartões de crédito é necessário que dois dados importantes sejam definidos, o status da autorização do cartão e o retorno da analise de fraude.</p>
+
+<p><strong>Status da Autorização do Cartão de Crédito</strong></p>
+
+<table><thead>
+<tr>
+<th>Digito final do Cartão</th>
+<th>Status retornado</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>0, 1, 2, 3 ou 4</td>
+<td>Autorizado</td>
+</tr>
+<tr>
+<td>5, 6, 7, 8 ou 9</td>
+<td>Não autorizado</td>
+</tr>
+</tbody></table>
+
+<ul>
+<li><strong>Exemplo:</strong> Transação autorizada, Alto Risco;</li>
+<li><strong>Numero do Cartão de credito:</strong> 5404434242930107</li>
+<li><strong>Nome do Cliente:</strong> Maria Alto</li>
+</ul>
+
+<p><strong>b - Boleto Bancario</strong></p>
+
+<p>Basta realizar o processo de compra normalmente sem nenhuma alteração no procedimento. O boleto gerado no modo de teste sempre será um boleto simulado.</p>
+
+<p><strong>c - Debito online</strong></p>
+
+<p>É necessário informa o status da transação de Debito online para que seja retornado o status desejado. Esse processo ocorre como no antifraude do cartão de crédito descrito acima, com a alteração do nome do comprador.</p>
+
+<p><strong>Status do Débito</strong>
+|Sobre nome do cliente|Status|
+|Pago|Pago|
+|Qualquer nome.|Não autorizado|</p>
+
+<ul>
+<li><strong>Exemplo:</strong> Status não Autorizado.</li>
+<li><strong>Nome do Cliente:</strong> Maria Pereira</li>
+</ul>
+
+<p><strong>d - Transações de teste</strong></p>
+
+<p>Todas as transações realizadas no modo de teste serão exibidas como transações normais na aba Pedidos do CHECKOUT CIELO, entretanto, elas serão marcadas como transações de teste e não serão contabilizadas em conjunto com as transações realizadas fora do ambiente de teste.</p>
+
+<p><img alt="Transações de teste" src="images/checkout-cielo-modo-teste-transacoes-de-teste.png" /></p>
+
+<p>Essas transações terão o simbolo de teste as diferenciando de suas outras transações. Elas podem ser capturadas ou canceladas utilizando os mesmos procedimentos das transações reais.</p>
+
+<p><img alt="Transações de teste" src="images/checkout-cielo-modo-teste-transacoes-de-teste-cancelamento.png" /></p>
+
+<aside class="notice">É muito importante que ao liberar sua loja para a realização de vendas para seus clientes que ela não esteja em modo de teste. Transações realizadas nesse ambiente poderão ser finalizadas normalmente, mas não serão descontadas do cartão do cliente e não poderão ser “transferidas” para o ambiente de venda padrão.</aside>
 
 <h1 id="parâmetros-de-integração">Parâmetros de integração</h1>
 
@@ -1254,7 +1420,7 @@ Ex.: 10 = 10%.</p>
 
 <h2 id="cartão-de-crédito">Cartão de Crédito</h2>
 
-<p>O Checkout Cielo trabalha com diferentes bandeiras de crédito, como Visa, Mastercard, Diners, Amex e Elo.</p>
+<p>O Checkout Cielo aceita as principais bandeiras de crédito do Brasil e do mundo. São elas: Visa, MasterCard, American Express (Amex), Elo, Diners, Discover, JCB e Aura.</p>
 
 <p><img alt="Cartões de crédito" src="images/checkout-cielo-cartao-credito.png" /></p>
 
@@ -1262,9 +1428,17 @@ Ex.: 10 = 10%.</p>
 
 <p>Pedidos por meio de cartão de crédito serão incluídos no Backoffice como <strong>“AUTORIZADO”</strong> ou <strong>“NÃO AUTORIZADO”</strong>, dependendo do resultado da autorização na Cielo. Caso haja algum problema no processamento deste pedido (consumidor fechou a tela, por exemplo), ele constará como <strong>“NÃO FINALIZADO”</strong>.</p>
 
+<h3 id="análise-de-fraude">Análise de Fraude</h3>
+
+<p>Pedidos <strong>“AUTORIZADOS”</strong> serão enviados online, ou seja, no ato da venda, para análise da ferramenta de antifraude, quando  este desenvolvimento estiver devidamente padronizado na integração. O resultado desta análise será traduzido no campo <strong>“Indicação AF”</strong> no Relatório de Pedido, para cada pedido.</p>
+
+<p>Esta análise indicará um <strong>“BAIXO RISCO”</strong> ou “ALTO RISCO” para a venda em questão. Esta sugestão é o que deve guiar a decisão de se confirmar  ou cancelar a venda. A analise será apresentada no “Detalhes do Pedido”, como abaixo:</p>
+
+<p>![Análise de risco(/images/checkout-cielo-analise-risco.png)</p>
+
 <h2 id="boleto">Boleto</h2>
 
-<p>Todo boleto gerado (emitido) aparece com o status de “PENDENTE” no Relatório de Pedidos. Sua troca de status vai depender de ações manuais do proprio lojista.</p>
+<p>Todo boleto gerado (emitido) aparece com o status de “PENDENTE” no Relatório de Pedidos. Sua troca de status vai depender de ações manuais do proprio lojista. Para isso, acesse o Backoffice do Checkout Cielo (incluir link do manual) na seção Pedidos</p>
 
 <h3 id="possiveis-status-do-boleto">Possiveis Status do Boleto</h3>
 
@@ -1320,66 +1494,68 @@ Ex.: 10 = 10%.</p>
 <li><strong>Não Finalizado</strong> - Apresentado para o Lojista caso o comprador tenha algum problema para finalizar o pagamento do meio Débito, seja fechando a janela do banco ou simplesmente nem chegando à tela do banco.</li>
 </ul>
 
+<h2 id="diferença-entre-estorno-e-cancelamento">Diferença entre estorno e cancelamento</h2>
+
+<ul>
+<li><strong>Cancelamento:</strong> é feito no mesmo dia da captura, devolvendo o limite ao cartão do comprador em até 72h conforme regras do banco emissor do cartão. Não é apresentado na fatura do comprador;</li>
+<li><strong>Estorno:</strong> a partir do dia seguinte da captura, o valor é “devolvido” na fatura do comprador em até 300 dias. É apresentado na fatura do comprador.</li>
+</ul>
+
 <h2 id="captura/cancelamento-automático">Captura/Cancelamento Automático</h2>
+
+<aside class="notice">Veja a diferença entre cancelamento e estorno em <a href="#diferença-entre-estorno-e-cancelamento">Diferença entre estorno e cancelamento</a></aside>
 
 <h3 id="captura-automática">Captura automática</h3>
 
-<p>As vendas <strong>“AUTORIZADAS”</strong>, e com <strong>“BAIXO RISCO”</strong> no antifraude serão <strong>CAPTURADAS</strong> automaticamente pelo sistema.</p>
+<p>As vendas <strong>“AUTORIZADAS”</strong>, e com <strong>“BAIXO RISCO”</strong> na ferramenta de  antifraude poderão ser <strong>CAPTURADAS</strong> automaticamente pelo sistema. Para isso é preciso configurar no o Backoffice do Checkout Cielo (incluir link)
+Após essa configuração, o status apresentado será <strong>“PAGO”</strong>. Esta venda será então confirmada (capturada) na Cielo.</p>
 
-<p>O status apresentado será <strong>“PAGO”</strong>. Esta venda será então confirmada (capturada) na Cielo.</p>
+<p><img alt="Cancelamento e captura automático" src="images/checkout-cielo-cancelamento-captura-automatico.png" /></p>
 
 <h3 id="cancelamento-automático">Cancelamento Automático</h3>
 
-<p>As vendas <strong>“AUTORIZADAS”</strong>, e com <strong>“ALTO RISCO”</strong> no antifraude serão <strong>CANCELADAS</strong> automaticamente pelo sistema.</p>
+<p>As vendas “AUTORIZADAS”, e com “ALTO RISCO”  na ferramenta de  antifraude poderão ser CANCELADAS automaticamente pelo sistema. Para isso é preciso configurar no o Backoffice do Checkout Cielo (incluir link)
+Após essa configuração, o status apresentado será “CANCELADO”. Esta venda será então cancelada (desfeita) na Cielo.</p>
 
-<p>O status apresentado será <strong>“PAGO”</strong>. Esta venda será então cancelada (desfeita) na Cielo.</p>
+<p><img alt="Cancelamento e captura automático" src="images/checkout-cielo-cancelamento-captura-automatico.png" /></p>
 
-<aside class="warning">Atenção! Você tem a opção de escolher a melhor integração para o seu negócio, a captura/cancelamento manual ou automático é feito diretamente pelo seu backoffice.</aside>
+<aside class="warning">Atenção! Você tem a opção de escolher a melhor integração para o seu negócio, a captura/cancelamento manual ou automático é feito diretamente pelo seu Backoffice.</aside>
 
 <p><img alt="Cancelamento e captura automáticos" src="images/checkout-cielo-anti-fraude-cancelamento-captura.png" /></p>
 
 <h2 id="captura/cancelamento-manual">Captura/Cancelamento manual</h2>
 
-<p>Concluindo uma Venda (captura ou cancelamento)</p>
+<aside class="notice">Veja a diferença entre cancelamento e estorno em <a href="#diferença-entre-estorno-e-cancelamento">Diferença entre estorno e cancelamento</a></aside>
 
-<p>As vendas <strong>“AUTORIZADAS”</strong> aguardam uma decisão de confirmação ou cancelamento. E esta decisão deve vir em conformidade com a análise de fraude.</p>
+<p>As vendas <strong>“AUTORIZADAS”</strong> aguardam uma decisão de confirmação ou cancelamento. E esta decisão deve vir em conformidade com a análise de fraude, caso esta funcionalidade esteja devidamente parametrizada na integração.</p>
 
-<p>A confirmação da venda deve ser feita pelo botão <strong>CAPTURAR</strong> no Detalhe do Pedido, e seu status mudará para <strong>“PAGO”</strong>. Esta venda será então confirmada (capturada) na Cielo.</p>
+<p>A confirmação da venda deve ser feita pelo botão <strong>CAPTURAR</strong>, na aba  <strong>“Pedidos”</strong>, no Backoffice do Checkout Cielo. Após a confirmação, o status mudará para <strong>“PAGO”</strong>. Esta venda será então confirmada (capturada) na Cielo.</p>
 
-<p>E o cancelamento deve ser feito pelo botão <strong>CANCELAR</strong> no Detalhe do Pedido, e seu status mudará para <strong>“CANCELADO”</strong>. Esta venda será então cancelada (desfeita) na Cielo.</p>
+<p>Já o  cancelamento deve ser feito pelo botão <strong>CANCELAR</strong> na mesma seção No Backoffice do Checkout Cielo. Após o cancelamento, o status mudará para <strong>“CANCELADO”</strong>. Esta venda será então cancelada (desfeita) na Cielo.</p>
 
 <aside class="warning">Atenção! Você tem até 5 dias pra confirmar a venda! Caso isso não seja feito ela não será mais válida na Cielo, e o limite reservado para sua loja/venda será liberado. Este é um procedimento padrão para todas as lojas.</aside>
+
+<aside class="warning">Quando o prazo de confirmação da venda autorizada expira, os pedidos passarão automaticamente para o status “EXPIRADO”. Isso acontecerá no sexto dia após a data de autorização (data da venda)</aside>
 
 <h2 id="estorno-de-venda">Estorno de Venda</h2>
 
 <p>Caso a venda já tenha sido confirmada (status PAGO) ela pode ser ainda, futuramente, estornada. Para isso, basta clicar no botão no Detalhe do Pedido.</p>
 
-<h3 id="diferença-entre-cancelado-e-estornado">Diferença entre Cancelado e Estornado</h3>
-
-<ul>
-<li><strong>Cancelamento:</strong> é feito no mesmo dia da captura, devolvendo o limite ao cartão do comprador em até 72h conforme regras do banco emissor do cartão. Não é apresentado na fatura do comprador;</li>
-<li><strong>Estorno:</strong> a partir do dia seguinte da captura, o valor é “devolvido” na fatura do comprador em até 120 dias. É apresentado na fatura do comprador.</li>
-</ul>
-
 <h3 id="vendas-de-cartões-de-crédito-expiradas">Vendas de Cartões de Crédito Expiradas</h3>
 
-<p>Conforme o prazo de confirmação da venda autorizada se acabar, seu pedido passará automaticamente para o status “EXPIRADO”. Isso acontecerá no sexto dia após a data de autorização (data do venda).</p>
+<p>Quando o prazo de confirmação da venda autorizada expira, os pedidos passarão automaticamente para o status “EXPIRADO”. Isso acontecerá no sexto dia após a data de autorização (data da venda)</p>
 
 <h2 id="chargeback">Chargeback</h2>
 
-<p>Seu cliente pode por algum motivo cancelar a compra diretamente com o banco emissor de seu cartão de crédito. Caso isso ocorra você receberá da Cielo um aviso de Chargeback de “Não Reconhecimento de compra”. Ou caso tenha havido uma compra com cartão fraudado, você recebera um aviso de Chargeback por “Fraude”.</p>
-
-<p>Essa comunicação não é feita via o backoffice do Checkout Cielo, mas sim pelo extrato da própria Cielo. Após esse recebimento, você pode entrar no Backoffice e sinalizar o pedido como tendo recebido um Chargeback, pra seu melhor controle. Basta entrar no Detalhe do Pedido e clicar no botão “ChargeBack”, e seu status passará a ser <strong>“CHARGEBACK”</strong>.</p>
+<p>O consumidor (comprador) pode por algum motivo cancelar a compra diretamente com o banco emissor do cartão de crédito. Caso isso ocorra  o lojista receberá da Cielo um aviso de Chargeback de “Não Reconhecimento de compra” ou caso tenha havido uma compra com cartão fraudado, você recebera um aviso de Chargeback por “Fraude”.</p>
 
 <p><img alt="Chargeback" src="images/checkout-cielo-chargeback.png" /></p>
 
-<h3 id="análise-de-fraude">Análise de Fraude</h3>
+<p>Essa comunicação não é feita via o Backoffice do Checkout Cielo, mas sim pelo extrato de venda da Cielo, destacada como um ajuste financeiro. O extrato de vendas está disponivel no site da Cielo <a href="https://www.cielo.com.br/minha-conta">www.cielo.com.br na aba “Acessar Minha conta”</a>.</p>
 
-<p>Pedidos <strong>“AUTORIZADOS”</strong> serão enviados online, ainda no ato da venda, para ferramenta de Antifraude da Cybersource para análise. O resultado desta análise será traduzido no campo <strong>“Indicação AF”</strong> no Relatório de Pedido, para cada pedido.</p>
+<p><img alt="Acessar minha conta" src="images/acessar-minha-conta.png" /></p>
 
-<p>Esta análise indicará um <strong>“BAIXO RISCO”</strong> ou <strong>“ALTO RISCO”</strong> para a venda em questão. Esta sugestão é o que deve guiar a decisão de se confirmar a venda ou não. A analise será apresentada no “Detalhes do Pedido”, como abaixo:</p>
-
-<p>[!Análise de risco(/images/checkout-cielo-analise-risco.png)</p>
+<p>Após esse recebimento, no próprio site da Cielo  é possivel acessar o Backoffice e sinalizar o pedido como tendo recebido um Chargeback, pra seu melhor controle. Basta entrar no Detalhe do Pedido e clicar no botão “ChargeBack”, e seu status passará a ser “CHARGEBACK”.</p>
 
       </div>
       <div class="dark-box">
