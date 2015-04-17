@@ -85,7 +85,7 @@ Após a leitura deste manual, caso ainda persistam dúvidas (técnicas ou não),
 
 # Integração
 
-## Via Carrinho de Compras
+## Carrinho de Compras
 
 Este  tipo  de  integração deve  ser  usada sempre  que  houver  um  “carrinho  de  compras”  a  ser  enviado,  ou  seja,  no  caso  do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar a um carrinho e depois então finalizar a venda. Se você não possui um carrinho de compras implementado, veja a seção de [integração via botão](#integração-via-botão) Checkout Cielo.
 
@@ -665,7 +665,7 @@ Há dois tipos de erro que poderão ocorrer durante o processo de integração c
 * **Antes da exibição da tela de Checkout** - Significa que houve algum dado erra do no envio da transação. Dados obrigatórios podem estar faltando ou no formato invalido. Aqui o lojista sempre vai receber um e-mail informando o que deu errado;
 * **Depois da Exibição da tela de Checkout (quando a venda é finalizada)** - Significa que há algum impedimento de cadastro que limita a venda. Coisas como afiliação bloqueada, erro nos dados salvos no cadastro ou até problemas no próprio checkout.
 
-## Via Botão
+## Botão
 
 Integração via Botão é um método de compra usada sempre que não houver um “carrinho de compras” em sua loja ou quando se deseja associar uma compra rápida direta a um produto, como uma promoção numa homepage pulando a etapa do carrinho.
 
