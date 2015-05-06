@@ -19,22 +19,19 @@ search: true
 
 # Manual Checkout Cielo
 
-O objetivo desta documentação é orientar o desenvolvedor sobre como integrar com a API Checkout Cielo, solução de integração simples  no qual o consumidor é direcionado para uma página de pagamento online segura da Cielo, proporcionando um alto nível de confiança, dentro das mais rígidas normas de segurança (PCI).
-Nesta documentação são descritas todas as funcionalidades desta integração, os métodos a serem utilizados, listas com as informações a serem enviadas e recebidas e principalmente códigos de exemplos para facilitar o seu desenvolvimento. Em linhas gerais, o Checkout Cielo é uma solução de checkout projetada para aumentar a conversão, simplificar o processo de compra, reduzir fraudes e custos operacionais.
+O objetivo desta documentação é orientar o desenvolvedor sobre o método de integração da API Checkout Cielo, solução simplificada na qual o consumidor é direcionado para uma página de pagamento online segura da Cielo, proporcionando um alto nível de confiança, dentro das mais rígidas normas de segurança (PCI). Em linhas gerais, o Checkout Cielo é uma solução de pagamento projetada para aumentar a conversão das vendas, simplificar o processo de compra, reduzir fraudes e custos operacionais.
+Nesta documentação estão descritas todas as funcionalidades desta integração, os parâmetros técnicos e principalmente os códigos de exemplos para facilitar o seu desenvolvimento. 
 
 O Checkout Cielo utiliza uma tecnologia REST que deve ser usada quando houver um *“carrinho de compras”* a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a compra. Há também opção de integração via botão usada sempre que não houver um *“carrinho de compras”* em sua loja ou quando se deseja associar uma compra rápida direta a um produto.
 
 # Visão Geral
 
-Neste manual será apresentado uma visão geral do Checkout Cielo e o mecanismo tecnológico da integração com carrinho ou com botão. Para todo pedido de compra, a meta é efetivá-la em uma venda. Uma venda com cartão pode ser caracterizado em uma transação autorizada e capturada.
-
-Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento dos processos funcionais que farão parte do cotidiano da loja, como o acompanhamento das movimentações financeiras, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  extrato de cobrança, entre outros. Veja o material complementar sobre o [BackOffice Checkout Cielo](http://developercielo.github.io/Checkout-Backoffice/). Lá você encontra orientações importantes sobre como administrar o e-Commerce aproveitando ao máximo as funcionalidades  do Checkout Cielo.
+Neste manual será apresentada uma visão geral do Checkout Cielo e o mecanismo tecnológico da integração com carrinho ou com botão. Para todo pedido de compra, a meta é revertê-lo em uma venda. Uma venda com cartão pode ser caracterizada por uma transação autorizada e capturada.
 
 <aside class="warning">Uma transação autorizada somente gera o crédito para o lojista se ela for capturada (ou confirmada).</aside>
 
-## Características da solução
+Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento dos processos funcionais que farão parte do cotidiano da loja, como o acompanhamento das movimentações financeiras, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  extrato de cobrança, entre outros. Veja o material complementar sobre o [BackOffice Checkout Cielo](http://developercielo.github.io/Checkout-Backoffice/). 
 
-O Checkout Cielo é uma solução de checkout projetada para aumentar a conversão, simplificar o processo de compra, reduzir fraudes e custos operacionais.
 
 ## Considerações sobre a integração
 
