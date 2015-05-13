@@ -1151,8 +1151,6 @@ Após esse recebimento, no próprio site da Cielo  é possivel acessar o [Backof
 
 ## Frete
 
-FRETE
-
 O Checkout Cielo suporta diferentes tipos de frete, que podem ser utilizados de maneira diferenciada de acordo com as opções oferecidas em sua loja. As opções disponíveis são:
 
 * Correios
