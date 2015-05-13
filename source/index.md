@@ -1040,6 +1040,25 @@ Esta análise indicará um **“BAIXO RISCO”** ou “ALTO RISCO” para a 
 
 ![Análise de risco](/images/checkout-cielo-analise-risco.png)
 
+## Cartão de débito
+
+O Checkout Cielo aceita as principais bandeiras de cartão de débito do mercado: Visa e MasterCard. As transações de cartão de débito possuem como participantes os bancos emissores, que por sua vez usam dos mesmos recursos para transações online (token, cartão de senhas e etc) para o processo de autenticação. Consulte a relação de emissores participantes no Suporte Cielo e-Commerce.
+
+* **E-mail**: [cieloecommerce@cielo.com.br](mailto:cieloecommerce@cielo.com.br)
+* **Telefones**:
+    * **Capitais**: (sem DDD) 4002.9700
+    * **Demais Localidades**: 0800.570.1700
+    * **Do exterior**: +55 (11) 2860.1348
+
+A autenticação da transação garantirá uma segurança extra ao lojista contra contestações dos consumidores (chargeback). O produto débito obrigatoriamente exige uma transação autenticada, caso contrário, a transação não é autorizada. A autenticação é obrigatória para transações de débito e opcional para o crédito.
+
+### Passo a passo da transação de cartão de débito:
+
+1. Cliente acessa o internet banking
+2. Digita a senha do cartão
+3. Banco confirma a senha
+4. Transação realizada
+
 ## Boleto
 
 Todo boleto gerado (emitido) aparece com o status de “PENDENTE” no Relatório de Pedidos. Sua troca de status vai depender de ações manuais do proprio lojista. Para isso, acesse o [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/) (incluir link do manual) na seção Pedidos
