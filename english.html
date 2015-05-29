@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <link href="https://www.cielo.com.br/wps/contenthandler/!ut/p/digest!3SvhW8ACOLyj_90YHxPhKQ/war/cielo-tema/themes/estatico/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <title>Manual Checkout Cielo</title>
+    <title>Cielo Checkout Guide</title>
 
     <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
@@ -20,7 +20,7 @@
       </script>
   </head>
 
-  <body class="index">
+  <body class="english">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -58,154 +58,151 @@
       <div class="content">
         <h1 id="manual-checkout-cielo">Manual Checkout Cielo</h1>
 
-<p>O objetivo desta documentação é orientar o desenvolvedor sobre o método de integração da API Checkout Cielo, solução simplificada na qual o consumidor é direcionado para uma página de pagamento online segura da Cielo, proporcionando um alto nível de confiança, dentro das mais rígidas normas de segurança (PCI). Em linhas gerais, o Checkout Cielo é uma solução de pagamento projetada para aumentar a conversão das vendas, simplificar o processo de compra, reduzir fraudes e custos operacionais.
-Nesta documentação estão descritas todas as funcionalidades desta integração, os parâmetros técnicos e principalmente os códigos de exemplos para facilitar o seu desenvolvimento. </p>
+<p>The goal of this documentation is to orientate the developer about the integration method of Cielo Checkout API, a simplified solution where the customer is redirected to an online payment page secured by Cielo, providing a high level of security, attending the more strict safety regulations (PCI). In general, Cielo Checkout is a payment solution projected to increase conversion rates, make easier the purchase process, reduce frauds and operational costs. At this documentation, we described all functionalities of the integration, technical parameter and specially the examples of codes to facilitate your development.</p>
 
-<p>O Checkout Cielo utiliza uma tecnologia REST que deve ser usada quando houver um <em>“carrinho de compras”</em> a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a compra. Há também opção de integração via botão usada sempre que não houver um <em>“carrinho de compras”</em> em sua loja ou quando se deseja associar uma compra rápida direta a um produto.</p>
+<p>Cielo Checkout uses a REST technology that should be used when a “shopping cart” must to be sent, in other words, the customer can browse on website, choose one or more products to add on shopping cart and then finish the purchase. There is also an option of integration by button that is always used if you have not a “shopping cart” at your store or when you want to associate a quick purchase directly to a product.</p>
 
-<h1 id="visão-geral">Visão Geral</h1>
+<h1 id="overview">Overview</h1>
 
-<p>Neste manual será apresentada uma visão geral do Checkout Cielo e o mecanismo tecnológico da integração com carrinho ou com botão. Para todo pedido de compra, a meta é revertê-lo em uma venda. Uma venda com cartão pode ser caracterizada por uma transação autorizada e capturada.</p>
+<p>In this guide will be presented an overview of Cielo Checkout and the technical mechanism of integration with shopping cart or button. For every purchase order, the target is convert it in a sale. A sale with card can be characterized by an authorized and captured transaction.</p>
 
-<aside class="warning">Uma transação autorizada somente gera o crédito para o lojista se ela for capturada (ou confirmada).</aside>
+<p>After the conclusion of the integration stage with Cielo, it’s essential that the retailer or online store manager has knowledge of functional process that will be part of the daily routine of store, like the follow-up of the financial transactions, status of each sale, actions (capture and cancellation) related to sales, charge statement, and so on. See the complement material about <a href="http://developercielo.github.io/Checkout-Backoffice/">BackOffice Checkout Cielo</a>.</p>
 
-<p>Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento dos processos funcionais que farão parte do cotidiano da loja, como o acompanhamento das movimentações financeiras, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  extrato de cobrança, entre outros. Veja o material complementar sobre o <a href="http://developercielo.github.io/Checkout-Backoffice/">BackOffice Checkout Cielo</a>. </p>
-
-<h2 id="considerações-sobre-a-integração">Considerações sobre a integração</h2>
+<h2 id="considerations-about-the-integration">Considerations about the integration</h2>
 
 <ul>
-<li>O cadastro da loja deve estar ativo junto à Cielo.</li>
-<li>Deve-se definir um timeout adequado nas requisições HTTP à Cielo; recomendamos 30 segundos.</li>
-<li>O certificado Root da entidade certificadora (CA) de nosso Web Service deve estar cadastrado na Truststore a ser utilizada. Como nossa certificadora é de ampla aceitação no mercado, é provável que ela já esteja registrada na Truststore do próprio sistema operacional. Veja a seção <a href="#certificado-extended-validation">Certificado Extended Validation</a> para mais informações.</li>
-<li>Os valores monetários são sempre tratados como valores inteiros, sem representação das casas decimais, sendo que os dois últimos dígitos são considerados como os centavos. Exemplo: R$ 1.286,87 é representado como 128687; R$ 1,00 é representado como 100.</li>
+<li>The store register must be activated at Cielo</li>
+<li>You must define an appropriate timeout on the HTTP requests to Cielo; we recommend 30 seconds.</li>
+<li>The Root certificate of certifying body (CA) of our Web Service must be registered at Truststore to be used. Because our certifying body has wider acceptance in the market, probably it’s already registered on Truststore at our own operational system. See the section <a href="#certificado-extended-validation">Certificated Extended Validation</a> for more information.</li>
+<li>The monetary value is always handled as intire values, without representation of decimals place, in such case the last two digits are considered as “centavos”. Example: R$ 1.286,87 is represented as 128687; R$ 1,00 is represented as 100.</li>
 </ul>
 
-<aside class="notice">Veja a seção <a href="#certificado-extended-validation">Certificado Extended Validation</a> para informações sobre os certificados Cielo</aside>
+<aside class="notice">See the section [Certificated Extended Validation](#certificado-extended-validation) for more information</aside>
 
-<h2 id="produtos-e-serviços">Produtos e serviços</h2>
+<h2 id="products-and-services">Products and services</h2>
 
-<p>A versão atual do Checkout Cielo possui suporte às seguintes bandeiras e produtos:</p>
+<p>The current version of Cielo Checkout has support to following card issuers and products:</p>
 
 <table><thead>
 <tr>
-<th>Bandeira</th>
-<th>Crédito à vista</th>
-<th>Crédito parcelado Loja</th>
-<th>Débito</th>
+<th>Card issuer</th>
+<th>Lump Sum</th>
+<th>Credit installment store</th>
+<th>Debit</th>
 <th>Voucher</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>Visa</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Não</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
 </tr>
 <tr>
 <td>Master Card</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Não</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
 </tr>
 <tr>
 <td>American Express</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Não</td>
-<td>Não</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
 </tr>
 <tr>
 <td>Elo</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Não</td>
-<td>Não</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
 </tr>
 <tr>
 <td>Diners Club</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Não</td>
-<td>Não</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
 </tr>
 <tr>
 <td>Discover</td>
-<td>Sim</td>
-<td>Não</td>
-<td>Não</td>
-<td>Não</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
 </tr>
 <tr>
 <td>JCB</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Não</td>
-<td>Não</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
 </tr>
 <tr>
 <td>Aura</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Não</td>
-<td>Não</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
 </tr>
 </tbody></table>
 
-<h2 id="histórico-de-versões">Histórico de versões</h2>
+<h2 id="historic-of-versions">Historic of versions</h2>
 
 <ul>
-<li><strong>Versão 1.3</strong> - 21/01/2015
+<li><strong>Version 1.3</strong> - 01/21/2015
 
 <ul>
-<li>Troca de nomes – Solução Integrada para Checkout Cielo</li>
+<li>Change of names – Solution integrated for Cielo Checkout</li>
 </ul></li>
-<li><strong>Versão 1.2</strong> - 09/01/2015
+<li><strong>Version 1.2</strong> - 01/09/2015
 
 <ul>
-<li>Inclusão dos seguintes parâmetros no Post de notificação: <code class="prettyprint">discount_amount</code>, <code class="prettyprint">shipping_address_state</code>, <code class="prettyprint">payment_boleto</code>, <code class="prettyprint">number</code>, <code class="prettyprint">tid</code>;</li>
-<li>Alteração do parâmetro numero do pedido no Post de Mudança de Status</li>
+<li>Inclusion of followers parameters at notification Post: <code class="prettyprint">discount_amount</code>, <code class="prettyprint">shipping_address_state</code>, <code class="prettyprint">payment_boleto</code>, <code class="prettyprint">number</code>, <code class="prettyprint">tid</code>;</li>
+<li>Alteration of parameter of order at Post of status change</li>
 </ul></li>
-<li><strong>Versão 1.1</strong> - 08/01/2015
+<li><strong>Version 1.1</strong> - 01/08/2015
 
 <ul>
-<li>Alinhamento dos fluxos de pagamento; inclusão de informações sobre os meios de pagamento; inclusão da tela de configurações do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a></li>
+<li>Alignment of payment flux; inclusion of information of payment methods; inclusion at setting screen at Cielo <a href="http://developercielo.github.io/Checkout-Backoffice/">Checkout Backoffice</a></li>
 </ul></li>
-<li><strong>Versão 1.0</strong> - 24/11/2014
+<li><strong>Version 1.0</strong> - 11/24/2014
 
 <ul>
-<li>Versão inicial</li>
+<li>Initial version</li>
 </ul></li>
 </ul>
 
-<h2 id="suporte-cielo">Suporte Cielo</h2>
+<h2 id="cielo-support">Cielo Support</h2>
 
-<p>Após a leitura deste manual, caso ainda persistam dúvidas (técnicas ou não), a Cielo disponibiliza o suporte técnico 24 horas por dia, 7 dias por semana em idiomas (Português e Inglês), nos seguintes contatos:</p>
-
-<ul>
-<li>+55 4002-9700 – <em>Capitais e Regiões Metropolitanas</em></li>
-<li>+55 0800-570-1700 – <em>Demais Localidades</em></li>
-<li>+55 11 2860-1348 – <em>Internacionais</em>
+<p>After reading this documentation, if you still have questions (technical or not), you can check Cielo technical support 24 hours per day, 7 days of week, in Portuguese and English, in the following contacts:</p>
 
 <ul>
-<li>Opção 1 – <em>Suporte técnico;</em></li>
-<li>Opção 2 – <em>Credenciamento E-commerce.</em></li>
+<li>+55 4002-9700 - <em>Capitals and Metropolitan regions</em></li>
+<li>+55 0800-570-1700 - <em>Others localities</em></li>
+<li>+55 11 2860-1348 - <em>International</em>
+
+<ul>
+<li>Option 1: <em>Technical support</em></li>
+<li>Option 2: <em>E-commerce credential</em></li>
 </ul></li>
 <li>Email: <a href="mailto:cieloecommerce@cielo.com.br">cieloecommerce@cielo.com.br</a></li>
 </ul>
 
-<h1 id="integração">Integração</h1>
+<h1 id="integration">Integration</h1>
 
-<h2 id="carrinho-de-compras">Carrinho de Compras</h2>
+<h2 id="shopping-cart">Shopping cart</h2>
 
-<p>Este  tipo  de  integração deve  ser  usada sempre  que  houver  um  “carrinho  de  compras”  a  ser  enviado,  ou  seja,  no  caso  do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar a um carrinho e depois então finalizar a venda. Se você não possui um carrinho de compras implementado, veja a seção de <a href="#integração-via-botão">integração via botão</a> Checkout Cielo.</p>
+<p>This kind of integration must be used always when there is “shopping cart” to be sent, in other words, in case of customer browses through the website and choose one or more products to add at shopping cart implemented, see the integration section via Cielo Checkout button.</p>
 
 <h3 id="endpoint">Endpoint</h3>
 
-<p>Endpoint é a URL para onde as requisições com os dados do carrinho serão enviadas. Todas as requisições deverão ser enviadas utilizando o método HTTP POST, para o endpoint <code class="prettyprint">https://cieloecommerce.cielo.com.br/api/public/v1/orders</code>.</p>
+<p>Endpoint is the URL to where the requests with data of shopping cart are sent. All the requests must be sent using the method HTTP POST, to endpoint <code class="prettyprint">https://cieloecommerce.cielo.com.br/api/public/v1/orders</code>.</p>
 
-<h3 id="autenticação-da-loja">Autenticação da loja</h3>
+<h3 id="authentication-of-store">Authentication of store</h3>
 <pre><code class="highlight shell">-H <span class="s2">"MerchantId: 00000000-0000-0000-0000-000000000000"</span> <span class="se">\</span>
 </code></pre>
 <pre><code class="highlight php"><span class="cp">&lt;?php</span>
@@ -220,15 +217,11 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 <pre><code class="highlight csharp"><span class="n">request</span><span class="p">.</span><span class="n">Headers</span><span class="p">[</span><span class="s">"MerchantId"</span><span class="p">]</span> <span class="p">=</span> <span class="s">"00000000-0000-0000-0000-000000000000"</span><span class="p">;</span>
 </code></pre>
 
-<p>Por se tratar de transações, todas as requisições enviadas para a Cielo deverão ser autenticadas pela loja. A autenticação consiste no envio do Merchant Id, que é o identificador único da loja fornecido pela Cielo após a afiliação da loja. A autenticação da loja deverá ser feita através do envio do campo de cabeçalho HTTP <code class="prettyprint">MerchandId</code>, como ilustrado abaixo e ao lado:</p>
+<p>In this case, all the requests sent for Cielo must be authenticated for the store. The authentication consists at sending the Merchant Id, that is unique identifier of store provided for Cielo after the affiliation of store. The authentication of store must be done through the sending of field of header HTTP MerchandID, as illustrated below and next:</p>
 
 <p><code class="prettyprint">MerchantId: 00000000-0000-0000-0000-000000000000</code></p>
 
-<aside class="notice">
-Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu MerchantId.
-</aside>
-
-<h3 id="requisição">Requisição</h3>
+<h3 id="request">Request</h3>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"OrderNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12344"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"SoftDescriptor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nome que aparecerá na fatura"</span><span class="p">,</span><span class="w">
@@ -699,122 +692,122 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 
 <table><thead>
 <tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>MerchantId</td>
 <td>Guid</td>
-<td>Sim</td>
+<td>Yes</td>
 <td>36</td>
-<td>Identificador único da loja. <strong>Formato:</strong> 00000000-0000-0000-0000-000000000000</td>
+<td>Unique identifier of store. Format: 00000000-0000-0000-0000-000000000000</td>
 </tr>
 <tr>
 <td>Content-type</td>
 <td>Alphanumeric</td>
-<td>Sim</td>
+<td>Yes</td>
 <td>n/a</td>
-<td>Tipo do conteúdo da mensagem a ser enviada. <strong>Utilizar:</strong> &ldquo;application/json&rdquo;</td>
+<td>Type of message content sent. Use: “application/json”</td>
 </tr>
 </tbody></table>
 
-<h4 id="objeto-raiz-da-requisição">Objeto raiz da requisição</h4>
+<h4 id="object-request-root">Object request root</h4>
 
 <table><thead>
 <tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>OrderNumber</td>
 <td>Alphanumeric</td>
-<td>Opcional</td>
+<td>Optional</td>
 <td>0..64</td>
-<td>Número do pedido da loja.</td>
+<td>Order number of store.</td>
 </tr>
 <tr>
 <td>SoftDescriptor</td>
 <td>Alphanumeric</td>
-<td>Opcional</td>
+<td>Optional</td>
 <td>0..13</td>
-<td>Texto para ser exibido na fatura do portador, após o nome do estabelecimento comercial.</td>
+<td>Text to be displayed at holder invoice, after the commercial establishment name.</td>
 </tr>
 <tr>
 <td>Cart</td>
-<td><a href="#cart">Cart</a></td>
+<td>Cart</td>
 <td>Sim</td>
 <td>n/a</td>
-<td>Informações sobre o carrinho de compras.</td>
+<td>Information about the cart shopping.</td>
 </tr>
 <tr>
 <td>Shipping</td>
-<td><a href="#shipping">Shipping</a></td>
+<td>Shipping</td>
 <td>Sim</td>
 <td>n/a</td>
-<td>Informações sobre a entrega do pedido.&ldquo;</td>
+<td>Information about the order delivery.</td>
 </tr>
 <tr>
 <td>Payment</td>
-<td><a href="#payment">Payment</a></td>
+<td>Payment</td>
 <td>Conditional</td>
 <td>n/a</td>
-<td>Informações sobre o pagamento do pedido.</td>
+<td>Information about the order payment.</td>
 </tr>
 <tr>
 <td>Customer</td>
-<td><a href="#customer">Customer</a></td>
+<td>Customer</td>
 <td>Condicional</td>
 <td>n/a</td>
-<td>Informações sobre dados pessoais do comprador.</td>
+<td>Information about the personal data of buyer.</td>
 </tr>
 <tr>
 <td>Options</td>
-<td><a href="#options">Options</a></td>
+<td>Options</td>
 <td>Conditional</td>
 <td>n/a</td>
-<td>Informações sobre opções configuráveis do pedido.</td>
+<td>Information about the configurable options of order.</td>
 </tr>
 </tbody></table>
 
-<h3 id="resposta">Resposta</h3>
+<h3 id="response">Response</h3>
 
-<h3 id="em-caso-de-sucesso">Em caso de sucesso</h3>
+<h3 id="in-case-of-success">In case of success</h3>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"Settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"CheckoutUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://cieloecommerce.cielo.com.br/transacional/order/index?id=123"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"Profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CheckoutCielo"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"Version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> 
+        </span><span class="s2">"Version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
 <table><thead>
 <tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>Settings</td>
-<td><a href="#settings">Settings</a></td>
-<td>Sim</td>
+<td>Settings</td>
+<td>Yes</td>
 <td>n/a</td>
-<td>Informações da resposta sobre a criação do pedido.</td>
+<td>Information about the order creation.</td>
 </tr>
 </tbody></table>
 
-<h3 id="em-caso-de-erro">Em caso de erro</h3>
+<h3 id="in-case-of-error">In case of error</h3>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"message"</span><span class="p">:</span><span class="s2">"An error has occurred."</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -822,268 +815,273 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 
 <table><thead>
 <tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>Message</td>
 <td>String</td>
-<td>Sim</td>
+<td>Yes</td>
 <td>1..254</td>
-<td>Mensagem descritiva do erro</td>
+<td>Message descriptive of error</td>
 </tr>
 </tbody></table>
 
-<h3 id="erros-de-integração">Erros de integração</h3>
+<h3 id="error-of-integration">Error of integration</h3>
 
-<p>Há dois tipos de erro que poderão ocorrer durante o processo de integração com o Checkout Cielo. São eles:</p>
+<p>There are two types of error that can happen during the integration process with Cielo Checkout. Here they are:</p>
 
 <ul>
-<li><strong>Antes da exibição da tela de Checkout</strong> - Significa que houve algum dado erra do no envio da transação. Dados obrigatórios podem estar faltando ou no formato invalido. Aqui o lojista sempre vai receber um e-mail informando o que deu errado;</li>
-<li><strong>Depois da Exibição da tela de Checkout (quando a venda é finalizada)</strong> - Significa que há algum impedimento de cadastro que limita a venda. Coisas como afiliação bloqueada, erro nos dados salvos no cadastro ou até problemas no próprio checkout.</li>
+<li><strong>Before the exhibition in Checkout screen</strong>: This means that there is a mistake in data that has been sent in the transaction. Mandatory data probably has been forgotten or they probably are in an invalid format;</li>
+<li><strong>After the exhibition in Checkout screen (when the sale is finished)</strong>: This means that there is an impediment of registration that limit the sale. Things like blocked affiliation, error in data saved at registration or problems in own checkout.</li>
 </ul>
 
-<h2 id="botão">Botão</h2>
+<h2 id="button">Button</h2>
 
-<p>Integração via Botão é um método de compra usada sempre que não houver um “carrinho de compras” em sua loja ou quando se deseja associar uma compra rápida direta a um produto, como uma promoção numa homepage pulando a etapa do carrinho.</p>
+<p>Integration via Button is a method of purchase used always that there isn’t a “shopping cart” in your store or when you want to associate a quick direct purchase to a product, as a promotion in a homepage jumping the cart stage.</p>
 
-<p>A integração via botão também pode ser usada para enviar um e-mail marketing, ou uma cobrança via e-mail, ou seja, adicionando o botão (HTML) referente ao produto/serviço a ser comprado/pago. Ou sempre que desejar disponibilizar uma venda rápida.</p>
+<p>The integration via button also can be used to send an e-mail marketing or a charge via e-mail, in other words, adding a button (HTTP) referent to a product/service to be bought/paid. Or always that you want to make available a quick sale.</p>
 
-<p>Para utilizar este recurso, é necessário cadastrar o produto que deseja vender, suas informações, e depois simplesmente copiar o código fonte gerado para este botão. A inclusão dos produtos é feita dentro do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, no menu de Produtos/Cadastrar Produto.</p>
-
-<p>A inclusão dos produtos é feita dentro do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, no menu de Produtos/Cadastrar Produto.</p>
+<p>To use this feature, it’s necessary register the product that you want to sell, your information, and then just copy the source code created for this button. The inclusion of products is done inside the <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, at menu of Products/Register Product.</p>
 
 <p><img alt="Integração com botão" src="images/checkout-cielo-integracao-botao.png" /></p>
 
-<h3 id="características-do-botão">Características do Botão</h3>
-
 <ul>
-<li>Cada botão gerado serve somente para um determinado produto.</li>
-<li>O preço do produto não pode ser alterado na tela de Checkout</li>
-<li>Não é necessário o desenvolvimento de um carrinho</li>
-<li>O cadastro do produto é obrigatório para a criação do botão.</li>
+<li>Button characteristics.</li>
+<li>Each button created leads to a certain product, only.</li>
+<li>The price of product can not be changed on Checkout screen.</li>
+<li>It’s not necessary to develop a cart..</li>
+<li>The registration of product is mandatory for creating the button.</li>
 </ul>
 
-<p>Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter à compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, e valerão os dados do cadastro.</p>
+<p>Each button has a unique code that just allows to buy that certain product in the condition of price and shipping registered. Therefore, the fraudster can’t change any of these information when submitting it to the purchase, because the Cielo Checkout will search all data of product in the registration of <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, and has validity the data of registration.</p>
 
-<h3 id="parâmetros-para-cadastro-de-produto">Parâmetros para cadastro de produto</h3>
+<h3 id="parameters-for-product-registration">Parameters for product registration</h3>
 
-<p>Abaixo seguem as informações necessárias para cadastrar um produto.</p>
+<p>Below you see the information necessary to register the product.</p>
 
 <table><thead>
 <tr>
-<th>Parâmetro</th>
-<th>Descrição</th>
-<th>Tamanho Min.</th>
-<th>Tamanho Máx.</th>
-<th>Obrigatório</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Size Min.</th>
+<th>Size Máx.</th>
+<th>Mandatory</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>Tipo do Produto</td>
-<td>Indique se está vendendo um bem Material, um Serviço ou um bem Digital. Para bens Digitais, não será apresentada a opção de tipo de Frete.</td>
+<td>Type of Product</td>
+<td>Signal if you are selling material goods, service, or digital goods, it won’t be presented the option of shipping type.</td>
 <td>n/a</td>
 <td>n/a</td>
-<td>Sim</td>
+<td>Yes</td>
 </tr>
 <tr>
 <td>SKU</td>
-<td>Código de identificação do produto</td>
+<td>Product identification code</td>
 <td>1</td>
 <td>50</td>
-<td>Não</td>
+<td>No</td>
 </tr>
 <tr>
-<td>Título</td>
-<td>Titulo do Produto</td>
+<td>Title</td>
+<td>Product title</td>
 <td>1</td>
 <td>50</td>
-<td>Sim</td>
+<td>yes</td>
 </tr>
 <tr>
-<td>Descrição</td>
-<td>Descrição do Produto</td>
+<td>Description</td>
+<td>Product description</td>
 <td>1</td>
 <td>255</td>
-<td>Sim</td>
+<td>Yes</td>
 </tr>
 <tr>
-<td>Preço</td>
-<td>Valor total do pedido <strong>em centavos</strong> (ex.: R$1,00 =100).</td>
+<td>Price</td>
+<td>Total amount of order in “centavos” (ex.: R$1,00 =100).</td>
 <td>11</td>
 <td>14</td>
-<td>Sim</td>
+<td>Yes</td>
 </tr>
 <tr>
-<td>Frete</td>
-<td>Escolher dentre uma das opções de Frete (Correios, Frete Fixo, Frete Grátis, Retirar na loja, Sem Cobrança).</td>
+<td>Shipping/Delivery</td>
+<td>Choose among the Shipping options (Correios, Flat Postage Cost , Free Shipping, pick up on store, no charge).</td>
 <td>n/a</td>
 <td>n/a</td>
-<td>Sim</td>
+<td>Yes</td>
 </tr>
 <tr>
-<td>CEP de Origem</td>
-<td>Esse campo só aparece para o frete tipo Correios, deve ser preenchido com o CEP de onde vai partir a mercadoria para fins de cálculo de frete.</td>
+<td>Origin CEP</td>
+<td>This field only appears for a Correios shipping, and must be filled with CEP, from will leave the product for purposes of shipping calculation.</td>
 <td>9</td>
 <td>9</td>
-<td>Sim</td>
+<td>Yes</td>
 </tr>
 <tr>
-<td>Peso(kg)</td>
-<td>Esse campo só aparece para o frete tipo Correios, deve ser preenchido com o peso do produto em kg para fins de cálculo de frete</td>
+<td>Weight(kg)</td>
+<td>This field only appears for Correios shipping, and must be filled with the weight of the product in kg (kilograms) for purposes of shipping calculation.</td>
 <td>n/a</td>
 <td>n/a</td>
-<td>Sim</td>
+<td>Yes</td>
 </tr>
 <tr>
-<td>Valor do Frete</td>
-<td>Esse campo só aparece para o frete tipo Frete Fixo, e deve ser preenchido com o valor que o lojista especificar para seus produtos.</td>
+<td>Shipping amount</td>
+<td>This field only appears for fixed shipping with the amount that the retailer specifies for the products.</td>
 <td>n/a</td>
 <td>n/a</td>
-<td>Sim</td>
+<td>Yes</td>
 </tr>
 <tr>
-<td>Método de envio</td>
-<td>Esse campo só aparece para Tipo Produto igual a Material Físico e Tipo de Frete igual a Frete Fixo.</td>
+<td>Sending method</td>
+<td>This field only appears for Product Type similar to Physical Material and Shipping Type similar to Fixed Shipping.</td>
 <td>n/a</td>
 <td>n/a</td>
-<td>Sim</td>
+<td>Yes</td>
 </tr>
 <tr>
 <td>URL</td>
-<td>Esse campo só aparece para Tipo Produto igual a Digital.</td>
+<td>This field only appears for Product type similar to Digital.</td>
 <td>n/a</td>
 <td>n/a</td>
-<td>Sim</td>
+<td>Yes</td>
 </tr>
 </tbody></table>
 
-<h4 id="exemplo-de-botão:">Exemplo de Botão:</h4>
+<h4 id="button-example:">Button example:</h4>
 <pre><code class="highlight html"><span class="nt">&lt;form</span> <span class="na">method=</span><span class="s">'post'</span> <span class="na">action=</span><span class="s">'https://cieloecommerce.cielo.com.br/transactional/Checkout/BuyNow'</span> <span class="na">target=</span><span class="s">'blank'</span><span class="nt">&gt;</span>
     <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">'hidden'</span> <span class="na">name=</span><span class="s">'id'</span> <span class="na">value=</span><span class="s">00000000-0000-0000-000000000000/</span><span class="nt">&gt;&lt;input</span> <span class="na">type=</span><span class="s">'image'</span> <span class="na">name=</span><span class="s">'submit'</span> <span class="na">alt=</span><span class="s">'Comprar'</span> <span class="na">src=</span><span class="s">'https://cieloecommerce.cielo.com.br /BackOffice/Content/images/botao_comprar_3.jpg'</span> <span class="nt">/&gt;</span>
 <span class="nt">&lt;/form&gt;</span>
 </code></pre>
 
-<p>Adicionando o botão na sua página HTML você deve copiar o código HTML do botão criado e colocar no código HTML do seu site, conforme o exemplo abaixo.</p>
+<p>Adding the button on your HTML page you have to copy the button HTML code created and put the HTML code on your website, as the example below:</p>
 
-<aside class="notice">O código deve ser inserido dentro da área adequada no seu HTML.</aside>
+<p>Each button has a unique code that only allows to buy a certain product in the pricing and shipping conditions registered. Therefore, the fraudster can’t change any of these information on purchase submit, because Cielo Checkout will search all product data on <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, and will be considered the registration data.</p>
 
-<p>Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter a compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, e valerão os dados do cadastro.</p>
+<h2 id="cielo-checkout-testing-mode">Cielo Checkout testing mode</h2>
 
-<h2 id="modo-de-teste-do-checkout-cielo">Modo de teste do Checkout Cielo</h2>
+<p>The Cielo Checkout testing mode is a method to do integration tests on your website, without the credit usage. The Cielo Checkout testing mode allows to execute transactions using different payment methods mock (simulative).</p>
 
-<p>O modo de teste Checkout Cielo é método de fazer testes de integração do Checkout Cielo com o seu site, sem o consumo de créditos. O modo de Teste Checkout Cielo permite realizar transações, testando a integração utilizando diferentes meios de pagamento simulados.</p>
+<h3 id="testing-mode-activation/validation">Testing mode activation/validation</h3>
 
-<h3 id="ativação-do-modo-de-teste.">Ativação do Modo de Teste.</h3>
-
-<p>O modo de teste pode ser ativado na aba Configurações:</p>
+<p>The testing mode can be activated on Settings tab:</p>
 
 <p><img alt="Modo de teste" src="images/checkout-cielo-modo-teste.png" /></p>
 
-<p>Nessa área há um caixa de seleção, que quando marcada, habilitará o modo de teste do Checkout Cielo. O modo somente se iniciará quando a seleção for salva.</p>
+<p>In this area there is a selection box, that once been marked, will enable the Cielo Checkout testing mode. The mode only will starts when the selection has been saved.</p>
 
 <p><img alt="Ativação Modo de teste" src="images/checkout-cielo-modo-teste-ativacao.png" /></p>
 
-<p>Quando a opção for salva, uma tarja vermelha será exibida na parte superior da tela. Ela será exibida em todas as telas do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a> e na tela de checkout do Checkout Cielo.</p>
+<p>When the option is saved, a red stripe will be exhibited on top area of screen. It will be displayed at all screens of Cielo Checkout Backoffice and the checkout screen of Cielo Checkout.</p>
 
-<p>Essa tarja indica que a sua loja Checkout Cielo está agora operando em ambiente de teste, ou seja, toda a transação realizada nesse modo será considerada como teste.</p>
+<p>This stripe indicates that your Cielo Checkout store is operating now in a testing environment, in other words, all transaction executed in this mode will be considered as a test.</p>
 
 <p><img alt="Modo de teste ativado" src="images/checkout-cielo-modo-teste-ativado.png" /></p>
 
-<h3 id="como-transacionar-no-modo-de-teste.">Como transacionar no Modo de teste.</h3>
+<h3 id="how-transact-on-testing-mode">How transact on Testing Mode</h3>
 
-<p>A realização de transações no modo de teste ocorre de forma normal. As informações da transação são enviadas via POST, utilizando os parâmetros como descrito no tópico <a href="#integração-carrinho-de-compras">Integração com carrinho</a>, entretanto, os meios de pagamentos a serem usados serão meios simulados.</p>
+<p>The transactions execution on testing mode happens in normal form. The information of transaction will be sent via POST, using the parameters as described on topic Integration with shopping cart, however, the payment methods to be used will be simulated methods.</p>
 
-<p>Para realizar transações de teste com diferentes meios de pagamento, siga as seguintes regras:</p>
+<p>To execute test transactions with different payment methods, follow the next rules:</p>
 
-<p><strong>a - Transações com Cartão de crédito:</strong></p>
+<p><strong>a - Credit Card Transactions:</strong></p>
 
-<p>Para testar cartões de crédito é necessário que dois dados importantes sejam definidos, o status da autorização do cartão e o retorno da analise de fraude.</p>
+<p>To test credit cards it’s necessary to define two important data; the authorization status of card and the fraud analysis return.</p>
 
-<p><strong>Status da Autorização do Cartão de Crédito</strong></p>
+<p>*<em>Status of Credit Card Authorization *</em></p>
 
 <table><thead>
 <tr>
-<th>Digito final do Cartão</th>
-<th>Status retornado</th>
+<th>Card Final Digit</th>
+<th>Returned Status</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>0, 1, 2, 3 ou 4</td>
-<td>Autorizado</td>
+<td>Authorized</td>
 </tr>
 <tr>
 <td>5, 6, 7, 8 ou 9</td>
-<td>Não autorizado</td>
+<td>Unauthorized</td>
 </tr>
 </tbody></table>
 
 <ul>
-<li><strong>Exemplo:</strong> Transação autorizada, Alto Risco;</li>
-<li><strong>Numero do Cartão de credito:</strong> 5404434242930107</li>
-<li><strong>Nome do Cliente:</strong> Maria Alto</li>
+<li><strong>Example</strong>: Authorized transaction, High risk;</li>
+<li><strong>Credit card Number</strong>: 5404434242930107</li>
+<li><strong>Customer name</strong>: Maria Alto</li>
 </ul>
 
 <p><strong>b - Boleto Bancario</strong></p>
 
-<p>Basta realizar o processo de compra normalmente sem nenhuma alteração no procedimento. O boleto gerado no modo de teste sempre será um boleto simulado.</p>
+<p>You simply carry out the purchase process without any changes on your proceeding. The boleto created on testing mode will always be a simulated boleto.</p>
 
-<p><strong>c - Debito online</strong></p>
+<p><strong>c - Online Debit</strong></p>
 
-<p>É necessário informa o status da transação de Debito online para que seja retornado o status desejado. Esse processo ocorre como no antifraude do cartão de crédito descrito acima, com a alteração do nome do comprador.</p>
+<p>It’s necessary to inform the transaction status of online debit transaction. This process happens like in the anti fraud of credit card described above, with change for buyer name.</p>
 
-<p><strong>Status do Débito</strong>
-|Sobre nome do cliente|Status|
-|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;|
-|Pago|Pago|
-|Qualquer nome.|Não autorizado|</p>
+<p><strong>Debit Status</strong></p>
+
+<table><thead>
+<tr>
+<th>Customer Lastname</th>
+<th>Status</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Paid</td>
+<td>Paid</td>
+</tr>
+<tr>
+<td>Any name</td>
+<td>Unauthorized</td>
+</tr>
+</tbody></table>
 
 <ul>
-<li><strong>Exemplo:</strong> Status não Autorizado.</li>
-<li><strong>Nome do Cliente:</strong> Maria Pereira</li>
+<li><strong>Example</strong>: Unauthorized Status.</li>
+<li><strong>Customer name</strong>: Maria Pereira</li>
 </ul>
 
-<p><strong>d - Transações de teste</strong></p>
+<p><strong>d - Testing transaction</strong></p>
 
-<p>Todas as transações realizadas no modo de teste serão exibidas como transações normais na aba Pedidos do Checkout Cielo, entretanto, elas serão marcadas como transações de teste e não serão contabilizadas em conjunto com as transações realizadas fora do ambiente de teste.</p>
+<p>All the transaction executed on testing mode will be displayed as normal transactions on Order Tab of Cielo Checkout, but, they will be marked as testing transactions and won’t be counted combined with all transactions executed outside of testing environment.</p>
 
 <p><img alt="Transações de teste" src="images/checkout-cielo-modo-teste-transacoes-de-teste.png" /></p>
 
-<p>Essas transações terão o simbolo de teste as diferenciando de suas outras transações. Elas podem ser capturadas ou canceladas utilizando os mesmos procedimentos das transações reais.</p>
+<p>These transaction will have a symbol of test to distinguish of other transactions. They can be captured or canceled using the same proceedings of real transactions.</p>
 
 <p><img alt="Transações de teste" src="images/checkout-cielo-modo-teste-transacoes-de-teste-cancelamento.png" /></p>
 
-<aside class="notice">É muito importante que ao liberar sua loja para a realização de vendas para seus clientes que ela não esteja em modo de teste. Transações realizadas nesse ambiente poderão ser finalizadas normalmente, mas não serão descontadas do cartão do cliente e não poderão ser “transferidas” para o ambiente de venda padrão.</aside>
+<h2 id="extended-validation-certificate">Extended Validation Certificate</h2>
 
-<h2 id="certificado-extended-validation">Certificado Extended Validation</h2>
+<p>The Extended Validation Certificate to web server offers authenticity and integrity of data in a website, providing to virtual store’s customers the guarantee of they are really accessing the website that they want and not a fraudster website.</p>
 
-<p>O Certificado Extended Validation para servidor web oferece autenticidade e integridade dos dados de um web site, proporcionando aos clientes das lojas virtuais a garantia de que estão realmente acessando o site que desejam, e não uma um site fraudador.</p>
+<p>Specialized companies are responsible for doing the domain and, depending of the type of certificate, there is also a holder authority of domain.</p>
 
-<p>Empresas especializadas são responsáveis por fazer a validação do domínio e, dependendo do tipo de certificado, também da entidade detentora do domínio.</p>
+<h3 id="what-is-extended-validation-certificate?">What is Extended Validation Certificate?</h3>
 
-<h3 id="o-que-é-certificado-extended-validation?">O que é Certificado Extended Validation?</h3>
+<p>The Certificate EV has been launched recently on the market and ensure a higher level of security for virtual store customer.</p>
 
-<p>O Certificado EV foi lançado no mercado recentemente e garante um nível de segurança maior para os clientes das lojas virtuais.</p>
+<p>This is the largest reliability and when accessing https, the address line becomes green, giving more reliability to visitors on website.</p>
 
-<p>Trata-se de um certificado de maior confiança e quando o https for acessado a barra de endereço ficará verde, dando mais confiabilidade aos visitantes do site.</p>
+<p>How to install the Extended Validation Certificate on the store server?</p>
 
-<p>Como instalar o Certificado Extended Validation no servidor da Loja?</p>
-
-<p>Basta instalar os três arquivos a seguir na Trustedstore do servidor. A Cielo não oferece suporte para a instalação do Certificado. Caso não esteja seguro sobre como realizar a instalação do Certificado EV, então você deverá ser contatado o suporte do fornecedor do seu servidor.</p>
+<p>It’s simple: you just need to install the next three archives at Trustedstore server. Cielo doesn’t offer support to Certificate installation. In case of you are not sure about doing a EV Certificate installation, then you have to be contacted by support of provider’ server.</p>
 
 <ul>
-<li><a href="attachment/Raiz.crt">Certificado Raiz</a></li>
-<li><a href="attachment/Intermediaria.crt">Certificado Intermediária</a></li>
-<li><a href="attachment/ecommerce.cielo.com.br.crt">Certificado E-Commerce Cielo</a></li>
+<li><a href="attachment/Raiz.crt">Root Certificate</a></li>
+<li><a href="attachment/Intermediaria.crt">Intermediate Certificate</a></li>
+<li><a href="attachment/ecommerce.cielo.com.br.crt">Cielo E-Commerce Certificate</a></li>
 </ul>
 
-<aside class="notice">Caso seu servidor seja uma distribuição Linux e você tenha familiaridade e acesso ssh, então o <a href="/attachment/cielo.sh">Instalador Linux - cielo.sh</a> poderá ajudá-lo com a instalação. <strong>Apenas utilize o instalador se você souber o que está fazendo</strong>. Na dúvida, entre em contato com o suporte do fornecedor do seu servidor.</aside>
+<aside class="notice"<a href="/attachment/cielo.sh">Linux Installer- cielo.sh</a> can help you with the installation. Use only the installer, if you know what you are doing. If you have any questions, get in touch with provider support of your server.</aside>
 
-<h1 id="parâmetros-de-integração">Parâmetros de integração</h1>
+<h1 id="integration-parameters">Integration Parameters</h1>
 
 <h2 id="cart">Cart</h2>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
@@ -1092,30 +1090,30 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>Parâmetro de requisição com informações sobre o carrinho de compras. Veja também o parâmetro <a href="#item">Item</a></p>
+<p>Request parameter with information about shopping cart. See also the parameter Item <a href="#item">Item</a></p>
 
 <table><thead>
 <tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>Discount</td>
 <td><a href="#discount">Discount</a></td>
-<td>Opcional</td>
+<td>Optional</td>
 <td>n/a</td>
-<td>Informações do desconto sobre o carrinho de compras.</td>
+<td>Discount information about the shopping cart.</td>
 </tr>
 <tr>
 <td>Items</td>
 <td><a href="#item">Item[]</a></td>
 <td>Sim</td>
 <td>n/a</td>
-<td>Lista de itens do carrinho de compras <em>(deve conter no mínimo 1 item)</em>.</td>
+<td>List of shopping cart items (must contain at minimum of 1 item).</td>
 </tr>
 </tbody></table>
 
@@ -1126,44 +1124,40 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>Parâmetro de requisição com informações sobre descontos.</p>
-
-<aside class="notice">Independentemente do tipo do desconto, ele deverá ser calculado antes da soma do valor do frete.</aside>
+<p>Request Parameter with information about discounts.</p>
 
 <table><thead>
 <tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>Type</td>
 <td>Alphanumeric</td>
-<td>Condicional</td>
+<td>Conditional</td>
 <td>n/a</td>
-<td>Tipo do desconto a ser aplicado: &quot;Amount&rdquo;, &ldquo;Percent&rdquo;. Obrigatório caso <code class="prettyprint">Value</code> for maior ou igual a zero.</td>
+<td>Type of discount to be applied:  &ldquo;Amount”, “Percent”. It’s mandatory in case of the Value being higher or equals zero.</td>
 </tr>
 <tr>
 <td>Value</td>
 <td>Numeric</td>
-<td>Condicional</td>
+<td>Conditional</td>
 <td>0..18</td>
-<td>Valor do desconto a ser aplicado <em>(pode ser valor absoluto ou percentual)</em>. Obrigatório caso <code class="prettyprint">Type</code> for &ldquo;Amount&rdquo; ou &ldquo;Percent&rdquo;.</td>
+<td>Discount value to be applied (it can be an absolute value or percentage). It’s mandatory in case of Type being “Amount” or “Percent”.</td>
 </tr>
 </tbody></table>
 
 <h4 id="discount.type-=-amount">Discount.Type = Amount</h4>
 
-<p>Caso o tipo de desconto escolhido seja o <code class="prettyprint">Amount</code>, deverá ser inserido o <strong>valor em centavos</strong>.
-Ex.: 100 = 1,00.</p>
+<p>In case of a type of discount chosen being the Amount, it must be insert the value in centavos. Ex.: 100 = 1,00.</p>
 
 <h4 id="discount.type-percent">Discount.Type Percent</h4>
 
-<p>Caso o tipo de desconto escolhido seja o <code class="prettyprint">Percentual</code>, deverá ser inserido o <strong>valor em número inteiro</strong>.
-Ex.: 10 = 10%.</p>
+<p>In case the discount type chosen being Percentual, it must be insert the integer number value. Ex.: 10 = 10%.</p>
 
 <h3 id="item">Item</h3>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
@@ -1177,15 +1171,15 @@ Ex.: 10 = 10%.</p>
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>Parâmetro de requisição com informações sobre o item do carrinho de compras. Veja também o parâmetro <a href="#cart">Cart</a></p>
+<p>Parameter of request with information about a shopping cart item. See also the <a href="#cart">Cart</a> parameter.</p>
 
 <table><thead>
 <tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -1193,53 +1187,53 @@ Ex.: 10 = 10%.</p>
 <td>Alphanumeric</td>
 <td>Sim</td>
 <td>1..128</td>
-<td>Nome do item no carrinho.</td>
+<td>Item’s name of cart.</td>
 </tr>
 <tr>
 <td>Description</td>
 <td>Alphanumeric</td>
 <td>Opcional</td>
 <td>0.256</td>
-<td>Descrição do item no carrinho.</td>
+<td>Item description in the cart</td>
 </tr>
 <tr>
 <td>UnitPrice</td>
 <td>Numeric</td>
 <td>Sim</td>
 <td>1..18</td>
-<td>Preço unitário do item no carrinho <em>(</em><em>em centavos.</em>* Ex: R$ 1,00 = 100)*.</td>
+<td>Unit price of item in cart (in centavos.* Ex: R$ 1,00 = 100)*.</td>
 </tr>
 <tr>
 <td>Quantity</td>
 <td>Numeric</td>
 <td>Sim</td>
 <td>1..9</td>
-<td>Quantidade do item no carrinho.</td>
+<td>Quantity of item in cart</td>
 </tr>
 <tr>
 <td>Type</td>
 <td>Alphanumeric</td>
 <td>Sim</td>
 <td>n/a</td>
-<td>Tipo do item no carrinho.</td>
+<td>Item type in cart</td>
 </tr>
 <tr>
 <td>Sku</td>
 <td>Alphanumeric</td>
 <td>Opcional</td>
 <td>0..32</td>
-<td>Sku do item no carrinho.</td>
+<td>Item Sku in cart.</td>
 </tr>
 <tr>
 <td>Weight</td>
 <td>Numeric</td>
 <td>Condicional</td>
 <td>0..9</td>
-<td>Peso em gramas do item no carrinho.</td>
+<td>Weight in grams of item in cart</td>
 </tr>
 </tbody></table>
 
-<h4 id="tipos-de-item">Tipos de item</h4>
+<h4 id="items-type">Items type</h4>
 
 <table><thead>
 <tr>
@@ -1249,19 +1243,19 @@ Ex.: 10 = 10%.</p>
 </thead><tbody>
 <tr>
 <td>Asset</td>
-<td>Material Físico</td>
+<td>Physical material</td>
 </tr>
 <tr>
 <td>Digital</td>
-<td>Produtos Digitais</td>
+<td>Digital Goods</td>
 </tr>
 <tr>
 <td>Service</td>
-<td>Serviços</td>
+<td>Services</td>
 </tr>
 <tr>
 <td>Payment</td>
-<td>Outros pagamentos</td>
+<td>Other payments</td>
 </tr>
 </tbody></table>
 
@@ -1275,15 +1269,15 @@ Ex.: 10 = 10%.</p>
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>Parâmetro de requisição com informações sobre endereço e serviço de entrega dos produtos.</p>
+<p>Request parameter with information about the address and shipping service of product delivery.</p>
 
 <table><thead>
 <tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -1291,35 +1285,35 @@ Ex.: 10 = 10%.</p>
 <td>Alphanumeric</td>
 <td>Sim</td>
 <td>n/a</td>
-<td>Tipo do frete: &ldquo;Correios&rdquo;, &ldquo;FixedAmount&rdquo;, &ldquo;Free&rdquo;, &ldquo;WithoutShippingPickUp&rdquo;, &ldquo;WithoutShipping&rdquo;.</td>
+<td>Shipping type: “Correios”, “FixedAmount”, “Free”, “WithoutShippingPickUp”, “WithoutShipping”.</td>
 </tr>
 <tr>
 <td>SourceZipCode</td>
 <td>Numeric</td>
 <td>Condicional</td>
 <td>8</td>
-<td>CEP de origem do carrinho de compras.</td>
+<td>Origin Zip code of shopping cart</td>
 </tr>
 <tr>
 <td>TargetZipCode</td>
 <td>Numeric</td>
 <td>Opcional</td>
 <td>8</td>
-<td>CEP do endereço de entrega do comprador.</td>
+<td>Zip code of customer shipping address</td>
 </tr>
 <tr>
 <td>Address</td>
 <td><a href="#address">Address</a></td>
 <td>Opcional</td>
 <td>n/a</td>
-<td>Informações sobre o endereço de entrega do comprador.</td>
+<td>Information about the customer shipping address</td>
 </tr>
 <tr>
 <td>Services</td>
 <td><a href="#service">Service[]</a></td>
 <td>Condicional</td>
 <td>n/a</td>
-<td>Lista de serviços de frete.</td>
+<td>List of shipping services</td>
 </tr>
 </tbody></table>
 
@@ -1334,15 +1328,15 @@ Ex.: 10 = 10%.</p>
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>Parâmetro de requisição com informações sobre o endereço do comprador. Veja também o parâmetro <a href="#customer">Customer</a></p>
+<p>Request parameter with information about the customer address. See also the Customer <a href="#customer">Customer</a> parameter</p>
 
 <table><thead>
 <tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -1350,42 +1344,42 @@ Ex.: 10 = 10%.</p>
 <td>Alphanumeric</td>
 <td>Sim</td>
 <td>1..256</td>
-<td>Rua, avenida, travessa, etc, do endereço de entrega do comprador.</td>
+<td>Street, avenue, crosspiece, etc, of customer shipping address.</td>
 </tr>
 <tr>
 <td>Number</td>
 <td>Alphanumeric</td>
 <td>Sim</td>
 <td>1..8</td>
-<td>Número do endereço de entrega do comprador.</td>
+<td>Number of customer shipping address</td>
 </tr>
 <tr>
 <td>Complement</td>
 <td>Alphanumeric</td>
 <td>Opcional</td>
 <td>0..256</td>
-<td>Complemento do endereço de entrega do comprador.</td>
+<td>Complement of customer shipping address</td>
 </tr>
 <tr>
 <td>District</td>
 <td>Alphanumeric</td>
 <td>Sim</td>
 <td>1..64</td>
-<td>Bairro do endereço de entrega do comprador.</td>
+<td>Neighborhood (district) of customer shipping address.</td>
 </tr>
 <tr>
 <td>City</td>
 <td>Alphanumeric</td>
 <td>Sim</td>
 <td>1..64</td>
-<td>Cidade do endereço de entrega do comprador.</td>
+<td>City of customer shipping address.</td>
 </tr>
 <tr>
 <td>State</td>
 <td>Alphanumeric</td>
 <td>Sim</td>
 <td>2</td>
-<td>Estado (UF) do endereço de entrega do comprador.</td>
+<td>Federal State (UF) of customer shipping address.</td>
 </tr>
 </tbody></table>
 
@@ -1397,15 +1391,15 @@ Ex.: 10 = 10%.</p>
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>Parâmetro de requisição com informações sobre o serviço de frete que será utilizado.</p>
+<p>Request parameter with information about the shipping service that will be used.</p>
 
 <table><thead>
 <tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -1413,21 +1407,21 @@ Ex.: 10 = 10%.</p>
 <td>Alphanumeric</td>
 <td>Sim</td>
 <td>1..128</td>
-<td>Nome do serviço de frete.</td>
+<td>Shipping service name</td>
 </tr>
 <tr>
 <td>Price</td>
 <td>Numeric</td>
 <td>Sim</td>
 <td>1..18</td>
-<td>Preço do serviço de frete (em centavos. Ex: R$ 1,00 = 100).</td>
+<td>Shipping service price (in centavos. Ex: R$ 1,00 = 100).</td>
 </tr>
 <tr>
 <td>Deadline</td>
 <td>Numeric</td>
 <td>Condicional</td>
 <td>0..9</td>
-<td>Prazo de entrega (em dias).</td>
+<td>Delivery deadline (in days).</td>
 </tr>
 </tbody></table>
 
@@ -1438,15 +1432,15 @@ Ex.: 10 = 10%.</p>
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>Parâmetro de requisição com informações sobre o desconto para pagamento via boleto ou débito online.</p>
+<p>Request parameter with information about the discount for payment via boleto or online debit.</p>
 
 <table><thead>
 <tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -1454,14 +1448,14 @@ Ex.: 10 = 10%.</p>
 <td>Numeric</td>
 <td>Condicional</td>
 <td>0..3</td>
-<td>Desconto, em porcentagem, para pagamentos a serem realizados com boleto.</td>
+<td>Discount, in percentage, for payment to be executed with boleto.</td>
 </tr>
 <tr>
 <td>DebitDiscount</td>
 <td>Numeric</td>
 <td>Condicional</td>
 <td>0..3</td>
-<td>Desconto, em porcentagem, para pagamentos a serem realizados com débito online.</td>
+<td>Discount, in percentage, for payment to be executed online debit.</td>
 </tr>
 </tbody></table>
 
@@ -1474,15 +1468,15 @@ Ex.: 10 = 10%.</p>
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>Parâmetro de requisição com informações sobre o comprador. Veja também o parâmetro <a href="#address">Address</a></p>
+<p>Request parameter with information about the buyer. See also <a href="#address">Address</a> Parameter.</p>
 
 <table><thead>
 <tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -1490,28 +1484,35 @@ Ex.: 10 = 10%.</p>
 <td>Numeric</td>
 <td>Condicional</td>
 <td>0..14</td>
-<td>CPF ou CNPJ do comprador.</td>
+<td>Customer CPF or CNPJ (digital certificate</td>
+</tr>
+<tr>
+<td>for the Brazilian legal entities)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td>FullName</td>
 <td>Alphanumeric</td>
 <td>Condicional</td>
 <td>0..288</td>
-<td>Nome completo do comprador.</td>
+<td>Complete customer name.</td>
 </tr>
 <tr>
 <td>Email</td>
 <td>Alphanumeric</td>
 <td>Condicional</td>
 <td>0..64</td>
-<td>Email do comprador.</td>
+<td>Customer Email.</td>
 </tr>
 <tr>
 <td>Phone</td>
 <td>Numeric</td>
 <td>Condicional</td>
 <td>0..11</td>
-<td>Telefone do comprador.</td>
+<td>Customer telephone</td>
 </tr>
 </tbody></table>
 
@@ -1521,15 +1522,15 @@ Ex.: 10 = 10%.</p>
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>Parâmetro de requisição para configurar o sistema de anti-fraude para a transação.</p>
+<p>Request parameter to configure the anti fraud system for a transaction. </p>
 
 <table><thead>
 <tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -1537,13 +1538,13 @@ Ex.: 10 = 10%.</p>
 <td>Boolean</td>
 <td>Conditional</td>
 <td>n/a</td>
-<td>Habilitar ou não a análise de fraude para o pedido.</td>
+<td>Enable or not a fraud analysis for an order</td>
 </tr>
 </tbody></table>
 
 <h2 id="settings">Settings</h2>
 
-<p>Parâmetro de resposta, recebido em caso de sucesso.</p>
+<p>Response parameter, received in case of success.</p>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"CheckoutUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://cieloecommerce.cielo.com.br/transacional/order/index?id=123"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"Profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CheckoutCielo"</span><span class="p">,</span><span class="w">
@@ -1553,11 +1554,11 @@ Ex.: 10 = 10%.</p>
 
 <table><thead>
 <tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -1565,192 +1566,184 @@ Ex.: 10 = 10%.</p>
 <td>Alphanumeric</td>
 <td>Sim</td>
 <td>1..128</td>
-<td>URL de checkout do pedido. <strong>Formato:</strong> <code class="prettyprint">https://cieloecommerce.cielo.com.br/transacional/order/index?id={id}</code></td>
+<td>Checkout URL of order. <strong>Format</strong>: <code class="prettyprint">https://cieloecommerce.cielo.com.br/transacional/order/index?id={id}</code></td>
 </tr>
 <tr>
 <td>Profile</td>
 <td>Alphanumeric</td>
 <td>Sim</td>
 <td>1..16</td>
-<td>Perfil do lojista: fixo &ldquo;CheckoutCielo&rdquo;.</td>
+<td>Retailer’s profile: fix “CheckoutCielo”.</td>
 </tr>
 <tr>
 <td>Version</td>
 <td>Alphanumeric</td>
 <td>Sim</td>
 <td>1</td>
-<td>Versão do serviço de criação de pedido <em>(versão: 1)</em>.</td>
+<td>Service version of order creation (version: 1).</td>
 </tr>
 </tbody></table>
 
-<h1 id="configurações-de-pagamento">Configurações de Pagamento</h1>
+<h1 id="payment-configuration">Payment configuration</h1>
 
-<h2 id="cartão-de-crédito">Cartão de Crédito</h2>
+<h2 id="credit-card">Credit card</h2>
 
-<p>O Checkout Cielo aceita as principais bandeiras de crédito do Brasil e do mundo. São elas: Visa, MasterCard, American Express (Amex), Elo, Diners, Discover, JCB e Aura.</p>
+<p>Cielo Checkout accepts the main card issuers of Brazil and world. They are: Visa, MasterCard, American Express (Amex), Elo, Diners, Discover, JCB and Aura.</p>
 
-<h3 id="recebendo-uma-venda-de-cartão-de-crédito">Recebendo uma Venda de Cartão de Crédito</h3>
+<h3 id="receiving-a-sale-with-credit-card">Receiving a sale with Credit Card</h3>
 
-<p>A partir da criação de uma transação, ela pode assumir diversos status. As transições de status podem ser realizadas através da troca de mensagens entre a loja e a Cielo, ou de forma automática, por exemplo, quando o prazo para a captura de transação autorizada expirar.</p>
+<p>From the creation of a transaction, it can assume different status. The transaction status can be performed through the exchange of messages between the store and Cielo, or, in automatic form, for example, when the deadline to a capture of an authorized transaction expires.</p>
 
-<p>Pedidos por meio de cartão de crédito serão incluídos no <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a> como <strong>“AUTORIZADO”</strong> ou <strong>“NÃO AUTORIZADO”</strong>, dependendo do resultado da autorização na Cielo. Caso haja algum problema no processamento deste pedido (consumidor fechou a tela, por exemplo), ele constará como <strong>“NÃO FINALIZADO”</strong>.</p>
+<p>Orders for credit card will be included on Cielo Checkout Backoffice as “AUTHORIZED” or “UNAUTHORIZED”, depending of the result of authorization at Cielo. If you have any problems during the proceeding of this order (the customer closed the screen, for example), it will be recorded as “DO NOT FINISHED”.</p>
 
-<h3 id="análise-de-fraude">Análise de Fraude</h3>
+<h3 id="fraud-analysis">Fraud analysis</h3>
 
-<p>Pedidos <strong>“AUTORIZADOS”</strong> serão enviados online, ou seja, no ato da venda, para análise da ferramenta de antifraude, quando  este desenvolvimento estiver devidamente padronizado na integração. O resultado desta análise será traduzido no campo <strong>“Indicação AF”</strong> no Relatório de Pedido, para cada pedido.</p>
+<p>Order “AUTHORIZED” will be sent online, in other words, in act of sale, for analysis of anti fraud solution, when this development being properly standardized in the integration. The result of this analysis will be translated in the field “Indication AF”, at Order Report, for each order.</p>
 
-<p>Esta análise indicará um <strong>“BAIXO RISCO”</strong> ou “ALTO RISCO” para a venda em questão. Esta sugestão é o que deve guiar a decisão de se confirmar  ou cancelar a venda. A analise será apresentada no “Detalhes do Pedido”, como abaixo:</p>
+<p>This analysis will indicate a “LOW RISK” or “HIGH RISK” for the sale in question. This suggestion is what that must guide the decision of approve or cancel a sale. The analysis will be presented at “Order Details”, as below:</p>
 
 <p><img alt="Análise de risco" src="images/checkout-cielo-analise-risco.png" /></p>
 
-<h2 id="cartão-de-débito">Cartão de débito</h2>
+<h2 id="debit-card">Debit card</h2>
 
-<p>O Checkout Cielo aceita as principais bandeiras de cartão de débito do mercado: Visa e MasterCard. As transações de cartão de débito possuem como participantes os bancos emissores, que por sua vez usam dos mesmos recursos para transações online (token, cartão de senhas e etc) para o processo de autenticação. Consulte a relação de emissores participantes no Suporte Cielo e-Commerce.</p>
+<p>Cielo Checkout Cielo accepts the main card issuers of debit in the market:  Visa and MasterCard. The transaction of debit card have as participants the issuer banks, that which in turn use the same resources of online transaction (token, password card, etc) for the authentication process.</p>
+
+<p>Consult the relation between participants issuers on Cielo e-commerce Support</p>
 
 <ul>
 <li><strong>E-mail</strong>: <a href="mailto:cieloecommerce@cielo.com.br">cieloecommerce@cielo.com.br</a></li>
-<li><strong>Telefones</strong>:
+<li><strong>Telephones</strong>:
 
 <ul>
-<li><strong>Capitais</strong>: (sem DDD) 4002.9700</li>
-<li><strong>Demais Localidades</strong>: 0800.570.1700</li>
-<li><strong>Do exterior</strong>: +55 (11) 2860.1348</li>
+<li><strong>Capital</strong>: (sem DDD) 4002.9700</li>
+<li><strong>Other Location</strong>: 0800.570.1700</li>
+<li><strong>From abroad</strong>: +55 (11) 2860.1348</li>
 </ul></li>
 </ul>
 
-<p>A autenticação da transação garantirá uma segurança extra ao lojista contra contestações dos consumidores (chargeback). O produto débito obrigatoriamente exige uma transação autenticada, caso contrário, a transação não é autorizada. A autenticação é obrigatória para transações de débito e opcional para o crédito.</p>
+<p>The transaction authentication will guarantee an extra security to the retail against Contesting process of Customer (Chargeback). The debit product mandatorily needs an authenticated transaction, otherwise, the transaction can not be authorized. The authentication is mandatory to debit transactions and optional for credit.</p>
 
-<h3 id="passo-a-passo-da-transação-de-cartão-de-débito:">Passo a passo da transação de cartão de débito:</h3>
+<h3 id="step-by-step-of-a-debit-card-transaction">Step by step of a debit card transaction</h3>
 
 <ol>
-<li>Cliente acessa o internet banking</li>
-<li>Digita a senha do cartão</li>
-<li>Banco confirma a senha</li>
-<li>Transação realizada</li>
+<li>Customer access the internet banking</li>
+<li>Type the card password </li>
+<li>Bank confirms the password</li>
+<li>Realised Transaction</li>
 </ol>
 
 <h2 id="boleto">Boleto</h2>
 
-<p>Todo boleto gerado (emitido) aparece com o status de “PENDENTE” no Relatório de Pedidos. Sua troca de status vai depender de ações manuais do proprio lojista. Para isso, acesse o <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a> (incluir link do manual) na seção Pedidos</p>
+<p>All boleto created (issued) appears with status of “PENDENT” on Order Report. The status change will depend of guide actions of the personal retailer. For that, access the Cielo Checkout Backoffice (include link of the guide) in the section Orders</p>
 
-<h3 id="possiveis-status-do-boleto">Possiveis Status do Boleto</h3>
+<h3 id="possible-status-of-boleto">Possible Status of Boleto</h3>
 
 <ul>
-<li><strong>PENDENTE</strong> – boleto emitido pelo processo de transação. Status continua até alteração manual pelo lojista.</li>
-<li><strong>PAGO</strong> – Status usado quando o botão &ldquo;Conciliar” é ativado pelo lojista. Esse status pode ser revertido para pendente utiliando o Botão “Desfazer conciliação”.</li>
-<li><strong>EXPIRADO</strong> – Status ativo após 10 dias da criação do boleto, caso esse não tenha sito conciliado nesse periodo. Boletos com status “EXPIRADO” podem ser conciliados.</li>
+<li><strong>PENDENT</strong> – boleto issued by the transactions process. Status continues until the manual change by retailer.</li>
+<li><strong>PAID</strong> – Status used when the button “Conciliate” is activated by the retailer. This status can be reverted for pendent using the Button “Undo conciliation”.</li>
+<li><strong>EXPIRED</strong> – Status activated after 10 days of creation of the boleto, if it’s not conciliated in this period. Boletos with “EXPIRED” status can be conciliated.</li>
 </ul>
 
-<h3 id="conciliando-um-boleto">Conciliando um Boleto</h3>
+<h3 id="conciliating-a-boleto">Conciliating a Boleto</h3>
 
-<p>Cabe ao lojista através de uma Conciliação Manual com seu extrato bancário, confirmar o pagamento do mesmo.</p>
+<p>It’s incumbent upon the retailer the Manual Conciliation with his bank statement, and confirm the payment of it.</p>
 
 <p><img alt="Conciliando um boleto" src="images/checkout-cielo-conciliar-boleto.png" /></p>
 
-<p>Para realizar a Conciliação você deve:</p>
+<p>To realise the Conciliation you will need:</p>
 
 <ol>
-<li>Acessar o relatório de pedidos no <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>;</li>
-<li>Filtrar os pedidos por Meio de Pagamento “Boleto” e status “PENDENTE” e identificar o boleto em questão pelo Valor;</li>
-<li>Clicar no sinal de + no final da linha para acessar a página de “Detalhes”;</li>
-<li>Clicar no botão de “ Confirmar Pagamento ” e informar a data de pagamento, para seu futuro controle;</li>
+<li>Access the order report on Cielo Checkout Backoffice;</li>
+<li>Filter the order by Payment Method “Boleto” and status “PENDENT” and identify the boleto in question by value/amount;</li>
+<li>Click in the symbol + in the end of the line to access the page of “Details”; </li>
+<li>Click in the button of “Confirm Payment” and inform the date of payment, for your forward control;</li>
 </ol>
 
-<p>O pedido passa para status <strong>PAGO</strong>.</p>
+<p>The order pass for PAID status.</p>
 
-<p>O Comprador também verá o pedido como <strong>PAGO</strong> no “Backoffice do Comprador”</p>
+<p>The Customer also will see the order as PAID on “Customer Backoffice” </p>
 
-<p>Desfazendo a conciliação (pagamento) de um Boleto. Caso a conciliação tenha sido feito errada, basta:</p>
+<p>To undo the conciliation (payment) of a Boleto, if the conciliation has been done in a wrong form, you just need:</p>
 
 <ol>
-<li>Encontrar o Pedido;</li>
-<li>Entrar no seu detalhe e clicar no botão “Desfazer Pagamento”;</li>
-<li>O Pedido voltará para o Status de “PENDENTE”.</li>
+<li>Find the Order;</li>
+<li>Enter in the detail and click on the button “Undo Payment”;</li>
+<li>The order will come back to “PENDENT” .</li>
 </ol>
 
-<h3 id="boletos-expirados">Boletos Expirados</h3>
+<h3 id="expired-boletos">Expired Boletos</h3>
 
-<p>Se o boleto não for conciliado dentro de um prazo de 10 dias após seu vencimento, seu Status será alterado para <strong>“EXPIRADO”</strong>, para um melhor controle dos boletos vencidos. Boletos EXPIRADOS podem ser conciliados.</p>
-
-<aside class="notice">Validade do Boleto – Caso o boleto expire em um dia não útil, como Sábado, ele será valido até o próximo dia útil.</aside>
+<p>If the boleto don’t be conciliated within 10 days after the expiration, its status will be changed to “EXPIRED”, for a better control of overdue boletos. EXPIRED boletos can be conciliated.</p>
 
 <p><img alt="Boleto" src="images/checkout-cielo-boleto.png" /></p>
 
-<h2 id="débito-online">Débito Online</h2>
+<h2 id="online-debit">Online Debit</h2>
 
-<p>Pedidos vendidos por meio de Débito online serão incluídos no <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a> como PENDENTE, PAGO, NÃO AUTORIZADO ou NÃO FINALIZADO, dependendo do resultado da autorização junto ao Banco.</p>
-
-<ul>
-<li><strong>Pendente</strong> - Corresponde quando o comprador ao finalizar o pedido e não obtem resposta por parte do Banco, ou seja, não conseguir nem carregar a página do Banco para inserir os dados para o Débito.</li>
-<li><strong>Pago</strong> - Corresponde quando o comprador conseguir realizar o pagamento do débito com sucesso.</li>
-<li><strong>Não Autorizado</strong> - Apresentado para o Lojista quando o comprador tentar realizar uma transação via débito e não ter saldo para a transação.</li>
-<li><strong>Não Finalizado</strong> - Apresentado para o Lojista caso o comprador tenha algum problema para finalizar o pagamento do meio Débito, seja fechando a janela do banco ou simplesmente nem chegando à tela do banco.</li>
-</ul>
-
-<h2 id="diferença-entre-estorno-e-cancelamento">Diferença entre estorno e cancelamento</h2>
+<p>Order done by online debit will be included on Cielo Checkout Backoffice as PENDENT, PAID, UNAUTHORIZED or DO NOT FINISHED, depending of the result of authorization at the Bank.</p>
 
 <ul>
-<li><strong>Cancelamento:</strong> é feito no mesmo dia da captura, devolvendo o limite ao cartão do comprador em até 72h conforme regras do banco emissor do cartão. Não é apresentado na fatura do comprador;</li>
-<li><strong>Estorno:</strong> a partir do dia seguinte da captura, o valor é “devolvido” na fatura do comprador em até 300 dias. É apresentado na fatura do comprador.</li>
+<li><strong>Pendent</strong> - Correspond to a moment when the customer finishes the order and doesn’t obtain the response of the Bank, in other words, the customer can’t get load the Bank Page to insert the information to debit.</li>
+<li><strong>Paid</strong> - It’s when the customer completed the payment with debit successfully.</li>
+<li><strong>Unauthorized</strong> - Presented to the retailer when the customer tries to realise a transaction via debit and don’t have any final balance to the transaction</li>
+<li><strong>Not finished</strong> - Presented to the retailer when the customer has a problem to finish the payment with debit, closing the bank page or just if he don’t reach the bank page</li>
 </ul>
 
-<h2 id="captura/cancelamento-automático">Captura/Cancelamento Automático</h2>
+<h2 id="difference-between-reverse-charge-and-cancellation">Difference between reverse charge and cancellation</h2>
 
-<aside class="notice">Veja a diferença entre cancelamento e estorno em <a href="#diferença-entre-estorno-e-cancelamento">Diferença entre estorno e cancelamento</a></aside>
+<ul>
+<li><strong>Cancellation</strong>: it’s done in the same day of the capture, paying back the customer card limit in until 72h, according the card issuer bank rules. It’s not presented the customer invoice.</li>
+<li><strong>Reverse charge</strong>: from the next day of the capture, the value is “returned” on customer invoice within 300 days. It’s presented on customer invoice.</li>
+</ul>
 
-<h3 id="captura-automática">Captura automática</h3>
+<h2 id="capture/automatic-cancellation">Capture/Automatic Cancellation</h2>
 
-<p>As vendas <strong>“AUTORIZADAS”</strong>, e com <strong>“BAIXO RISCO”</strong> na ferramenta de  antifraude poderão ser <strong>CAPTURADAS</strong> automaticamente pelo sistema. Para isso é preciso configurar no o <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>. Após essa configuração, o status apresentado será <strong>“PAGO”</strong>. Esta venda será então confirmada (capturada) na Cielo.</p>
+<aside class="notice"><a href="#diferença-entre-estorno-e-cancelamento">Difference between reverse charge and cancellation</a></aside>
+
+<h3 id="automatic-capture">Automatic capture</h3>
+
+<p>The “AUTHORIZED”, and “LOW RISK” sales at anti fraud tools can be CAPTURED automatically by the system. For that, it’s necessary configure at Cielo Checkout Backoffice. After this configuration, the status presented will be “PAID”. This sale will be then, confirmed (captured) at Cielo.</p>
 
 <p><img alt="Cancelamento e captura automático" src="images/checkout-cielo-cancelamento-captura-automatico.png" /></p>
 
-<h3 id="cancelamento-automático">Cancelamento Automático</h3>
+<h3 id="automatic-cancellation">Automatic Cancellation</h3>
 
-<p>As vendas “AUTORIZADAS”, e com “ALTO RISCO”  na ferramenta de  antifraude poderão ser CANCELADAS automaticamente pelo sistema. Para isso é preciso configurar no o <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>. Após essa configuração, o status apresentado será “CANCELADO”. Esta venda será então cancelada (desfeita) na Cielo.</p>
+<p>The “AUTHORIZED”, and “HIGH RISK” sales with anti fraud solutions can be CANCELED automatically on Cielo Checkout Backoffice by the system. For that, it’s necessary to configure at Cielo Checkout Backoffice. After this configuration, the status presented will be “CANCELED”. Then this sale will be canceled (undo) at Cielo.</p>
 
 <p><img alt="Cancelamento e captura automático" src="images/checkout-cielo-cancelamento-captura-automatico.png" /></p>
-
-<aside class="warning">Atenção! Você tem a opção de escolher a melhor integração para o seu negócio, a captura/cancelamento manual ou automático é feito diretamente pelo seu Backoffice.</aside>
 
 <p><img alt="Cancelamento e captura automáticos" src="images/checkout-cielo-anti-fraude-cancelamento-captura.png" /></p>
 
-<h2 id="captura/cancelamento-manual">Captura/Cancelamento manual</h2>
+<h2 id="capture/manual-cancellation">Capture/Manual Cancellation</h2>
 
-<aside class="notice">Veja a diferença entre cancelamento e estorno em <a href="#diferença-entre-estorno-e-cancelamento">Diferença entre estorno e cancelamento</a></aside>
+<p>The “AUTHORIZED” sales waits a decision of confirmation or cancellation. This decision has to come according to the fraud analysis, in case of this feature is properly parameterized on integration.</p>
 
-<p>As vendas <strong>“AUTORIZADAS”</strong> aguardam uma decisão de confirmação ou cancelamento. E esta decisão deve vir em conformidade com a análise de fraude, caso esta funcionalidade esteja devidamente parametrizada na integração.</p>
+<p>The sales confirmation must be done by the button CAPTURE, on the “ORDER” tab, on Cielo Checkout Backoffice. After this confirmation, the status will change for “PAID”. This sale will be confirmed (captured) on Cielo.</p>
 
-<p>A confirmação da venda deve ser feita pelo botão <strong>CAPTURAR</strong>, na aba  <strong>“Pedidos”</strong>, no <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>. Após a confirmação, o status mudará para <strong>“PAGO”</strong>. Esta venda será então confirmada (capturada) na Cielo.</p>
+<p>The cancellation must be done by the button CANCEL in the same section on Cielo Checkout Backoffice. After the cancellation, the status will change for “CANCEL”. This sale will be canceled (undone) then on Cielo.</p>
 
-<p>Já o  cancelamento deve ser feito pelo botão <strong>CANCELAR</strong> na mesma seção No <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>. Após o cancelamento, o status mudará para <strong>“CANCELADO”</strong>. Esta venda será então cancelada (desfeita) na Cielo.</p>
+<h2 id="sales-reverse-charge">Sales reverse charge</h2>
 
-<aside class="warning">Atenção! Você tem até 5 dias pra confirmar a venda! Caso isso não seja feito ela não será mais válida na Cielo, e o limite reservado para sua loja/venda será liberado. Este é um procedimento padrão para todas as lojas.</aside>
+<p>In case of the sale has been already confirmed (status PAID) it’s can be yet, subsequently, reversed. For that, you just need click on the button for Order Details</p>
 
-<aside class="warning">Quando o prazo de confirmação da venda autorizada expira, os pedidos passarão automaticamente para o status “EXPIRADO”. Isso acontecerá no sexto dia após a data de autorização (data da venda)</aside>
+<h3 id="sales-with-expired-credit-card">Sales with expired credit card</h3>
 
-<h2 id="estorno-de-venda">Estorno de Venda</h2>
-
-<p>Caso a venda já tenha sido confirmada (status PAGO) ela pode ser ainda, futuramente, estornada. Para isso, basta clicar no botão no Detalhe do Pedido.</p>
-
-<h3 id="vendas-de-cartões-de-crédito-expiradas">Vendas de Cartões de Crédito Expiradas</h3>
-
-<p>Quando o prazo de confirmação da venda autorizada expira, os pedidos passarão automaticamente para o status “EXPIRADO”. Isso acontecerá no sexto dia após a data de autorização (data da venda)</p>
+<p>When the deadline of sales confirmation expires, the orders will go automatically to “EXPIRED” status. This will happens in the sixth day after the authorization date (sales date).</p>
 
 <h2 id="chargeback">Chargeback</h2>
 
-<p>O consumidor (comprador) pode por algum motivo cancelar a compra diretamente com o banco emissor do cartão de crédito. Caso isso ocorra  o lojista receberá da Cielo um aviso de Chargeback de “Não Reconhecimento de compra” ou caso tenha havido uma compra com cartão fraudado, você recebera um aviso de Chargeback por “Fraude”.</p>
+<p>The customer (buyer) can, for any reason, cancel the purchase directly with the issuer bank of credit card. In case of this happens, the retailer will receive from Cielo a warning of Chargeback of “No recognition of purchase” or in case of a purchase with a phished card, you will receive a warning of Chargeback for “Fraud”.</p>
 
 <p><img alt="Chargeback" src="images/checkout-cielo-chargeback.png" /></p>
 
-<p>Essa comunicação não é feita via o <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, mas sim pelo extrato de venda da Cielo, destacada como um ajuste financeiro. O extrato de vendas está disponivel no site da Cielo <a href="https://www.cielo.com.br/minha-conta">www.cielo.com.br na aba “Acessar Minha conta”</a>.</p>
+<p>This communication it’s not done via Cielo Checkout Backoffice, but by the Cielo Sales Statement, highlighted as a financial adjust. The statement of sales will be available at Cielo website www.cielo.com.br on tab “Access My Account”: <a href="https://www.cielo.com.br/minha-conta">www.cielo.com.br na aba “Acessar Minha conta”</a>.</p>
 
 <p><img alt="Acessar minha conta" src="images/acessar-minha-conta.png" /></p>
 
-<p>Após esse recebimento, no próprio site da Cielo  é possivel acessar o <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a> e sinalizar o pedido como tendo recebido um Chargeback, pra seu melhor controle. Basta entrar no Detalhe do Pedido e clicar no botão “ChargeBack”, e seu status passará a ser “CHARGEBACK”.</p>
+<p>After this receipt, the own Cielo website is possible to access the Cielo Checkout Backoffice and signalize the order as receipt a Chargeback, to your better control. You just need enter on “Order Details” and click on the button “Chargeback” and your status will become “CHARGEBACK”.</p>
 
-<h2 id="frete">Frete</h2>
+<h2 id="shipping">Shipping</h2>
 
-<p>O Checkout Cielo suporta diferentes tipos de frete, que podem ser utilizados de maneira diferenciada de acordo com as opções oferecidas em sua loja. As opções disponíveis são:</p>
+<p>The Cielo checkout supports differents types of shipping, that can be used on differents ways according to the option offered in your store. The options available are:</p>
 
 <ul>
 <li>Correios</li>
@@ -1759,21 +1752,19 @@ Ex.: 10 = 10%.</p>
 <li>Sem Frete</li>
 </ul>
 
-<p>A maneira e o tipo de frete que ficará ativo em sua loja é configurado no Backoffice do Checkout Cielo. Devido ao aspecto mais técnico, sugerimos que as configurações de frete sejam feitas pelo desenvolvedor. Diferentes métodos de cálculo de frete:</p>
+<p>The manner and type of shipping that will keep activated in your store is configured on the Cielo Checkout Backoffice. Because of the technical aspect, we suggest that the developers do the shipping settings. Different of shipping calculation:</p>
 
-<h3 id="cálculo-de-frete-próprio">Cálculo de frete próprio</h3>
+<h3 id="shipping-calculation-by-your-own">Shipping calculation by your own</h3>
 
-<p>É possível selecionar 1 ou mais opções de frete. Elas serão apresentadas ao consumidor de acordo com a sua escolha entre as opções disponíveis. O valor selecionado pelo consumidor será adicionado ao valor total da compra.</p>
+<p>It’s possible to select one or more options of shipping. They are presented to the customer according to the choice between the available options. The selected value by customer will be added to the total amount of purchase.</p>
 
-<h3 id="contrato-próprio-com-os-correios">Contrato próprio com os Correios</h3>
+<h3 id="agreement-with-correios">Agreement with Correios</h3>
 
 <ul>
-<li>O Checkout Cielo usará este número de contrato para fazer o cálculo de frete, utilizando assim a tabela de frete que você possui acordada junto aos Correios. Desse modo, o checkout apresentará todas as opções de frete dos Correios (Sedex, Sedex 10, Sedex. Hoje e PAC, entre outras) para o consumidor escolher, de acordo com o CEP de destino digitado. O valor selecionado pelo Consumidor será adicionado ao valor total da compra.</li>
-<li>Usar o cálculo de frete dos Correios do Checkout Cielo. O Checkout Cielo apresentará todas as opções de frete dos Correios (Sedex, Sedex 10, Sedex Hoje e PAC, entre outras) para o consumidor escolher, de acordo com o CEP de destino digitado. O valor selecionado pelo consumidor será adicionado ao valor total da compra.</li>
-<li>Seleção do Frete no carrinho e não no Checkout Cielo. O Checkout Cielo apresentará somente a tela de escolha do meio de pagamento para o consumidor. O valor do frete já estará embutido no valor final</li>
+<li>The Cielo Checkout will use this number of contract to do the shipping calculation, using the shipping table that you have agreed with Correios.</li>
+<li>This way, the checkout will present all shipping options of Correios (Sedex, Sedex 10, Sedex. Today and PAC, etc) to the customer chooses, according to the destiny zip code typed. The value selected by customer will be added to the total purchase amount.</li>
+<li>Selection of shipping on shopping cart and not in Cielo Checkout. The Cielo Checkout only will present the screen of choice of payment method for the customer. The shipping amount is already embed on final amount.</li>
 </ul>
-
-<aside class="notice">O consumidor não poderá alterar o endereço de entrega na tela do Checkout Cielo</aside>
 
       </div>
       <div class="dark-box">
