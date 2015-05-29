@@ -48,6 +48,20 @@ html, body {
   width: 20px;
 }
 
+.languages {
+    padding: 0 15px 0 !important;
+    display: block;
+    height: 14px;
+    margin: 15px 0 0 0 !important;
+}
+
+.languages:after {content: " "; display: block; width:1px;height:1px;clear:both}
+
+    .languages li {display: block; float: left; width: 26px; height: 14px; padding: 0 !important;}
+        .languages .english {background:url("../images/english.png") no-repeat top left;}
+        .languages .portuguese {background:url("../images/portuguese.png") no-repeat top left; margin-left: 15px !important;}
+    .languages li a {overflow: hidden; text-indent: -1000px; display: block; width: 26px; height: 14px;}
+
 @mixin embossed-bg {
   @include background(
     linear-gradient(top,
@@ -206,13 +220,9 @@ html, body {
   }
 
   .toc-footer {
-    margin-top: 3em;
+    padding: 1em 0;
+    margin-top: 1em;
     border-top: 1px dashed $nav-footer-border-color;
-
-    h2 {
-        color: $sub-title;
-        margin-left: 15px;
-    }
 
     li,a {
       color: $nav-text;
