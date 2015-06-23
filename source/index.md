@@ -172,7 +172,7 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
             "Complement": "",
             "District": "Bairro da entrega",
             "City": "Cidade de entrega",
-            "State": "São Paulo"
+            "State": "SP"
         },
         "Services": [
             {
@@ -232,7 +232,7 @@ curl -X POST "https://cieloecommerce.cielo.com.br/api/public/v1/orders" \
                       "Complement": "",
                       "District": "Bairro da entrega",
                       "City": "Cidade de entrega",
-                      "State": "São Paulo"
+                      "State": "SP"
                   },
                   "Services": [
                       {
@@ -286,7 +286,7 @@ $order->Shipping->Address->Number = '123';
 $order->Shipping->Address->Complement = '';
 $order->Shipping->Address->District = 'Bairro da entrega';
 $order->Shipping->Address->City = 'Cidade da entrega';
-$order->Shipping->Address->State = 'São Paulo';
+$order->Shipping->Address->State = 'SP';
 $order->Shipping->Services = array();
 $order->Shipping->Services[0] = new stdClass();
 $order->Shipping->Services[0]->Name = 'Serviço de frete';
@@ -356,7 +356,7 @@ json = dumps({
             "Complement": "",
             "District": "Bairro da entrega",
             "City": "Cidade de entrega",
-            "State": "São Paulo"
+            "State": "SP"
         },
         "Services": [
             {
@@ -423,7 +423,7 @@ request = JSON.generate({
             "Complement" => "",
             "District" => "Bairro da entrega",
             "City" => "Cidade de entrega",
-            "State" => "São Paulo"
+            "State" => "SP"
         },
         "Services" => [
             {
@@ -485,7 +485,7 @@ String json = "{"
             + "            \"Complement\": \"\","
             + "            \"District\": \"Bairro da entrega\","
             + "            \"City\": \"Cidade de entrega\","
-            + "            \"State\": \"São Paulo\""
+            + "            \"State\": \"SP\""
             + "        },"
             + "        \"Services\": ["
             + "            {"
@@ -586,7 +586,7 @@ string json = "{"
             + "            \"Complement\": \"\","
             + "            \"District\": \"Bairro da entrega\","
             + "            \"City\": \"Cidade de entrega\","
-            + "            \"State\": \"São Paulo\""
+            + "            \"State\": \"SP\""
             + "        },"
             + "        \"Services\": ["
             + "            {"
@@ -675,6 +675,59 @@ Há dois tipos de erro que poderão ocorrer durante o processo de integração c
 
 * **Antes da exibição da tela de Checkout** - Significa que houve algum dado erra do no envio da transação. Dados obrigatórios podem estar faltando ou no formato invalido. Aqui o lojista sempre vai receber um e-mail informando o que deu errado;
 * **Depois da Exibição da tela de Checkout (quando a venda é finalizada)** - Significa que há algum impedimento de cadastro que limita a venda. Coisas como afiliação bloqueada, erro nos dados salvos no cadastro ou até problemas no próprio checkout.
+
+### Tabela de erros de integração
+
+|Código|Mensagem|Descrição|Ação|
+|------|--------|---------|----|
+|1|Mensagem inválida|A mensagem XML está fora do formato especificado pelo arquivo ecommerce.xsd|Revisar as informações enviadas na mensagem XML frente às especificações|
+|2|Credenciais inválidas|Impossibilidade de autenticar uma requisição daloja virtual.|Verificar se o número de credenciamento e a chave estão corretos|
+|3|Transação inexistente|Não existe transação para o identificador informado|Rever a aplicação|
+|8|Código de Segurança Inválido|O código de segurança informado na mensagem é inválido.|Revisar as informações de cartão enviadas na mensagem XML|
+|10|Inconsistência no envio do cartão|A transação, com ou sem cartão, está divergente com a permissão de envio dessa informação|Rever se o cadastro da loja permite o envio do cartão ou não|
+|11|Modalidade não habilitada|A transação está configurada com uma modalidade de pagamento não habilitada para a loja|Rever a modalidade de pagamento solicitada|
+|12|Número de parcelas inválido|O número de parcelas solicitado ultrapassa o máximo permitido|Rever a forma de pagamento|
+|13|Flag de autorização automática|Flag de autorização automática incompatível com a inválida forma de pagamento solicitada|Rever as regras de utilização da flag|
+|14|Autorização Direta inválida|A solicitação de Autorização Direta está inválida|Rever as regras de utilização da Autorização Direta|
+|15|Autorização Direta sem Cartão|A solicitação de Autorização Direta está sem cartão|Rever as regras de utilização da Autorização Direta|
+|16|Identificador, TID, inválido|O TID fornecido está duplicado|Rever a aplicação|
+|17|Código de segurança ausente|O código de segurança do cartão não foi enviado (essa informação é sempre obrigatória para Amex)|Rever a aplicação|
+|18|Indicador de código de segurança inconsistente|Uso incorreto do indicador de código de segurança|Revisar as informações de cartão enviadas na mensagem XML|
+|19|URL de Retorno não fornecida|A URL de Retorno é obrigatória, exceto para recorrência e autorização direta.|Revisar as informações enviadas na mensagem XML|
+|20|Status não permite autorização|Não é permitido realizar autorização para o status da transação|Rever as regras de autorização|
+|21|Prazo de autorização vencido|Não é permitido realizar autorização, pois o prazo está vencido|Rever as regras de autorização|
+|22|Número de parcelas inválido|Não é permitido realizar autorização para este número de parcelas|Rever as regras de autorização|
+|25|Encaminhamento a autorização não permitido|O resultado da Autenticação da transação não permite a solicitação de Autorização|Rever as regras de autorização|
+|30|Status inválido para captura|O status da transação não permite captura|Rever as regras de captura|
+|31|Prazo de captura vencido|A captura não pode ser realizada, pois o prazo para captura está vencido|Rever as regras de captura|
+|32|Valor de captura inválido|O valor solicitado para captura não é válido|Rever as regras de captura|
+|33|Falha ao capturar|Não foi possível realizar a captura|Realizar nova tentativa. Persistindo, entrar em contato com o Suporte E-commerce e informar o TID da transação.|
+|34|Valor da taxa de embarque obrigatório|O valor da taxa de embarque é obrigatório se a captura for parcial e a autorização tiver sido feita com taxa de embarque.|Envie novamente a requisição de captura com a tag .|
+|35|Bandeira inválida para utilização da Taxa de Embarque|A bandeira utilizada na transação não tem suporte à taxa de embarque.|Remova a taxa de embarque ou utilize um cartão que suporte esta funcionalidade: Visa ou Mastercard.|
+|36|Produto inválido para utilização da Taxa de Embarque|O produto escolhido não tem suporte à taxa de embarque.|Altere o produto.|
+|40|Prazo de cancelamento vencido|O cancelamento não pode ser realizado, pois o prazo está vencido|Rever as regras de cancelamento.|
+|42|Falha ao cancelar|Não foi possível realizar o cancelamento|Realizar nova tentativa. Persistindo, entrar em contato com o Suporte E-commerce e informar o TID da transação.|
+|43|Valor de cancelamento é maior que valor autorizado.|O valor que está tentando cancelar supera o valor total capturado da transação.|Revisar o valor do cancelamento parcial, pois não pode ser maior que o valor capturado da transação.|
+|51|Recorrência Inválida|As configurações da transação não permitem que a transação recorrente seja efetuada com sucesso.|Verifique se escolheu “Crédito à vista”; Verifique se está enviando somente o token ou somente o cartão de crédito|
+|52|Token Inválido|O token fornecido na requisição de autorização não é válido ou está bloqueado.|Verifique se o Token está correto. Persistindo, entrar em contato com o Suporte.|
+|53|Recorrência não habilitada|O cadastro do lojista não permite o envio de transações recorrentes.|Entre em contato com suporte para saber como habilitar a recorrência no cadastro.|
+|54|Transação com Token inválida|As configurações da transação não permitem que a autorização direta com uso de Token seja efetuada com sucesso.|Verifique se escolheu “Crédito à vista”; Verifique se está enviando somente o token ou somente o cartão de crédito.|
+|55|Número do cartão não fornecido|Foi solicitado criação de Token, porém o número do cartão de crédito não foi fornecido.|Revisar as informações enviadas na mensagem XML frente às especificações|
+|56|Validade do cartão não fornecido|Foi solicitado criação de Token, porém a validade do cartão de crédito não foi fornecida.|Revisar as informações enviadas na mensagem XML frente às especificações.|
+|57|Erro inesperado gerando Token|Falha no sistema ocorrida no momento da geração do Token.|Tentar novamente. Persistindo, entrar em contato com o Suporte.|
+|61|Transação Recorrente Inválida|As configurações da transação recorrente estão inválidas.|Verifique se o produto é Crédito à vista, se o token ou o cartão foram enviados na mensagem.|
+|77|XID não fornecido|Foi solicitado uma autorização com autenticação externa, porém o campo XID não foi fornecido.|Revisar as informações enviadas na mensagem XML frente às especificações.|
+|78|CAVV não fornecido|Foi solicitado uma autorização com autenticação externa, porém o campo CAVV não foi fornecido.|Revisar as informações enviadas na mensagem XML frente às especificações.|
+|86|XID e CAVV não fornecidos|Foi solicitado uma autorização com autenticação externa, porém os campos CAVV e XID não foram fornecidos.|Revisar as informações enviadas na mensagem XML frente às especificações.|
+|87|CAVV com tamanho divergente|Foi solicitado uma autorização com autenticação externa, porém o campo CAVV possue um tamanho divergente.|Revisar as informações enviadas na mensagem XML frente às especificações.|
+|88|XID com tamanho divergente|Foi solicitado uma autorização com autenticação externa, porém o campo XID possue um tamanho divergente.|Revisar as informações enviadas na mensagem XML frente às especificações.|
+|89|ECI com tamanho divergente|Foi solicitado uma autorização com autenticação externa, porém o campo ECI possue um tamanho divergente.|Revisar as informações enviadas na mensagem XML frente às especificações.|
+|90|ECI inválido|Foi solicitado uma autorização com autenticação externa, porém o campo ECI possue um valor inválido.|Revisar as informações enviadas na mensagem XML frente às especificações.|
+|95|Erro interno de autenticação|Falha no sistema|Persistindo, entrar em contato com o Suporte e informar o TID da transação.|
+|97|Sistema indisponível|Falha no sistema|Persistindo, entrar em contato com o Suporte.|
+|98|Timeout|A aplicação não respondeu dentro de 25 segundos|Persistindo, entrar em contato com o Suporte.|
+|99|Erro inesperado|Falha no sistema|Persistindo, entrar em contato com o Suporte e informar o TID da transação.|
+
 
 ## Botão
 
