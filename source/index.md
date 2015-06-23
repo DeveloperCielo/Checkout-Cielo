@@ -603,7 +603,7 @@ using (var writer = new StreamWriter(request.GetRequestStream()))
 	writer.Close();
 }
 
-HttpWebRequest response = (HttpWebResponse) request.GetResponse();
+HttpWebResponse response = (HttpWebResponse) request.GetResponse();
 ```
 
 #### Cabeçalho HTTP
@@ -919,7 +919,7 @@ Parâmetro de requisição com informações sobre endereço e serviço de entre
     "Complement": "",
     "District": "Bairro da entrega",
     "City": "Cidade de entrega",
-    "State": "São Paulo"
+    "State": "SP"
 }
 ```
 
