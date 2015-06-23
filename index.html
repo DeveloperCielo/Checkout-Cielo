@@ -63,6 +63,22 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 
 <p>O Checkout Cielo utiliza uma tecnologia REST que deve ser usada quando houver um <em>“carrinho de compras”</em> a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a compra. Há também opção de integração via botão usada sempre que não houver um <em>“carrinho de compras”</em> em sua loja ou quando se deseja associar uma compra rápida direta a um produto.</p>
 
+<p>Durante a integração com o Checkout Cielo, alguns passos e alguns redirecionamentos ocorrerão. A imagem abaixo ilustra esse fluxo:</p>
+
+<p><img alt="Fluxo de integração Checkout Cielo" src="images/fluxo-checkout.svg" /></p>
+
+<p>Após o portador do cartão (consumidor) selecionar suas compras e apertar o botão “Comprar” da loja virtual já integrada ao Checkout Cielo, o fluxo segue desta forma:</p>
+
+<ol>
+<li>A API da Cielo retorna o <strong>CheckoutURL</strong>, que deverá ser utilizado pela loja para redirecionar o cliente ao ambiente seguro de pagamento da Cielo (página do Checkout Cielo)</li>
+<li>A loja redireciona o cliente para a URL retornada pela Cielo</li>
+<li>O portador do cartão digita os dados de pagamento e conclui a compra</li>
+<li>O Checkout Cielo redireciona o cliente para a URL de Retorno escolhida pela loja, configurada no <a href="/Checkout-Backoffice/">Backoffice Checkout Cielo</a> desta solução</li>
+<li>A loja avisa ao cliente que o processo foi concluído e que ele receberá mais informações sobre a compra e o pagamento por e-mail.</li>
+<li>O Checkout Cielo envia o POST de notificação para a URL de Notificação, configurada no Backoffice</li>
+<li>A loja processa o pedido de compra utilizando os dados do POST de notificação e, se a transação estiver autorizada, libera o pedido.</li>
+</ol>
+
 <h1 id="visão-geral">Visão Geral</h1>
 
 <p>Neste manual será apresentada uma visão geral do Checkout Cielo e o mecanismo tecnológico da integração com carrinho ou com botão. Para todo pedido de compra, a meta é revertê-lo em uma venda. Uma venda com cartão pode ser caracterizada por uma transação autorizada e capturada.</p>
@@ -629,7 +645,7 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 
 <span class="n">request</span><span class="p">.</span><span class="n">Method</span> <span class="p">=</span> <span class="s">"POST"</span><span class="p">;</span>
 <span class="n">request</span><span class="p">.</span><span class="n">Headers</span><span class="p">[</span><span class="s">"Content-Type"</span><span class="p">]</span> <span class="p">=</span> <span class="s">"text/json"</span><span class="p">;</span>
-<span class="n">request</span><span class="p">.</span><span class="n">Headers</span><span class="p">[</span><span class="s">"MerchantKey"</span><span class="p">]</span> <span class="p">=</span> <span class="s">"06eadc0b-2e32-449b-be61-6fd4f1811708"</span><span class="p">;</span>
+<span class="n">request</span><span class="p">.</span><span class="n">Headers</span><span class="p">[</span><span class="s">"MerchantId"</span><span class="p">]</span> <span class="p">=</span> <span class="s">"06eadc0b-2e32-449b-be61-6fd4f1811708"</span><span class="p">;</span>
 
 <span class="kt">string</span> <span class="n">json</span> <span class="p">=</span> <span class="s">"{"</span>
             <span class="p">+</span> <span class="s">"    \"OrderNumber\": \"12344\","</span>
@@ -692,7 +708,7 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
     <span class="n">writer</span><span class="p">.</span><span class="nf">Close</span><span class="p">();</span>
 <span class="p">}</span>
 
-<span class="n">HttpWebRequest</span> <span class="n">response</span> <span class="p">=</span> <span class="p">(</span><span class="n">HttpWebResponse</span><span class="p">)</span> <span class="n">request</span><span class="p">.</span><span class="nf">GetResponse</span><span class="p">();</span>
+<span class="n">HttpWebResponse</span> <span class="n">response</span> <span class="p">=</span> <span class="p">(</span><span class="n">HttpWebResponse</span><span class="p">)</span> <span class="n">request</span><span class="p">.</span><span class="nf">GetResponse</span><span class="p">();</span>
 </code></pre>
 
 <h4 id="cabeçalho-http">Cabeçalho HTTP</h4>
@@ -791,7 +807,7 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
     </span><span class="s2">"Settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"CheckoutUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://cieloecommerce.cielo.com.br/transacional/order/index?id=123"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"Profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CheckoutCielo"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"Version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> 
+        </span><span class="s2">"Version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
@@ -1083,6 +1099,312 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 
 <aside class="notice">Caso seu servidor seja uma distribuição Linux e você tenha familiaridade e acesso ssh, então o <a href="/attachment/cielo.sh">Instalador Linux - cielo.sh</a> poderá ajudá-lo com a instalação. <strong>Apenas utilize o instalador se você souber o que está fazendo</strong>. Na dúvida, entre em contato com o suporte do fornecedor do seu servidor.</aside>
 
+<h1 id="urls-do-checkout-cielo">URLs do Checkout Cielo</h1>
+
+<p>A loja deve configurar as três URLs (notificação, retorno e status) em seu <a href="/Checkout-Backoffice/">Backoffice Checkout Cielo</a>, na aba “Configurações”. Veja a tela abaixo:</p>
+
+<p><img alt="Configurações da loja" src="images/checkout-configuracoes-loja.png" /></p>
+
+<ul>
+<li><strong>URL de Retorno</strong> – Página web na qual o comprador será redirecionado ao fim da compra. Nenhum dado é trocado ou enviado para essa URL. Essa URL apenas leva o comprador, após finalizar a compra, a uma página definida pela loja. Essa página deve ser configurada no <a href="/Checkout-Backoffice/">Backoffice Checkout Cielo</a>, aba “Configurações”</li>
+<li><strong>URL de Notificação</strong> – Ao finalizar uma transação é enviado um POST HTTP com todos os dados da venda para a URL de Notificação, previamente cadastrada no <a href="/Checkout-Backoffice/">Backoffice Checkout Cielo</a>. <strong>O POST de notificação é enviado apenas no momento que a transação é finalizada, independentemente se houve alteração do status da transação</strong>. A URL deve conter uma página preparada para o receber os parâmetros  nos formatos definidos na tabela <a href="#parâmetros-para-integração-com-post-de-notificação">Parâmetros para integração com POST de notificação</a> via a linguagem/modulo com o qual seu site foi desenvolvido, que receberá o POST HTTP.</li>
+<li><strong>URL de Mudança de Status</strong> – Quando um pedido tiver seu status alterado, será enviando um post HTTP para a URL de Mudança de Status, previamente cadastrada no <a href="/Checkout-Backoffice/">Backoffice Checkout Cielo</a>. O POST de mudança de status não contem dados do carrinho, apenas dados de identificação do pedido. A URL deve conter uma pagina preparada para o receber os parâmetros  nos formatos definidos na tabela <a href="#parâmetros-para-integração-com-post-de-mudança-de-status">Parâmetros para integração com o POST de Mudança de Status</a> via a linguagem/modulo com o qual seu site foi desenvolvido.</li>
+</ul>
+
+<h2 id="url-de-retorno">URL de Retorno</h2>
+
+<p>A URL de Retorno é a que a Cielo utilizará para redirecionar o cliente de volta para a loja assim que o pagamento for concluído. Essa página da loja deverá estar preparada para receber o cliente ao fim do fluxo e avisá-lo que o processo foi concluído e que ele receberá mais informações em breve.</p>
+
+<h2 id="url-de-notificação">URL de Notificação</h2>
+
+<p>A URL de Notificação é a que a Cielo utilizará para enviar os dados da transação, do carrinho e da autorização ao fim do fluxo de integração. Ao receber a notificação, a loja terá todas as informações sobre o carrinho, pedido e poderá utilizar essas informações para alimentar seu sistema.</p>
+
+<h3 id="parâmetros-para-integração-com-post-de-notificação">Parâmetros para integração com POST de notificação</h3>
+
+<table><thead>
+<tr>
+<th>Parâmetro</th>
+<th>Descrição</th>
+<th>Tipo do campo</th>
+<th>Tamanho mínimo</th>
+<th>Tamanho máximo</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>checkout_cielo_order_number</td>
+<td>Identificador único gerado pelo CHECKOUT CIELO</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>32</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>Preço unitário do produto, em centavos (ex: R$ 1,00 = 100)</td>
+<td>Numérico</td>
+<td>1</td>
+<td>10</td>
+</tr>
+<tr>
+<td>order_number</td>
+<td>Número do pedido enviado pela loja</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>32</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>Data da criação do pedido (dd/MM/yyyy HH:mm:ss)</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>20</td>
+</tr>
+<tr>
+<td>customer_name</td>
+<td>Nome do consumidor. Se enviado, esse valor já vem preenchido na tela do CHECKOUT CIELO</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>289</td>
+</tr>
+<tr>
+<td>customer_identity</td>
+<td>Identificação do consumidor (CPF ou CNPJ) Se enviado, esse valor já vem preenchido na tela do CHECKOUT CIELO</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>14</td>
+</tr>
+<tr>
+<td>customer_email</td>
+<td>E-mail do consumidor. Se enviado, esse valor já vem preenchido na tela do CHECKOUT CIELO</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>64</td>
+</tr>
+<tr>
+<td>customer_phone</td>
+<td>Telefone do consumidor. Se enviado, esse valor já vem preenchido na tela do CHECKOUT CIELO</td>
+<td>Numérico</td>
+<td>1</td>
+<td>11</td>
+</tr>
+<tr>
+<td>discount_amount</td>
+<td>Valor do desconto fornecido (enviado somente se houver desconto)</td>
+<td>Numérico</td>
+<td>1</td>
+<td>10</td>
+</tr>
+<tr>
+<td>shipping_type</td>
+<td>Modalidade de frete</td>
+<td>Numérico</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>shipping_name</td>
+<td>Nome do frete</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>128</td>
+</tr>
+<tr>
+<td>shipping_price</td>
+<td>Valor do serviço de frete, em centavos (ex: R$ 10,00 = 1000)</td>
+<td>Numérico</td>
+<td>1</td>
+<td>10</td>
+</tr>
+<tr>
+<td>shipping_address_zipcode</td>
+<td>CEP do endereço de entrega</td>
+<td>Numérico</td>
+<td>1</td>
+<td>8</td>
+</tr>
+<tr>
+<td>shipping_address_district</td>
+<td>Bairro do endereço de entrega</td>
+<td>Texto</td>
+<td>1</td>
+<td>64</td>
+</tr>
+<tr>
+<td>shipping_address_city</td>
+<td>Cidade do endereço de entrega</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>64</td>
+</tr>
+<tr>
+<td>shipping_address_state</td>
+<td>Estado de endereço de entrega</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>64</td>
+</tr>
+<tr>
+<td>shipping_address_line1</td>
+<td>Endereço de entrega</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>256</td>
+</tr>
+<tr>
+<td>shipping_address_line2</td>
+<td>Complemento do endereço de entrega</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>256</td>
+</tr>
+<tr>
+<td>shipping_address_number</td>
+<td>Número do endereço de entrega</td>
+<td>Numérico</td>
+<td>1</td>
+<td>8</td>
+</tr>
+<tr>
+<td>payment_method_type</td>
+<td>Cód. do tipo de meio de pagamento</td>
+<td>Numérico</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>payment_method_brand</td>
+<td>Bandeira (somente para transações com meio de pagamento cartão de crédito)</td>
+<td>Numérico</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>payment_method_bank</td>
+<td>Banco emissor (Para transações de Boleto e Débito Automático)</td>
+<td>Numérico</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>payment_maskedcredicard</td>
+<td>Cartão Mascarado (Somente para transações com meio de pagamento cartão de crédito)</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>20</td>
+</tr>
+<tr>
+<td>payment_installments</td>
+<td>Número de parcelas</td>
+<td>Numérico</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>payment_antifrauderesult</td>
+<td>Status das transações de cartão de Crédito no Antifraude</td>
+<td>Numérico</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>payment_boletonumber</td>
+<td>Numero do boleto gerado</td>
+<td>String</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>payment_boletoexpirationdate</td>
+<td>Data de vencimento para transações realizadas com boleto bancário</td>
+<td>Numérico</td>
+<td>1</td>
+<td>10</td>
+</tr>
+<tr>
+<td>payment_status</td>
+<td>Status da transação</td>
+<td>Numérico</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>tid</td>
+<td>TID Cielo gerado no momento da autorização da transação</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>32</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">A página destino do POST de Notificação deve seguir a formatação dos parâmetros com todos os nomes em MINUSCULO</aside>
+
+<h3 id="recebimento-do-post-de-notificação">Recebimento do POST de notificação</h3>
+
+<ul>
+<li>Quando acessada pelo servidor da Braspag, enviando o POST da tabela acima, a URL cadastrada para Notificação deverá exibir um código informando que recebeu a mudança de status e a processou com sucesso. <strong>Código:</strong><code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code></li>
+<li>Se a URL for acessada pelo nosso servidor e não exibir o código de confirmação, o servidor irá tentar novamente por três vezes, a cada hora. Caso o <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code> ainda não seja exibido, será entendido que o servidor da loja não responde.</li>
+<li>A URL de Notificação somente pode utilizar <strong>porta 80</strong> (padrão para http) ou <strong>porta 443</strong> (padrão para https).</li>
+</ul>
+
+<h2 id="url-de-mudança-de-status">URL de Mudança de Status</h2>
+
+<p>A URL de Mudança de Status é a que a Cielo utilizará para notificar a loja sobre as mudanças de status das transações. Uma mudança de status, de Autorizado para Cancelado, por exemplo, pode ocorrer a qualquer momento. Se o administrador da loja cancelar um pedido no Backoffice Cielo, então a Cielo enviará para a URL de Mudança de Status uma notificação semelhante a enviada para a URL de notificação. A única diferença dessa notificação é que não conterá os dados do carrinho, mas apenas do pedido e o novo status da autorização.</p>
+
+<aside class="warning">A URL de mudança de status é fornecida pelo lojista. Nessa URL serão postadas as informações de todos os pedidos que tiverem seu status alterado.</aside>
+
+<h3 id="parâmetros-para-integração-com-post-de-mudança-de-status">Parâmetros para integração com POST de Mudança de Status</h3>
+
+<table><thead>
+<tr>
+<th>Parâmetro</th>
+<th>Descrição</th>
+<th>Tipo do campo</th>
+<th>Tamanho mínimo</th>
+<th>Tamanho máximo</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>checkout_cielo_order_number</td>
+<td>Identificador único gerado pelo CHECKOUT CIELO.</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>32</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>Preço unitário do produto, em centavos (ex: R$ 1,00 = 100)</td>
+<td>Numérico</td>
+<td>1</td>
+<td>10</td>
+</tr>
+<tr>
+<td>order_number</td>
+<td>Número do pedido enviado pela loja</td>
+<td>Alfanumérico</td>
+<td>1</td>
+<td>32</td>
+</tr>
+<tr>
+<td>payment_status</td>
+<td>Status da transação</td>
+<td>Numérico</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody></table>
+
+<h3 id="recebimento-do-post-de-mudança-de-status">Recebimento do POST de Mudança de Status</h3>
+
+<ul>
+<li>Quando acessada pelo servidor da Braspag, enviando o POST, a URL cadastrada para Retorno de Mudança de Status, deverá exibir um código informando que recebeu a mudança de status e a processou com sucesso: <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code></li>
+<li>Se a URL de mudança de status da loja for acessada pelo servidor da Braspag não exibir o código de confirmação, o servidor irá tentar novamente por três vezes.</li>
+<li>Caso o <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code> ainda não seja exibido, será entendido que o servidor da loja não responde, e será enviado um e-mail ao responsável pela loja, informando que o pedido em questão foi pago.</li>
+<li>Ou seja, o código fonte da página indicando Sucesso deverá conter APENAS <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code> <strong>e nada mais</strong>.</li>
+</ul>
+
+<aside class="notice">Na tela de pedidos, dentro de cada transação, há a opção de reenvio do POST de mudança de status. Basta clicar nos botões azuis, marcados na imagem abaixo</aside>
+
+<p><img alt="Reenvio de notificação" src="images/checkout-reenviar-notificacao.png" /></p>
+
 <h1 id="parâmetros-de-integração">Parâmetros de integração</h1>
 
 <h2 id="cart">Cart</h2>
@@ -1330,7 +1652,7 @@ Ex.: 10 = 10%.</p>
     </span><span class="s2">"Complement"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
     </span><span class="s2">"District"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bairro da entrega"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"City"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cidade de entrega"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"State"</span><span class="p">:</span><span class="w"> </span><span class="s2">"São Paulo"</span><span class="w">
+    </span><span class="s2">"State"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SP"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
