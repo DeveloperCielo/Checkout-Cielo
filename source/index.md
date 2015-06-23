@@ -540,7 +540,7 @@ HttpWebRequest request = (HttpWebRequest)
 
 request.Method = "POST";
 request.Headers["Content-Type"] = "text/json";
-request.Headers["MerchantKey"] = "06eadc0b-2e32-449b-be61-6fd4f1811708";
+request.Headers["MerchantId"] = "06eadc0b-2e32-449b-be61-6fd4f1811708";
 
 string json = "{"
             + "    \"OrderNumber\": \"12344\","
@@ -634,7 +634,7 @@ HttpWebRequest response = (HttpWebResponse) request.GetResponse();
     "Settings": {
         "CheckoutUrl": "https://cieloecommerce.cielo.com.br/transacional/order/index?id=123",
         "Profile": "CheckoutCielo",
-        "Version": 1 
+        "Version": 1
     }
 }
 ```
