@@ -6,18 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <link href="https://www.cielo.com.br/wps/contenthandler/!ut/p/digest!3SvhW8ACOLyj_90YHxPhKQ/war/cielo-tema/themes/estatico/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <title>Manual Checkout Cielo</title>
+    <title>Manual de Integração EDI</title>
 
     <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
       <script src="javascripts/all.js" type="text/javascript"></script>
 
-      <script>
-        $(function() {
-          setupLanguages(["json","shell","php","ruby","python","java","csharp"]);
-        });
-      </script>
+    <script async src='//www.google-analytics.com/analytics.js'></script>
+    <script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+
+    ga('create', 'UA-8516386-7', {'cookieDomain': 'auto',
+                                  'alwaysSendReferrer': true});
+
+    ga("set", "transport", "beacon");
+    ga('send', 'pageview');
+    </script>
   </head>
 
   <body class="index">
@@ -28,2086 +33,1812 @@
       </span>
     </a>
     <div class="tocify-wrapper">
-      <ul class="languages">
-          <li class="english"><a href="english.html" title="English version">English version</a></li>
-          <li class="portuguese"><a href="index.html" title="Versão em português">Versão em português</a></li>
-      </ul>
       <img src="images/logo.png" />
-        <div class="lang-selector">
-              <a href="#" data-language-name="json">JSON</a>
-              <a href="#" data-language-name="shell">Shell</a>
-              <a href="#" data-language-name="php">PHP</a>
-              <a href="#" data-language-name="ruby">Ruby</a>
-              <a href="#" data-language-name="python">Python</a>
-              <a href="#" data-language-name="java">Java</a>
-              <a href="#" data-language-name="csharp">C#</a>
-        </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
         </div>
         <ul class="search-results"></ul>
       <div id="toc">
       </div>
-        <ul class="toc-footer">
-            <li><a href='/Checkout-Backoffice/'>Backoffice Cielo</a></li>
-            <li><a href='/Checkout-FAQ/'>Perguntas Frequêntes</a></li>
-        </ul>
+      <div class="links-footer">
+          <ul class="link-list">
+              <li class="facebook"><a href="https://www.facebook.com/cielobr">Cielo</a></li>
+              <li class="twitter"><a href="https://twitter.com/Cielo_br">Cielo</a></li>
+              <li class="github"><a href="https://github.com/developercielo">Cielo</a></li>
+              <li class="cielo"><a href="https://www.cielo.com.br/desenvolvedores">Cielo</a></li>
+          </ul>
+      </div>
     </div>
     <div class="page-wrapper">
-      <div class="dark-box"></div>
-      <div class="content">
-        <h1 id="manual-checkout-cielo">Manual Checkout Cielo</h1>
+      <div class="content no-dark-box">
+        <h1 id="introdução">Introdução</h1>
 
-<p>O objetivo desta documentação é orientar o desenvolvedor sobre o método de integração da API Checkout Cielo, solução simplificada na qual o consumidor é direcionado para uma página de pagamento online segura da Cielo, proporcionando um alto nível de confiança, dentro das mais rígidas normas de segurança (PCI). Em linhas gerais, o Checkout Cielo é uma solução de pagamento projetada para aumentar a conversão das vendas, simplificar o processo de compra, reduzir fraudes e custos operacionais.
-Nesta documentação estão descritas todas as funcionalidades desta integração, os parâmetros técnicos e principalmente os códigos de exemplos para facilitar o seu desenvolvimento. </p>
+<p>O EDI - Eletronic Data Interchange é um canal de captura e processamento de grandes volumes de transações em lote, por meio de troca de arquivos entre o cliente, o parceiro de transmissão de arquivos (VANs) e a Cielo.</p>
 
-<p>O Checkout Cielo utiliza uma tecnologia REST que deve ser usada quando houver um <em>“carrinho de compras”</em> a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a compra. Há também opção de integração via botão usada sempre que não houver um <em>“carrinho de compras”</em> em sua loja ou quando se deseja associar uma compra rápida direta a um produto.</p>
+<p>Este canal é indicado para:</p>
 
-<p>Durante a integração com o Checkout Cielo, alguns passos e alguns redirecionamentos ocorrerão. A imagem abaixo ilustra esse fluxo:</p>
+<ul>
+<li>Autorizar transações de Crédito e Parcelado, principalmente transaçõesrecorrentes, ex.: Editoras, Seguradoras, Academias, etc.</li>
+<li>Cancelar transações Crédito, Parcelado e Débito independe do canal de autorização: Máquina / TEF / E-commerce / Mobile ou EDI.</li>
+<li>Captura para o processamento, em Base II, das transações de Cias Aéreas, enviadas pela IATA (International Air Transport Association).</li>
+<li>Transmissão do extrato eletrônico (manual de integração especifico)</li>
+</ul>
 
-<p><img alt="Fluxo de integração Checkout Cielo" src="images/fluxo-checkout.svg" /></p>
+<h2 id="público-alvo">Público Alvo</h2>
 
-<p>Após o portador do cartão (consumidor) selecionar suas compras e apertar o botão “Comprar” da loja virtual já integrada ao Checkout Cielo, o fluxo segue desta forma:</p>
+<p>Não há restrição para utilização deste Canal. Porém, as necessidades de negócio do cliente podem ou não viabilizar a utilização deste canal de captura.</p>
+
+<p>Conforme descrito acima, algumas características se fazem necessárias:</p>
+
+<ul>
+<li>Autorização de transações: indicado para clientes com necessidade de autorizar grandes volumes de transações, principalmente transações recorrentes (academias, seguros, assinaturas, etc).</li>
+<li>Cancelamento de transações: indicado para clientes com necessidade de cancelar grandes volumes de transações, de forma automatizada.</li>
+<li>Transações IATA: utilizado por Cias Aéreas internacionais que fazem parte do sistema IATA e GDS.</li>
+<li>Extrato eletrônico: indicado para clientes com grande volume de transações, com objetivo de facilitar a conciliação financeira.</li>
+</ul>
+
+<h2 id="edi-em-4-passos">EDI em 4 passos</h2>
+
+<p>Para utilizar o canal de captura EDI, são necessários quatro passos:</p>
 
 <ol>
-<li>A API da Cielo retorna o <strong>CheckoutURL</strong>, que deverá ser utilizado pela loja para redirecionar o cliente ao ambiente seguro de pagamento da Cielo (página do Checkout Cielo)</li>
-<li>A loja redireciona o cliente para a URL retornada pela Cielo</li>
-<li>O portador do cartão digita os dados de pagamento e conclui a compra</li>
-<li>O Checkout Cielo redireciona o cliente para a URL de Retorno escolhida pela loja, configurada no <a href="/Checkout-Backoffice/">Backoffice Checkout Cielo</a> desta solução</li>
-<li>A loja avisa ao cliente que o processo foi concluído e que ele receberá mais informações sobre a compra e o pagamento por e-mail.</li>
-<li>O Checkout Cielo envia o POST de notificação para a URL de Notificação, configurada no Backoffice</li>
-<li>A loja processa o pedido de compra utilizando os dados do POST de notificação e, se a transação estiver autorizada, libera o pedido.</li>
+<li>Credenciamento: o cliente precisa ser credenciado a Cielo;</li>
+<li>Integração: realizar desenvolvimento de acordo com o manual para se integrar ao EDI. Obs.: o tamanho do desenvolvimento dependerá do grau de integração desejado com seus sistemas de gestão (ERP, Automação Comercial, etc);</li>
+<li>Homologação: um arquivo teste pode ser enviado à Ilha de Atendimento EDI para validação da estrutura do arquivo;</li>
+<li>Produção: enviar o arquivo para processamento.</li>
 </ol>
 
-<h1 id="visão-geral">Visão Geral</h1>
+<p><img alt="Passos" src="images/edi-passos.png" /></p>
 
-<p>Neste manual será apresentada uma visão geral do Checkout Cielo e o mecanismo tecnológico da integração com carrinho ou com botão. Para todo pedido de compra, a meta é revertê-lo em uma venda. Uma venda com cartão pode ser caracterizada por uma transação autorizada e capturada.</p>
+<h2 id="suporte-técnico">Suporte Técnico</h2>
 
-<aside class="warning">Uma transação autorizada somente gera o crédito para o lojista se ela for capturada (ou confirmada).</aside>
+<p>A solução de captura EDI conta com uma Ilha de Atendimento para suporte, responsável por:</p>
 
-<p>Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento dos processos funcionais que farão parte do cotidiano da loja, como o acompanhamento das movimentações financeiras, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  extrato de cobrança, entre outros. Veja o material complementar sobre o <a href="http://developercielo.github.io/Checkout-Backoffice/">BackOffice Checkout Cielo</a>. </p>
+<ol>
+<li>Suporte à integração e homologação pelo cliente;</li>
+<li>Suporte de 1º nível na fase de produção;</li>
+<li>Interface com as áreas internas Cielo e com parceiros VAN’s (TIVIT e GXS), para suporte de 2º e 3º nível.</li>
+</ol>
 
-<h2 id="considerações-sobre-a-integração">Considerações sobre a integração</h2>
+<h2 id="produtos-e-bandeiras-habilitados-para-o-canal-edi:">Produtos e Bandeiras habilitados para o CANAL EDI:</h2>
+
+<p><img alt="Bandeiras" src="images/edi-bandeiras.png" /></p>
+
+<table><thead>
+<tr>
+<th>Produto/Serviço</th>
+<th>Autorização em lote</th>
+<th>Cancelamento em lote</th>
+<th>IATA Submissão Base 2</th>
+<th>IATA Cancelamento</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Débito</td>
+<td>Não</td>
+<td>Sim</td>
+<td>Não</td>
+<td>Sim*</td>
+</tr>
+<tr>
+<td>Crédito a Vista</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Sim</td>
+</tr>
+<tr>
+<td>Parcelado Loja</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Sim</td>
+</tr>
+</tbody></table>
+
+<h3 id="exceções">Exceções</h3>
 
 <ul>
-<li>O cadastro da loja deve estar ativo junto à Cielo.</li>
-<li>Deve-se definir um timeout adequado nas requisições HTTP à Cielo; recomendamos 30 segundos.</li>
-<li>O certificado Root da entidade certificadora (CA) de nosso Web Service deve estar cadastrado na Truststore a ser utilizada. Como nossa certificadora é de ampla aceitação no mercado, é provável que ela já esteja registrada na Truststore do próprio sistema operacional. Veja a seção <a href="#certificado-extended-validation">Certificado Extended Validation</a> para mais informações.</li>
-<li>Os valores monetários são sempre tratados como valores inteiros, sem representação das casas decimais, sendo que os dois últimos dígitos são considerados como os centavos. Exemplo: R$ 1.286,87 é representado como 128687; R$ 1,00 é representado como 100.</li>
+<li>A bandeira ELO não está habilitada para a modalidade IATA.</li>
+<li>*Bandeiras no modelo de VANs (Amex, Vouchers, etc.) não estão habilitadas para o canal EDI.</li>
 </ul>
 
-<aside class="notice">Veja a seção <a href="#certificado-extended-validation">Certificado Extended Validation</a> para informações sobre os certificados Cielo</aside>
+<h1 id="conceitos">Conceitos</h1>
 
-<h2 id="produtos-e-serviços">Produtos e serviços</h2>
+<h2 id="o-que-é?">O que é?</h2>
 
-<p>A versão atual do Checkout Cielo possui suporte às seguintes bandeiras e produtos:</p>
+<p>O EDI - Eletronic Data Interchange, é um canal de captura e processamento de transações em lote, por meio de troca de arquivos entre o cliente o parceiro de transmissão de arquivos (VANs) e a Cielo.</p>
 
-<table><thead>
-<tr>
-<th>Bandeira</th>
-<th>Crédito à vista</th>
-<th>Crédito parcelado Loja</th>
-<th>Débito</th>
-<th>Voucher</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Visa</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Não</td>
-</tr>
-<tr>
-<td>Master Card</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Não</td>
-</tr>
-<tr>
-<td>American Express</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Não</td>
-<td>Não</td>
-</tr>
-<tr>
-<td>Elo</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Não</td>
-<td>Não</td>
-</tr>
-<tr>
-<td>Diners Club</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Não</td>
-<td>Não</td>
-</tr>
-<tr>
-<td>Discover</td>
-<td>Sim</td>
-<td>Não</td>
-<td>Não</td>
-<td>Não</td>
-</tr>
-<tr>
-<td>JCB</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Não</td>
-<td>Não</td>
-</tr>
-<tr>
-<td>Aura</td>
-<td>Sim</td>
-<td>Sim</td>
-<td>Não</td>
-<td>Não</td>
-</tr>
-</tbody></table>
-
-<h2 id="histórico-de-versões">Histórico de versões</h2>
+<h2 id="para-que-serve?">Para que serve?</h2>
 
 <ul>
-<li><strong>Versão 1.3</strong> - 21/01/2015
-
-<ul>
-<li>Troca de nomes – Solução Integrada para Checkout Cielo</li>
-</ul></li>
-<li><strong>Versão 1.2</strong> - 09/01/2015
-
-<ul>
-<li>Inclusão dos seguintes parâmetros no Post de notificação: <code class="prettyprint">discount_amount</code>, <code class="prettyprint">shipping_address_state</code>, <code class="prettyprint">payment_boleto</code>, <code class="prettyprint">number</code>, <code class="prettyprint">tid</code>;</li>
-<li>Alteração do parâmetro numero do pedido no Post de Mudança de Status</li>
-</ul></li>
-<li><strong>Versão 1.1</strong> - 08/01/2015
-
-<ul>
-<li>Alinhamento dos fluxos de pagamento; inclusão de informações sobre os meios de pagamento; inclusão da tela de configurações do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a></li>
-</ul></li>
-<li><strong>Versão 1.0</strong> - 24/11/2014
-
-<ul>
-<li>Versão inicial</li>
-</ul></li>
+<li>Autorizar transações de cartão não presente, principalmente transações recorrentes, ex.: Editoras, Seguradoras, Academias, etc.</li>
+<li>Cancelar transações de cartão, presente ou não presente, independe do canal onde foi realizada a autorização: Máquina, TEF, E-Commerce ou EDI.</li>
+<li>Transações IATA: utilizado por Cias Aéreas internacionais que fazem parte do sistema IATA e GDS.</li>
+<li>Extrato eletrônico: indicado para clientes com grande volume de transações, com objetivo de facilitar a conciliação financeira.</li>
 </ul>
 
-<h2 id="suporte-cielo">Suporte Cielo</h2>
-
-<p>Após a leitura deste manual, caso ainda persistam dúvidas (técnicas ou não), a Cielo disponibiliza o suporte técnico 24 horas por dia, 7 dias por semana em idiomas (Português e Inglês), nos seguintes contatos:</p>
+<h2 id="como-funciona?">Como funciona?</h2>
 
 <ul>
-<li>+55 4002-9700 – <em>Capitais e Regiões Metropolitanas</em></li>
-<li>+55 0800-570-1700 – <em>Demais Localidades</em></li>
-<li>+55 11 2860-1348 – <em>Internacionais</em>
-
-<ul>
-<li>Opção 1 – <em>Suporte técnico;</em></li>
-<li>Opção 2 – <em>Credenciamento E-commerce.</em></li>
-</ul></li>
-<li>Email: <a href="mailto:cieloecommerce@cielo.com.br">cieloecommerce@cielo.com.br</a></li>
+<li>O cliente, após credenciamento na Cielo, solicita os documentos de integração e a criação de uma caixa postal para envio dos arquivos EDI.</li>
+<li>Desenvolve a integração entre seus sistemas de gestão, backoffice ou automação comercial para formatar as transações de acordo com o layout EDI (arquivo de transações).</li>
+<li>A Ilha de Atendimento EDI e o parceiro Cielo (VAN), prestam os suportes necessários ao cliente durante a fase de integração.</li>
+<li>O cliente envia os arquivos de transação, no formato (layout) específico do EDI, para a caixa postal eletrônica. Exceção: transações IATA possuem layout próprio.</li>
+<li>Estas transações são enviadas aos sistemas da Cielo, que realizará o processamento de segunda-feira a sábado e envio destas transações às respectivas bandeiras de cartão, para autorização ou cancelamento das mesmas.</li>
+<li>A Cielo retorna o arquivo ao cliente em até 2 dias, com o resultado do processamento de todas as transações (aprovadas ou negadas com seus motivos).</li>
 </ul>
 
-<h1 id="integração">Integração</h1>
-
-<h2 id="carrinho-de-compras">Carrinho de Compras</h2>
-
-<p>Este  tipo  de  integração deve  ser  usada sempre  que  houver  um  “carrinho  de  compras”  a  ser  enviado,  ou  seja,  no  caso  do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar a um carrinho e depois então finalizar a venda. Se você não possui um carrinho de compras implementado, veja a seção de <a href="#integração-via-botão">integração via botão</a> Checkout Cielo.</p>
-
-<h3 id="endpoint">Endpoint</h3>
-
-<p>Endpoint é a URL para onde as requisições com os dados do carrinho serão enviadas. Todas as requisições deverão ser enviadas utilizando o método HTTP POST, para o endpoint <code class="prettyprint">https://cieloecommerce.cielo.com.br/api/public/v1/orders</code>.</p>
-
-<h3 id="autenticação-da-loja">Autenticação da loja</h3>
-<pre><code class="highlight shell">-H <span class="s2">"MerchantId: 00000000-0000-0000-0000-000000000000"</span> <span class="se">\</span>
-</code></pre>
-<pre><code class="highlight php"><span class="cp">&lt;?php</span>
-<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'MerchantId: 00000000-0000-0000-0000-000000000000'</span><span class="p">));</span>
-</code></pre>
-<pre><code class="highlight ruby"><span class="n">headers</span>  <span class="o">=</span> <span class="p">{</span><span class="ss">:content_type</span> <span class="o">=&gt;</span> <span class="s2">"application/json"</span><span class="p">,</span><span class="ss">:merchantid</span> <span class="o">=&gt;</span> <span class="s2">"00000000-0000-0000-0000-000000000000"</span><span class="p">}</span>
-</code></pre>
-<pre><code class="highlight python"><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">"Content-Type"</span><span class="p">:</span> <span class="s">"application/json"</span><span class="p">,</span> <span class="s">"MerchantId"</span><span class="p">:</span> <span class="s">"00000000-0000-0000-0000-000000000000"</span><span class="p">}</span>
-</code></pre>
-<pre><code class="highlight java"><span class="n">connection</span><span class="o">.</span><span class="na">addRequestProperty</span><span class="o">(</span><span class="s">"MerchantId"</span><span class="o">,</span> <span class="s">"0000000-0000-0000-0000-000000000000"</span><span class="o">);</span>
-</code></pre>
-<pre><code class="highlight csharp"><span class="n">request</span><span class="p">.</span><span class="n">Headers</span><span class="p">[</span><span class="s">"MerchantId"</span><span class="p">]</span> <span class="p">=</span> <span class="s">"00000000-0000-0000-0000-000000000000"</span><span class="p">;</span>
-</code></pre>
-
-<p>Por se tratar de transações, todas as requisições enviadas para a Cielo deverão ser autenticadas pela loja. A autenticação consiste no envio do Merchant Id, que é o identificador único da loja fornecido pela Cielo após a afiliação da loja. A autenticação da loja deverá ser feita através do envio do campo de cabeçalho HTTP <code class="prettyprint">MerchandId</code>, como ilustrado abaixo e ao lado:</p>
-
-<p><code class="prettyprint">MerchantId: 00000000-0000-0000-0000-000000000000</code></p>
-
-<aside class="notice">
-Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu MerchantId.
-</aside>
-
-<h3 id="requisição">Requisição</h3>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"OrderNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12344"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"SoftDescriptor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nome que aparecerá na fatura"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Cart"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"Discount"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Percent"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"Value"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-        </span><span class="p">},</span><span class="w">
-        </span><span class="s2">"Items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nome do produto"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"Description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Descrição do produto"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"UnitPrice"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"Quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Asset"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"Sku"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sku do item no carrinho"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"Weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-        </span><span class="p">]</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"Shipping"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"SourceZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14400000"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"TargetZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11000000"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"Address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"Street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Endereço de entrega"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"Number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"Complement"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"District"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bairro da entrega"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"City"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cidade de entrega"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"State"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SP"</span><span class="w">
-        </span><span class="p">},</span><span class="w">
-        </span><span class="s2">"Services"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Serviço de frete"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"Price"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"Deadline"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-        </span><span class="p">]</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"Payment"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"BoletoDiscount"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"DebitDiscount"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"Customer"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"Identity"</span><span class="p">:</span><span class="w"> </span><span class="mi">11111111111</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"FullName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fulano Comprador da Silva"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"Email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fulano@email.com"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"Phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11999999999"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"Options"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"AntifraudEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<pre><code class="highlight shell">curl -X POST <span class="s2">"https://cieloecommerce.cielo.com.br/api/public/v1/orders"</span> <span class="se">\</span>
-     -H <span class="s2">"MerchantId: 00000000-0000-0000-0000-000000000000"</span> <span class="se">\</span>
-     -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
-     -d <span class="s1">'{
-             "OrderNumber": "12344",
-             "SoftDescriptor": "Nome que aparecerá na fatura",
-             "Cart": {
-                  "Discount": {
-                      "Type": "Percent",
-                      "Value": 10
-                  },
-                  "Items": [
-                      {
-                          "Name": "Nome do produto",
-                          "Description": "Descrição do produto",
-                          "UnitPrice": 100,
-                          "Quantity": 2,
-                          "Type": "Asset",
-                          "Sku": "Sku do item no carrinho",
-                          "Weight": 200
-                      }
-                  ]
-             },
-             "Shipping": {
-                  "Type": "Correios",
-                  "SourceZipCode": "14400000",
-                  "TargetZipCode": "11000000",
-                  "Address": {
-                      "Street": "Endereço de entrega",
-                      "Number": "123",
-                      "Complement": "",
-                      "District": "Bairro da entrega",
-                      "City": "Cidade de entrega",
-                      "State": "SP"
-                  },
-                  "Services": [
-                      {
-                          "Name": "Serviço de frete",
-                          "Price": 123,
-                          "Deadline": 15
-                      }
-                  ]
-             },
-             "Payment": {
-                  "BoletoDiscount": 0,
-                  "DebitDiscount": 10
-             },
-             "Customer": {
-                  "Identity": 11111111111,
-                  "FullName": "Fulano Comprador da Silva",
-                  "Email": "fulano@email.com",
-                  "Phone": "11999999999"
-             },
-             "Options": {
-                  "AntifraudEnabled": false
-             }
-         }'</span>
-</code></pre>
-<pre><code class="highlight php"><span class="cp">&lt;?php</span>
-<span class="nv">$order</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">OrderNumber</span> <span class="o">=</span> <span class="s1">'1234'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">SoftDescriptor</span> <span class="o">=</span> <span class="s1">'Nome que aparecerá na fatura'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Discount</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Discount</span><span class="o">-&gt;</span><span class="na">Type</span> <span class="o">=</span> <span class="s1">'Percent'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Discount</span><span class="o">-&gt;</span><span class="na">Value</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Name</span> <span class="o">=</span> <span class="s1">'Nome do produto'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Description</span> <span class="o">=</span> <span class="s1">'Descrição do produto'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">UnitPrice</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Quantity</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Type</span> <span class="o">=</span> <span class="s1">'Asset'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Sku</span> <span class="o">=</span> <span class="s1">'Sku do item no carrinho'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Cart</span><span class="o">-&gt;</span><span class="na">Items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Weight</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Type</span> <span class="o">=</span> <span class="s1">'Correios'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">SourceZipCode</span> <span class="o">=</span> <span class="s1">'14400000'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">TargetZipCode</span> <span class="o">=</span> <span class="s1">'11000000'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Address</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Address</span><span class="o">-&gt;</span><span class="na">Street</span> <span class="o">=</span> <span class="s1">'Endereço de entrega'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Address</span><span class="o">-&gt;</span><span class="na">Number</span> <span class="o">=</span> <span class="s1">'123'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Address</span><span class="o">-&gt;</span><span class="na">Complement</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Address</span><span class="o">-&gt;</span><span class="na">District</span> <span class="o">=</span> <span class="s1">'Bairro da entrega'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Address</span><span class="o">-&gt;</span><span class="na">City</span> <span class="o">=</span> <span class="s1">'Cidade da entrega'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Address</span><span class="o">-&gt;</span><span class="na">State</span> <span class="o">=</span> <span class="s1">'SP'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Services</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Services</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Services</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Name</span> <span class="o">=</span> <span class="s1">'Serviço de frete'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Services</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">Price</span> <span class="o">=</span> <span class="mi">123</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Shipping</span><span class="o">-&gt;</span><span class="na">Services</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">DeadLine</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Payment</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Payment</span><span class="o">-&gt;</span><span class="na">BoletoDiscount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Payment</span><span class="o">-&gt;</span><span class="na">DebitDiscount</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Customer</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Customer</span><span class="o">-&gt;</span><span class="na">Identity</span> <span class="o">=</span> <span class="mi">11111111111</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Customer</span><span class="o">-&gt;</span><span class="na">FullName</span> <span class="o">=</span> <span class="s1">'Fulano Comprador da Silva'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Customer</span><span class="o">-&gt;</span><span class="na">Email</span> <span class="o">=</span> <span class="s1">'fulano@email.com'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Customer</span><span class="o">-&gt;</span><span class="na">Phone</span> <span class="o">=</span> <span class="s1">'11999999999'</span><span class="p">;</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Options</span> <span class="o">=</span> <span class="k">new</span> <span class="k">stdClass</span><span class="p">();</span>
-<span class="nv">$order</span><span class="o">-&gt;</span><span class="na">Options</span><span class="o">-&gt;</span><span class="na">AntifraudEnabled</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-
-<span class="nv">$curl</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">();</span>
-
-<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_URL</span><span class="p">,</span> <span class="s1">'https://cieloecommerce.cielo.com.br/api/public/v1/orders'</span><span class="p">);</span>
-<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_SSL_VERIFYPEER</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
-<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_POST</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$order</span><span class="p">));</span>
-<span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$curl</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
-    <span class="s1">'MerchantId: 00000000-0000-0000-0000-000000000000'</span><span class="p">,</span>
-    <span class="s1">'Content-Type: application/json'</span>
-<span class="p">));</span>
-
-<span class="nv">$response</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$curl</span><span class="p">);</span>
-
-<span class="nb">curl_close</span><span class="p">(</span><span class="nv">$curl</span><span class="p">);</span>
-
-<span class="nv">$json</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$response</span><span class="p">);</span>
-</code></pre>
-<pre><code class="highlight python"><span class="kn">from</span> <span class="nn">urllib2</span> <span class="kn">import</span> <span class="n">Request</span><span class="p">,</span> <span class="n">urlopen</span>
-<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dumps</span>
-
-<span class="n">json</span> <span class="o">=</span> <span class="n">dumps</span><span class="p">({</span>
-    <span class="s">"OrderNumber"</span><span class="p">:</span> <span class="s">"12344"</span><span class="p">,</span>
-    <span class="s">"SoftDescriptor"</span><span class="p">:</span> <span class="s">"Nome que aparecerá na fatura"</span><span class="p">,</span>
-    <span class="s">"Cart"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">"Discount"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">"Type"</span><span class="p">:</span> <span class="s">"Percent"</span><span class="p">,</span>
-            <span class="s">"Value"</span><span class="p">:</span> <span class="mi">10</span>
-        <span class="p">},</span>
-        <span class="s">"Items"</span><span class="p">:</span> <span class="p">[</span>
-            <span class="p">{</span>
-                <span class="s">"Name"</span><span class="p">:</span> <span class="s">"Nome do produto"</span><span class="p">,</span>
-                <span class="s">"Description"</span><span class="p">:</span> <span class="s">"Descrição do produto"</span><span class="p">,</span>
-                <span class="s">"UnitPrice"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
-                <span class="s">"Quantity"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-                <span class="s">"Type"</span><span class="p">:</span> <span class="s">"Asset"</span><span class="p">,</span>
-                <span class="s">"Sku"</span><span class="p">:</span> <span class="s">"Sku do item no carrinho"</span><span class="p">,</span>
-                <span class="s">"Weight"</span><span class="p">:</span> <span class="mi">200</span>
-            <span class="p">}</span>
-        <span class="p">]</span>
-    <span class="p">},</span>
-    <span class="s">"Shipping"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">"Type"</span><span class="p">:</span> <span class="s">"Correios"</span><span class="p">,</span>
-        <span class="s">"SourceZipCode"</span><span class="p">:</span> <span class="s">"14400000"</span><span class="p">,</span>
-        <span class="s">"TargetZipCode"</span><span class="p">:</span> <span class="s">"11000000"</span><span class="p">,</span>
-        <span class="s">"Address"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">"Street"</span><span class="p">:</span> <span class="s">"Endereço de entrega"</span><span class="p">,</span>
-            <span class="s">"Number"</span><span class="p">:</span> <span class="s">"123"</span><span class="p">,</span>
-            <span class="s">"Complement"</span><span class="p">:</span> <span class="s">""</span><span class="p">,</span>
-            <span class="s">"District"</span><span class="p">:</span> <span class="s">"Bairro da entrega"</span><span class="p">,</span>
-            <span class="s">"City"</span><span class="p">:</span> <span class="s">"Cidade de entrega"</span><span class="p">,</span>
-            <span class="s">"State"</span><span class="p">:</span> <span class="s">"SP"</span>
-        <span class="p">},</span>
-        <span class="s">"Services"</span><span class="p">:</span> <span class="p">[</span>
-            <span class="p">{</span>
-                <span class="s">"Name"</span><span class="p">:</span> <span class="s">"Serviço de frete"</span><span class="p">,</span>
-                <span class="s">"Price"</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span>
-                <span class="s">"Deadline"</span><span class="p">:</span> <span class="mi">15</span>
-            <span class="p">}</span>
-        <span class="p">]</span>
-    <span class="p">},</span>
-    <span class="s">"Payment"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">"BoletoDiscount"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s">"DebitDiscount"</span><span class="p">:</span> <span class="mi">10</span>
-    <span class="p">},</span>
-    <span class="s">"Customer"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">"Identity"</span><span class="p">:</span> <span class="mi">11111111111</span><span class="p">,</span>
-        <span class="s">"FullName"</span><span class="p">:</span> <span class="s">"Fulano Comprador da Silva"</span><span class="p">,</span>
-        <span class="s">"Email"</span><span class="p">:</span> <span class="s">"fulano@email.com"</span><span class="p">,</span>
-        <span class="s">"Phone"</span><span class="p">:</span> <span class="s">"11999999999"</span>
-    <span class="p">},</span>
-    <span class="s">"Options"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">"AntifraudEnabled"</span><span class="p">:</span> <span class="n">false</span>
-    <span class="p">}</span>
-<span class="p">})</span>
-
-<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">"Content-Type"</span><span class="p">:</span> <span class="s">"application/json"</span><span class="p">,</span> <span class="s">"MerchantId"</span><span class="p">:</span> <span class="s">"00000000-0000-0000-0000-000000000000"</span><span class="p">}</span>
-<span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="s">"https://cieloecommerce.cielo.com.br/api/public/v1/orders"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">request</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-<span class="k">print</span> <span class="n">response</span>
-</code></pre>
-<pre><code class="highlight ruby"><span class="nb">require</span> <span class="s1">'rubygems'</span> <span class="k">if</span> <span class="no">RUBY_VERSION</span> <span class="o">&lt;</span> <span class="s1">'1.9'</span>
-<span class="nb">require</span> <span class="s1">'rest-client'</span>
-<span class="nb">require</span> <span class="s1">'json'</span>
-
-<span class="n">request</span> <span class="o">=</span> <span class="no">JSON</span><span class="p">.</span><span class="nf">generate</span><span class="p">({</span>
-    <span class="s2">"OrderNumber"</span> <span class="o">=&gt;</span> <span class="s2">"12344"</span><span class="p">,</span>
-    <span class="s2">"SoftDescriptor"</span> <span class="o">=&gt;</span> <span class="s2">"Nome que aparecerá na fatura"</span><span class="p">,</span>
-    <span class="s2">"Cart"</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="s2">"Discount"</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="s2">"Type"</span> <span class="o">=&gt;</span> <span class="s2">"Percent"</span><span class="p">,</span>
-            <span class="s2">"Value"</span> <span class="o">=&gt;</span> <span class="mi">10</span>
-        <span class="p">},</span>
-        <span class="s2">"Items"</span> <span class="o">=&gt;</span> <span class="p">[</span>
-            <span class="p">{</span>
-                <span class="s2">"Name"</span> <span class="o">=&gt;</span> <span class="s2">"Nome do produto"</span><span class="p">,</span>
-                <span class="s2">"Description"</span> <span class="o">=&gt;</span> <span class="s2">"Descrição do produto"</span><span class="p">,</span>
-                <span class="s2">"UnitPrice"</span> <span class="o">=&gt;</span> <span class="mi">100</span><span class="p">,</span>
-                <span class="s2">"Quantity"</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span>
-                <span class="s2">"Type"</span> <span class="o">=&gt;</span> <span class="s2">"Asset"</span><span class="p">,</span>
-                <span class="s2">"Sku"</span> <span class="o">=&gt;</span> <span class="s2">"Sku do item no carrinho"</span><span class="p">,</span>
-                <span class="s2">"Weight"</span> <span class="o">=&gt;</span> <span class="mi">200</span>
-            <span class="p">}</span>
-        <span class="p">]</span>
-    <span class="p">},</span>
-    <span class="s2">"Shipping"</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="s2">"Type"</span> <span class="o">=&gt;</span> <span class="s2">"Correios"</span><span class="p">,</span>
-        <span class="s2">"SourceZipCode"</span> <span class="o">=&gt;</span> <span class="s2">"14400000"</span><span class="p">,</span>
-        <span class="s2">"TargetZipCode"</span> <span class="o">=&gt;</span> <span class="s2">"11000000"</span><span class="p">,</span>
-        <span class="s2">"Address"</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="s2">"Street"</span> <span class="o">=&gt;</span> <span class="s2">"Endereço de entrega"</span><span class="p">,</span>
-            <span class="s2">"Number"</span> <span class="o">=&gt;</span> <span class="s2">"123"</span><span class="p">,</span>
-            <span class="s2">"Complement"</span> <span class="o">=&gt;</span> <span class="s2">""</span><span class="p">,</span>
-            <span class="s2">"District"</span> <span class="o">=&gt;</span> <span class="s2">"Bairro da entrega"</span><span class="p">,</span>
-            <span class="s2">"City"</span> <span class="o">=&gt;</span> <span class="s2">"Cidade de entrega"</span><span class="p">,</span>
-            <span class="s2">"State"</span> <span class="o">=&gt;</span> <span class="s2">"SP"</span>
-        <span class="p">},</span>
-        <span class="s2">"Services"</span> <span class="o">=&gt;</span> <span class="p">[</span>
-            <span class="p">{</span>
-                <span class="s2">"Name"</span> <span class="o">=&gt;</span> <span class="s2">"Serviço de frete"</span><span class="p">,</span>
-                <span class="s2">"Price"</span> <span class="o">=&gt;</span> <span class="mi">123</span><span class="p">,</span>
-                <span class="s2">"Deadline"</span> <span class="o">=&gt;</span> <span class="mi">15</span>
-            <span class="p">}</span>
-        <span class="p">]</span>
-    <span class="p">},</span>
-    <span class="s2">"Payment"</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="s2">"BoletoDiscount"</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">"DebitDiscount"</span> <span class="o">=&gt;</span> <span class="mi">10</span>
-    <span class="p">},</span>
-    <span class="s2">"Customer"</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="s2">"Identity"</span> <span class="o">=&gt;</span> <span class="mi">11111111111</span><span class="p">,</span>
-        <span class="s2">"FullName"</span> <span class="o">=&gt;</span> <span class="s2">"Fulano Comprador da Silva"</span><span class="p">,</span>
-        <span class="s2">"Email"</span> <span class="o">=&gt;</span> <span class="s2">"fulano@email.com"</span><span class="p">,</span>
-        <span class="s2">"Phone"</span> <span class="o">=&gt;</span> <span class="s2">"11999999999"</span>
-    <span class="p">},</span>
-    <span class="s2">"Options"</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="s2">"AntifraudEnabled"</span> <span class="o">=&gt;</span> <span class="kp">false</span>
-    <span class="p">}</span>
-<span class="p">})</span>
-
-<span class="n">headers</span>  <span class="o">=</span> <span class="p">{</span><span class="ss">:content_type</span> <span class="o">=&gt;</span> <span class="s2">"application/json"</span><span class="p">,</span><span class="ss">:merchantid</span> <span class="o">=&gt;</span> <span class="s2">"00000000-0000-0000-0000-000000000000"</span><span class="p">}</span>
-<span class="n">response</span> <span class="o">=</span> <span class="no">RestClient</span><span class="p">.</span><span class="nf">post</span> <span class="s2">"https://cieloecommerce.cielo.com.br/api/public/v1/orders"</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">headers</span>
-
-<span class="nb">puts</span> <span class="n">response</span>
-</code></pre>
-<pre><code class="highlight java"><span class="n">String</span> <span class="n">json</span> <span class="o">=</span> <span class="s">"{"</span>
-            <span class="o">+</span> <span class="s">"    \"OrderNumber\": \"12344\","</span>
-            <span class="o">+</span> <span class="s">"    \"SoftDescriptor\": \"Nome que aparecerá na fatura\","</span>
-            <span class="o">+</span> <span class="s">"    \"Cart\": {"</span>
-            <span class="o">+</span> <span class="s">"        \"Discount\": {"</span>
-            <span class="o">+</span> <span class="s">"            \"Type\": \"Percent\","</span>
-            <span class="o">+</span> <span class="s">"            \"Value\": 10"</span>
-            <span class="o">+</span> <span class="s">"        },"</span>
-            <span class="o">+</span> <span class="s">"        \"Items\": ["</span>
-            <span class="o">+</span> <span class="s">"            {"</span>
-            <span class="o">+</span> <span class="s">"                \"Name\": \"Nome do produto\","</span>
-            <span class="o">+</span> <span class="s">"                \"Description\": \"Descrição do produto\","</span>
-            <span class="o">+</span> <span class="s">"                \"UnitPrice\": 100,"</span>
-            <span class="o">+</span> <span class="s">"                \"Quantity\": 2,"</span>
-            <span class="o">+</span> <span class="s">"                \"Type\": \"Asset\","</span>
-            <span class="o">+</span> <span class="s">"                \"Sku\": \"Sku do item no carrinho\","</span>
-            <span class="o">+</span> <span class="s">"                \"Weight\": 200"</span>
-            <span class="o">+</span> <span class="s">"            }"</span>
-            <span class="o">+</span> <span class="s">"        ]"</span>
-            <span class="o">+</span> <span class="s">"    },"</span>
-            <span class="o">+</span> <span class="s">"    \"Shipping\": {"</span>
-            <span class="o">+</span> <span class="s">"        \"Type\": \"Correios\","</span>
-            <span class="o">+</span> <span class="s">"        \"SourceZipCode\": \"14400000\","</span>
-            <span class="o">+</span> <span class="s">"        \"TargetZipCode\": \"11000000\","</span>
-            <span class="o">+</span> <span class="s">"        \"Address\": {"</span>
-            <span class="o">+</span> <span class="s">"            \"Street\": \"Endereço de entrega\","</span>
-            <span class="o">+</span> <span class="s">"            \"Number\": \"123\","</span>
-            <span class="o">+</span> <span class="s">"            \"Complement\": \"\","</span>
-            <span class="o">+</span> <span class="s">"            \"District\": \"Bairro da entrega\","</span>
-            <span class="o">+</span> <span class="s">"            \"City\": \"Cidade de entrega\","</span>
-            <span class="o">+</span> <span class="s">"            \"State\": \"SP\""</span>
-            <span class="o">+</span> <span class="s">"        },"</span>
-            <span class="o">+</span> <span class="s">"        \"Services\": ["</span>
-            <span class="o">+</span> <span class="s">"            {"</span>
-            <span class="o">+</span> <span class="s">"                \"Name\": \"Serviço de frete\","</span>
-            <span class="o">+</span> <span class="s">"                \"Price\": 123,"</span>
-            <span class="o">+</span> <span class="s">"                \"Deadline\": 15"</span>
-            <span class="o">+</span> <span class="s">"            }"</span>
-            <span class="o">+</span> <span class="s">"        ]"</span>
-            <span class="o">+</span> <span class="s">"    },"</span>
-            <span class="o">+</span> <span class="s">"    \"Payment\": {"</span>
-            <span class="o">+</span> <span class="s">"        \"BoletoDiscount\": 0,"</span>
-            <span class="o">+</span> <span class="s">"        \"DebitDiscount\": 10"</span>
-            <span class="o">+</span> <span class="s">"     },"</span>
-            <span class="o">+</span> <span class="s">"     \"Customer\": {"</span>
-            <span class="o">+</span> <span class="s">"         \"Identity\": 11111111111,"</span>
-            <span class="o">+</span> <span class="s">"         \"FullName\": \"Fulano Comprador da Silva\","</span>
-            <span class="o">+</span> <span class="s">"         \"Email\": \"fulano@email.com\","</span>
-            <span class="o">+</span> <span class="s">"         \"Phone\": \"11999999999\""</span>
-            <span class="o">+</span> <span class="s">"     },"</span>
-            <span class="o">+</span> <span class="s">"     \"Options\": {"</span>
-            <span class="o">+</span> <span class="s">"         \"AntifraudEnabled\": false"</span>
-            <span class="o">+</span> <span class="s">"     }"</span>
-            <span class="o">+</span> <span class="s">"}"</span><span class="o">;</span>
-
-<span class="n">URL</span> <span class="n">url</span><span class="o">;</span>
-<span class="n">HttpURLConnection</span> <span class="n">connection</span><span class="o">;</span>
-<span class="n">BufferedReader</span> <span class="n">bufferedReader</span><span class="o">;</span>
-
-<span class="k">try</span> <span class="o">{</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">"https://cieloecommerce.cielo.com.br/api/public/v1/orders"</span><span class="o">);</span>
-
-    <span class="n">connection</span> <span class="o">=</span> <span class="o">(</span><span class="n">HttpURLConnection</span><span class="o">)</span> <span class="n">url</span><span class="o">.</span><span class="na">openConnection</span><span class="o">();</span>
-    <span class="n">connection</span><span class="o">.</span><span class="na">setRequestMethod</span><span class="o">(</span><span class="s">"POST"</span><span class="o">);</span>
-    <span class="n">connection</span><span class="o">.</span><span class="na">addRequestProperty</span><span class="o">(</span><span class="s">"MerchantId"</span><span class="o">,</span> <span class="s">"0000000-0000-0000-0000-000000000000"</span><span class="o">);</span>
-    <span class="n">connection</span><span class="o">.</span><span class="na">setRequestProperty</span><span class="o">(</span><span class="s">"Content-Type"</span><span class="o">,</span> <span class="s">"application/json; charset=utf-8"</span><span class="o">);</span>
-    <span class="n">connection</span><span class="o">.</span><span class="na">setDoOutput</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-
-    <span class="n">DataOutputStream</span> <span class="n">jsonRequest</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DataOutputStream</span><span class="o">(</span>
-                <span class="n">connection</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">());</span>
-
-    <span class="n">jsonRequest</span><span class="o">.</span><span class="na">writeBytes</span><span class="o">(</span><span class="n">json</span><span class="o">);</span>
-    <span class="n">jsonRequest</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
-    <span class="n">jsonRequest</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
-
-    <span class="n">bufferedReader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="n">InputStreamReader</span><span class="o">(</span>
-                <span class="n">connection</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">()));</span>
-
-    <span class="n">String</span> <span class="n">responseLine</span><span class="o">;</span>
-    <span class="n">StringBuffer</span> <span class="n">jsonResponse</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">();</span>
-
-    <span class="k">while</span> <span class="o">((</span><span class="n">responseLine</span> <span class="o">=</span> <span class="n">bufferedReader</span><span class="o">.</span><span class="na">readLine</span><span class="o">())</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">jsonResponse</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">responseLine</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="n">bufferedReader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
-
-    <span class="n">connection</span><span class="o">.</span><span class="na">disconnect</span><span class="o">();</span>
-<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-<span class="o">}</span>
-</code></pre>
-<pre><code class="highlight csharp"><span class="n">HttpWebRequest</span> <span class="n">request</span> <span class="p">=</span> <span class="p">(</span><span class="n">HttpWebRequest</span><span class="p">)</span>
-                         <span class="n">WebRequest</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="s">"https://cieloecommerce.cielo.com.br/api/public/v1/orders"</span><span class="p">);</span>
-
-<span class="n">request</span><span class="p">.</span><span class="n">Method</span> <span class="p">=</span> <span class="s">"POST"</span><span class="p">;</span>
-<span class="n">request</span><span class="p">.</span><span class="n">Headers</span><span class="p">[</span><span class="s">"Content-Type"</span><span class="p">]</span> <span class="p">=</span> <span class="s">"text/json"</span><span class="p">;</span>
-<span class="n">request</span><span class="p">.</span><span class="n">Headers</span><span class="p">[</span><span class="s">"MerchantId"</span><span class="p">]</span> <span class="p">=</span> <span class="s">"06eadc0b-2e32-449b-be61-6fd4f1811708"</span><span class="p">;</span>
-
-<span class="kt">string</span> <span class="n">json</span> <span class="p">=</span> <span class="s">"{"</span>
-            <span class="p">+</span> <span class="s">"    \"OrderNumber\": \"12344\","</span>
-            <span class="p">+</span> <span class="s">"    \"SoftDescriptor\": \"Nome que aparecerá na fatura\","</span>
-            <span class="p">+</span> <span class="s">"    \"Cart\": {"</span>
-            <span class="p">+</span> <span class="s">"        \"Discount\": {"</span>
-            <span class="p">+</span> <span class="s">"            \"Type\": \"Percent\","</span>
-            <span class="p">+</span> <span class="s">"            \"Value\": 10"</span>
-            <span class="p">+</span> <span class="s">"        },"</span>
-            <span class="p">+</span> <span class="s">"        \"Items\": ["</span>
-            <span class="p">+</span> <span class="s">"            {"</span>
-            <span class="p">+</span> <span class="s">"                \"Name\": \"Nome do produto\","</span>
-            <span class="p">+</span> <span class="s">"                \"Description\": \"Descrição do produto\","</span>
-            <span class="p">+</span> <span class="s">"                \"UnitPrice\": 100,"</span>
-            <span class="p">+</span> <span class="s">"                \"Quantity\": 2,"</span>
-            <span class="p">+</span> <span class="s">"                \"Type\": \"Asset\","</span>
-            <span class="p">+</span> <span class="s">"                \"Sku\": \"Sku do item no carrinho\","</span>
-            <span class="p">+</span> <span class="s">"                \"Weight\": 200"</span>
-            <span class="p">+</span> <span class="s">"            }"</span>
-            <span class="p">+</span> <span class="s">"        ]"</span>
-            <span class="p">+</span> <span class="s">"    },"</span>
-            <span class="p">+</span> <span class="s">"    \"Shipping\": {"</span>
-            <span class="p">+</span> <span class="s">"        \"Type\": \"Correios\","</span>
-            <span class="p">+</span> <span class="s">"        \"SourceZipCode\": \"14400000\","</span>
-            <span class="p">+</span> <span class="s">"        \"TargetZipCode\": \"11000000\","</span>
-            <span class="p">+</span> <span class="s">"        \"Address\": {"</span>
-            <span class="p">+</span> <span class="s">"            \"Street\": \"Endereço de entrega\","</span>
-            <span class="p">+</span> <span class="s">"            \"Number\": \"123\","</span>
-            <span class="p">+</span> <span class="s">"            \"Complement\": \"\","</span>
-            <span class="p">+</span> <span class="s">"            \"District\": \"Bairro da entrega\","</span>
-            <span class="p">+</span> <span class="s">"            \"City\": \"Cidade de entrega\","</span>
-            <span class="p">+</span> <span class="s">"            \"State\": \"SP\""</span>
-            <span class="p">+</span> <span class="s">"        },"</span>
-            <span class="p">+</span> <span class="s">"        \"Services\": ["</span>
-            <span class="p">+</span> <span class="s">"            {"</span>
-            <span class="p">+</span> <span class="s">"                \"Name\": \"Serviço de frete\","</span>
-            <span class="p">+</span> <span class="s">"                \"Price\": 123,"</span>
-            <span class="p">+</span> <span class="s">"                \"Deadline\": 15"</span>
-            <span class="p">+</span> <span class="s">"            }"</span>
-            <span class="p">+</span> <span class="s">"        ]"</span>
-            <span class="p">+</span> <span class="s">"    },"</span>
-            <span class="p">+</span> <span class="s">"    \"Payment\": {"</span>
-            <span class="p">+</span> <span class="s">"        \"BoletoDiscount\": 0,"</span>
-            <span class="p">+</span> <span class="s">"        \"DebitDiscount\": 10"</span>
-            <span class="p">+</span> <span class="s">"     },"</span>
-            <span class="p">+</span> <span class="s">"     \"Customer\": {"</span>
-            <span class="p">+</span> <span class="s">"         \"Identity\": 11111111111,"</span>
-            <span class="p">+</span> <span class="s">"         \"FullName\": \"Fulano Comprador da Silva\","</span>
-            <span class="p">+</span> <span class="s">"         \"Email\": \"fulano@email.com\","</span>
-            <span class="p">+</span> <span class="s">"         \"Phone\": \"11999999999\""</span>
-            <span class="p">+</span> <span class="s">"     },"</span>
-            <span class="p">+</span> <span class="s">"     \"Options\": {"</span>
-            <span class="p">+</span> <span class="s">"         \"AntifraudEnabled\": false"</span>
-            <span class="p">+</span> <span class="s">"     }"</span>
-            <span class="p">+</span> <span class="s">"}"</span><span class="p">;</span>
-
-<span class="k">using</span> <span class="p">(</span><span class="n">var</span> <span class="n">writer</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">StreamWriter</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="nf">GetRequestStream</span><span class="p">()))</span>
-<span class="p">{</span>
-    <span class="n">writer</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="n">json</span><span class="p">);</span>
-    <span class="n">writer</span><span class="p">.</span><span class="nf">Close</span><span class="p">();</span>
-<span class="p">}</span>
-
-<span class="n">HttpWebResponse</span> <span class="n">response</span> <span class="p">=</span> <span class="p">(</span><span class="n">HttpWebResponse</span><span class="p">)</span> <span class="n">request</span><span class="p">.</span><span class="nf">GetResponse</span><span class="p">();</span>
-</code></pre>
-
-<h4 id="cabeçalho-http">Cabeçalho HTTP</h4>
-
-<table><thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>MerchantId</td>
-<td>Guid</td>
-<td>Sim</td>
-<td>36</td>
-<td>Identificador único da loja. <strong>Formato:</strong> 00000000-0000-0000-0000-000000000000</td>
-</tr>
-<tr>
-<td>Content-type</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
-<td>n/a</td>
-<td>Tipo do conteúdo da mensagem a ser enviada. <strong>Utilizar:</strong> &ldquo;application/json&rdquo;</td>
-</tr>
-</tbody></table>
-
-<h4 id="objeto-raiz-da-requisição">Objeto raiz da requisição</h4>
-
-<table><thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>OrderNumber</td>
-<td>Alphanumeric</td>
-<td>Opcional</td>
-<td>0..64</td>
-<td>Número do pedido da loja.</td>
-</tr>
-<tr>
-<td>SoftDescriptor</td>
-<td>Alphanumeric</td>
-<td>Opcional</td>
-<td>0..13</td>
-<td>Texto para ser exibido na fatura do portador, após o nome do estabelecimento comercial.</td>
-</tr>
-<tr>
-<td>Cart</td>
-<td><a href="#cart">Cart</a></td>
-<td>Sim</td>
-<td>n/a</td>
-<td>Informações sobre o carrinho de compras.</td>
-</tr>
-<tr>
-<td>Shipping</td>
-<td><a href="#shipping">Shipping</a></td>
-<td>Sim</td>
-<td>n/a</td>
-<td>Informações sobre a entrega do pedido.&ldquo;</td>
-</tr>
-<tr>
-<td>Payment</td>
-<td><a href="#payment">Payment</a></td>
-<td>Conditional</td>
-<td>n/a</td>
-<td>Informações sobre o pagamento do pedido.</td>
-</tr>
-<tr>
-<td>Customer</td>
-<td><a href="#customer">Customer</a></td>
-<td>Condicional</td>
-<td>n/a</td>
-<td>Informações sobre dados pessoais do comprador.</td>
-</tr>
-<tr>
-<td>Options</td>
-<td><a href="#options">Options</a></td>
-<td>Conditional</td>
-<td>n/a</td>
-<td>Informações sobre opções configuráveis do pedido.</td>
-</tr>
-</tbody></table>
-
-<h3 id="resposta">Resposta</h3>
-
-<h3 id="em-caso-de-sucesso">Em caso de sucesso</h3>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"Settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"CheckoutUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://cieloecommerce.cielo.com.br/transacional/order/index?id=123"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"Profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CheckoutCielo"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"Version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<table><thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Settings</td>
-<td><a href="#settings">Settings</a></td>
-<td>Sim</td>
-<td>n/a</td>
-<td>Informações da resposta sobre a criação do pedido.</td>
-</tr>
-</tbody></table>
-
-<h3 id="em-caso-de-erro">Em caso de erro</h3>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"message"</span><span class="p">:</span><span class="s2">"An error has occurred."</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<table><thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Message</td>
-<td>String</td>
-<td>Sim</td>
-<td>1..254</td>
-<td>Mensagem descritiva do erro</td>
-</tr>
-</tbody></table>
-
-<h3 id="erros-de-integração">Erros de integração</h3>
-
-<p>Há dois tipos de erro que poderão ocorrer durante o processo de integração com o Checkout Cielo. São eles:</p>
+<h1 id="considerações-gerais">Considerações Gerais</h1>
 
 <ul>
-<li><strong>Antes da exibição da tela de Checkout</strong> - Significa que houve algum dado erra do no envio da transação. Dados obrigatórios podem estar faltando ou no formato invalido. Aqui o lojista sempre vai receber um e-mail informando o que deu errado;</li>
-<li><strong>Depois da Exibição da tela de Checkout (quando a venda é finalizada)</strong> - Significa que há algum impedimento de cadastro que limita a venda. Coisas como afiliação bloqueada, erro nos dados salvos no cadastro ou até problemas no próprio checkout.</li>
+<li>O arquivo de retorno estará disponível para o Estabelecimento em até 48 horas, utilizando o mesmo layout.</li>
+<li>O arquivo de Remessa de Vendas ou Cancelamento submetido até 12:00h será retornado em D+1. Arquivos submetidos após 12:00 h, serão considerados como movimento do dia posterior e seu retorno será em D+2.</li>
+<li>Os movimentos são processados de segunda a sábado. Não há processamento aos domingos.</li>
+<li>Podem ser enviadas transações de cartão de crédito das bandeiras: Visa, MasterCard, ELO (exceto na modalidade IATA) e Diners.</li>
+<li>Transações de arquivos de Cias. Aéreas via IATA não são contempladas neste manual. Possuem layout específico.</li>
+<li><strong>Não possuímos ambiente de homologação para este serviço</strong>.</li>
 </ul>
 
-<h2 id="botão">Botão</h2>
-
-<p>Integração via Botão é um método de compra usada sempre que não houver um “carrinho de compras” em sua loja ou quando se deseja associar uma compra rápida direta a um produto, como uma promoção numa homepage pulando a etapa do carrinho.</p>
-
-<p>A integração via botão também pode ser usada para enviar um e-mail marketing, ou uma cobrança via e-mail, ou seja, adicionando o botão (HTML) referente ao produto/serviço a ser comprado/pago. Ou sempre que desejar disponibilizar uma venda rápida.</p>
-
-<p>Para utilizar este recurso, é necessário cadastrar o produto que deseja vender, suas informações, e depois simplesmente copiar o código fonte gerado para este botão. A inclusão dos produtos é feita dentro do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, no menu de Produtos/Cadastrar Produto.</p>
-
-<p>A inclusão dos produtos é feita dentro do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, no menu de Produtos/Cadastrar Produto.</p>
-
-<p><img alt="Integração com botão" src="images/checkout-cielo-integracao-botao.png" /></p>
-
-<h3 id="características-do-botão">Características do Botão</h3>
+<h2 id="nomes-dos-retornos-dos-arquivos:">Nomes dos retornos dos arquivos:</h2>
 
 <ul>
-<li>Cada botão gerado serve somente para um determinado produto.</li>
-<li>O preço do produto não pode ser alterado na tela de Checkout</li>
-<li>Não é necessário o desenvolvimento de um carrinho</li>
-<li>O cadastro do produto é obrigatório para a criação do botão.</li>
+<li>Ao enviar o arquivo de Submissão de Cancelamento, o sistema pode retornar dois tipos de arquivo: “Retmov” ou “Visa Erro”.</li>
+<li>“Retmov”: arquivo de retorno com todas as transações (aprovadas ou negadas).</li>
+<li>“Visa Erro”: transações que não foram efetuadas devido a um problema de estrutura do arquivo enviado, tendo todas as transações não submetidas.</li>
+<li>Possíveis erros de digitação, bem como na estrutura do arquivo, são de responsabilidade do cliente.</li>
 </ul>
 
-<p>Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter à compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, e valerão os dados do cadastro.</p>
+<h1 id="dicas-para-formatação-dos-arquivos-edi">Dicas para formatação dos arquivos EDI</h1>
 
-<h3 id="parâmetros-para-cadastro-de-produto">Parâmetros para cadastro de produto</h3>
+<h2 id="resumo-de-operação-(ro)">Resumo de Operação (RO)</h2>
 
-<p>Abaixo seguem as informações necessárias para cadastrar um produto.</p>
+<p>Identifica o número do lote, grupo de transações de venda.</p>
 
-<table><thead>
-<tr>
-<th>Parâmetro</th>
-<th>Descrição</th>
-<th>Tamanho Min.</th>
-<th>Tamanho Máx.</th>
-<th>Obrigatório</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Tipo do Produto</td>
-<td>Indique se está vendendo um bem Material, um Serviço ou um bem Digital. Para bens Digitais, não será apresentada a opção de tipo de Frete.</td>
-<td>n/a</td>
-<td>n/a</td>
-<td>Sim</td>
-</tr>
-<tr>
-<td>SKU</td>
-<td>Código de identificação do produto</td>
-<td>1</td>
-<td>50</td>
-<td>Não</td>
-</tr>
-<tr>
-<td>Título</td>
-<td>Titulo do Produto</td>
-<td>1</td>
-<td>50</td>
-<td>Sim</td>
-</tr>
-<tr>
-<td>Descrição</td>
-<td>Descrição do Produto</td>
-<td>1</td>
-<td>255</td>
-<td>Sim</td>
-</tr>
-<tr>
-<td>Preço</td>
-<td>Valor total do pedido <strong>em centavos</strong> (ex.: R$1,00 =100).</td>
-<td>11</td>
-<td>14</td>
-<td>Sim</td>
-</tr>
-<tr>
-<td>Frete</td>
-<td>Escolher dentre uma das opções de Frete (Correios, Frete Fixo, Frete Grátis, Retirar na loja, Sem Cobrança).</td>
-<td>n/a</td>
-<td>n/a</td>
-<td>Sim</td>
-</tr>
-<tr>
-<td>CEP de Origem</td>
-<td>Esse campo só aparece para o frete tipo Correios, deve ser preenchido com o CEP de onde vai partir a mercadoria para fins de cálculo de frete.</td>
-<td>9</td>
-<td>9</td>
-<td>Sim</td>
-</tr>
-<tr>
-<td>Peso(kg)</td>
-<td>Esse campo só aparece para o frete tipo Correios, deve ser preenchido com o peso do produto em kg para fins de cálculo de frete</td>
-<td>n/a</td>
-<td>n/a</td>
-<td>Sim</td>
-</tr>
-<tr>
-<td>Valor do Frete</td>
-<td>Esse campo só aparece para o frete tipo Frete Fixo, e deve ser preenchido com o valor que o lojista especificar para seus produtos.</td>
-<td>n/a</td>
-<td>n/a</td>
-<td>Sim</td>
-</tr>
-<tr>
-<td>Método de envio</td>
-<td>Esse campo só aparece para Tipo Produto igual a Material Físico e Tipo de Frete igual a Frete Fixo.</td>
-<td>n/a</td>
-<td>n/a</td>
-<td>Sim</td>
-</tr>
-<tr>
-<td>URL</td>
-<td>Esse campo só aparece para Tipo Produto igual a Digital.</td>
-<td>n/a</td>
-<td>n/a</td>
-<td>Sim</td>
-</tr>
-</tbody></table>
+<h2 id="comprovante-de-venda-(cv)">Comprovante de Venda (CV)</h2>
 
-<h4 id="exemplo-de-botão:">Exemplo de Botão:</h4>
-<pre><code class="highlight html"><span class="nt">&lt;form</span> <span class="na">method=</span><span class="s">'post'</span> <span class="na">action=</span><span class="s">'https://cieloecommerce.cielo.com.br/transactional/Checkout/BuyNow'</span> <span class="na">target=</span><span class="s">'blank'</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">'hidden'</span> <span class="na">name=</span><span class="s">'id'</span> <span class="na">value=</span><span class="s">00000000-0000-0000-000000000000/</span><span class="nt">&gt;&lt;input</span> <span class="na">type=</span><span class="s">'image'</span> <span class="na">name=</span><span class="s">'submit'</span> <span class="na">alt=</span><span class="s">'Comprar'</span> <span class="na">src=</span><span class="s">'https://cieloecommerce.cielo.com.br /BackOffice/Content/images/botao_comprar_3.jpg'</span> <span class="nt">/&gt;</span>
-<span class="nt">&lt;/form&gt;</span>
-</code></pre>
-
-<p>Adicionando o botão na sua página HTML você deve copiar o código HTML do botão criado e colocar no código HTML do seu site, conforme o exemplo abaixo.</p>
-
-<aside class="notice">O código deve ser inserido dentro da área adequada no seu HTML.</aside>
-
-<p>Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter a compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, e valerão os dados do cadastro.</p>
-
-<h2 id="modo-de-teste-do-checkout-cielo">Modo de teste do Checkout Cielo</h2>
-
-<p>O modo de teste Checkout Cielo é método de fazer testes de integração do Checkout Cielo com o seu site, sem o consumo de créditos. O modo de Teste Checkout Cielo permite realizar transações, testando a integração utilizando diferentes meios de pagamento simulados.</p>
-
-<h3 id="ativação-do-modo-de-teste.">Ativação do Modo de Teste.</h3>
-
-<p>O modo de teste pode ser ativado na aba Configurações:</p>
-
-<p><img alt="Modo de teste" src="images/checkout-cielo-modo-teste.png" /></p>
-
-<p>Nessa área há um caixa de seleção, que quando marcada, habilitará o modo de teste do Checkout Cielo. O modo somente se iniciará quando a seleção for salva.</p>
-
-<p><img alt="Ativação Modo de teste" src="images/checkout-cielo-modo-teste-ativacao.png" /></p>
-
-<p>Quando a opção for salva, uma tarja vermelha será exibida na parte superior da tela. Ela será exibida em todas as telas do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a> e na tela de checkout do Checkout Cielo.</p>
-
-<p>Essa tarja indica que a sua loja Checkout Cielo está agora operando em ambiente de teste, ou seja, toda a transação realizada nesse modo será considerada como teste.</p>
-
-<p><img alt="Modo de teste ativado" src="images/checkout-cielo-modo-teste-ativado.png" /></p>
-
-<h3 id="como-transacionar-no-modo-de-teste.">Como transacionar no Modo de teste.</h3>
-
-<p>A realização de transações no modo de teste ocorre de forma normal. As informações da transação são enviadas via POST, utilizando os parâmetros como descrito no tópico <a href="#integração-carrinho-de-compras">Integração com carrinho</a>, entretanto, os meios de pagamentos a serem usados serão meios simulados.</p>
-
-<p>Para realizar transações de teste com diferentes meios de pagamento, siga as seguintes regras:</p>
-
-<p><strong>a - Transações com Cartão de crédito:</strong></p>
-
-<p>Para testar cartões de crédito é necessário que dois dados importantes sejam definidos, o status da autorização do cartão e o retorno da analise de fraude.</p>
-
-<p><strong>Status da Autorização do Cartão de Crédito</strong></p>
-
-<table><thead>
-<tr>
-<th>Digito final do Cartão</th>
-<th>Status retornado</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>0, 1, 2, 3 ou 4</td>
-<td>Autorizado</td>
-</tr>
-<tr>
-<td>5, 6, 7, 8 ou 9</td>
-<td>Não autorizado</td>
-</tr>
-</tbody></table>
+<p>Cada venda é registrada em um comprovante de venda.</p>
 
 <ul>
-<li><strong>Exemplo:</strong> Transação autorizada, Alto Risco;</li>
-<li><strong>Numero do Cartão de credito:</strong> 5404434242930107</li>
-<li><strong>Nome do Cliente:</strong> Maria Alto</li>
+<li>Cada Resumo de Operação (RO) poderá conter até 9.999 Comprovantes de Venda (CV&rsquo;s).</li>
+<li>As transações deverão ser agrupadas por tipo de operação (à vista ou parcelado loja), devendo-se criar um RO específico para cada uma delas.</li>
+<li>Para cada grupo de transações (lote/RO) deve ser gerado um movimento contendo header, detalhe(s) e trailler.</li>
+<li>Para cada número de maquineta todas as regras acima devem ser aplicadas.</li>
+<li>Deve ser submetido header, detalhe e trailler para cada maquineta e para cada resumo de operação (RO)</li>
+<li>O arquivo deve ser formatado com 1 único lote (RO) de vendas parceladas por maquineta e 1 lote de venda (RO) à vista por maquineta.</li>
 </ul>
 
-<p><strong>b - Boleto Bancario</strong></p>
+<h1 id="layout-de-arquivos-para-remessa-e/ou-retorno-de-vendas">Layout de Arquivos para Remessa e/ou Retorno de Vendas</h1>
 
-<p>Basta realizar o processo de compra normalmente sem nenhuma alteração no procedimento. O boleto gerado no modo de teste sempre será um boleto simulado.</p>
-
-<p><strong>c - Debito online</strong></p>
-
-<p>É necessário informa o status da transação de Debito online para que seja retornado o status desejado. Esse processo ocorre como no antifraude do cartão de crédito descrito acima, com a alteração do nome do comprador.</p>
-
-<p><strong>Status do Débito</strong>
-|Sobre nome do cliente|Status|
-|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;|
-|Pago|Pago|
-|Qualquer nome.|Não autorizado|</p>
-
-<ul>
-<li><strong>Exemplo:</strong> Status não Autorizado.</li>
-<li><strong>Nome do Cliente:</strong> Maria Pereira</li>
-</ul>
-
-<p><strong>d - Transações de teste</strong></p>
-
-<p>Todas as transações realizadas no modo de teste serão exibidas como transações normais na aba Pedidos do Checkout Cielo, entretanto, elas serão marcadas como transações de teste e não serão contabilizadas em conjunto com as transações realizadas fora do ambiente de teste.</p>
-
-<p><img alt="Transações de teste" src="images/checkout-cielo-modo-teste-transacoes-de-teste.png" /></p>
-
-<p>Essas transações terão o simbolo de teste as diferenciando de suas outras transações. Elas podem ser capturadas ou canceladas utilizando os mesmos procedimentos das transações reais.</p>
-
-<p><img alt="Transações de teste" src="images/checkout-cielo-modo-teste-transacoes-de-teste-cancelamento.png" /></p>
-
-<aside class="notice">É muito importante que ao liberar sua loja para a realização de vendas para seus clientes que ela não esteja em modo de teste. Transações realizadas nesse ambiente poderão ser finalizadas normalmente, mas não serão descontadas do cartão do cliente e não poderão ser “transferidas” para o ambiente de venda padrão.</aside>
-
-<h2 id="certificado-extended-validation">Certificado Extended Validation</h2>
-
-<p>O Certificado Extended Validation para servidor web oferece autenticidade e integridade dos dados de um web site, proporcionando aos clientes das lojas virtuais a garantia de que estão realmente acessando o site que desejam, e não uma um site fraudador.</p>
-
-<p>Empresas especializadas são responsáveis por fazer a validação do domínio e, dependendo do tipo de certificado, também da entidade detentora do domínio.</p>
-
-<h3 id="o-que-é-certificado-extended-validation?">O que é Certificado Extended Validation?</h3>
-
-<p>O Certificado EV foi lançado no mercado recentemente e garante um nível de segurança maior para os clientes das lojas virtuais.</p>
-
-<p>Trata-se de um certificado de maior confiança e quando o https for acessado a barra de endereço ficará verde, dando mais confiabilidade aos visitantes do site.</p>
-
-<p>Como instalar o Certificado Extended Validation no servidor da Loja?</p>
-
-<p>Basta instalar os três arquivos a seguir na Trustedstore do servidor. A Cielo não oferece suporte para a instalação do Certificado. Caso não esteja seguro sobre como realizar a instalação do Certificado EV, então você deverá ser contatado o suporte do fornecedor do seu servidor.</p>
-
-<ul>
-<li><a href="attachment/Raiz.crt">Certificado Raiz</a></li>
-<li><a href="attachment/Intermediaria.crt">Certificado Intermediária</a></li>
-<li><a href="attachment/ecommerce.cielo.com.br.crt">Certificado E-Commerce Cielo</a></li>
-</ul>
-
-<aside class="notice">Caso seu servidor seja uma distribuição Linux e você tenha familiaridade e acesso ssh, então o <a href="./attachment/cielo.sh">Instalador Linux - cielo.sh</a> poderá ajudá-lo com a instalação. <strong>Apenas utilize o instalador se você souber o que está fazendo</strong>. Na dúvida, entre em contato com o suporte do fornecedor do seu servidor.</aside>
-
-<h1 id="urls-do-checkout-cielo">URLs do Checkout Cielo</h1>
-
-<p>A loja deve configurar as três URLs (notificação, retorno e status) em seu <a href="/Checkout-Backoffice/">Backoffice Checkout Cielo</a>, na aba “Configurações”. Veja a tela abaixo:</p>
-
-<p><img alt="Configurações da loja" src="images/checkout-configuracoes-loja.png" /></p>
-
-<ul>
-<li><strong>URL de Retorno</strong> – Página web na qual o comprador será redirecionado ao fim da compra. Nenhum dado é trocado ou enviado para essa URL. Essa URL apenas leva o comprador, após finalizar a compra, a uma página definida pela loja. Essa página deve ser configurada no <a href="/Checkout-Backoffice/">Backoffice Checkout Cielo</a>, aba “Configurações”</li>
-<li><strong>URL de Notificação</strong> – Ao finalizar uma transação é enviado um POST HTTP com todos os dados da venda para a URL de Notificação, previamente cadastrada no <a href="/Checkout-Backoffice/">Backoffice Checkout Cielo</a>. <strong>O POST de notificação é enviado apenas no momento que a transação é finalizada, independentemente se houve alteração do status da transação</strong>. A URL deve conter uma página preparada para o receber os parâmetros  nos formatos definidos na tabela <a href="#parâmetros-para-integração-com-post-de-notificação">Parâmetros para integração com POST de notificação</a> via a linguagem/modulo com o qual seu site foi desenvolvido, que receberá o POST HTTP.</li>
-<li><strong>URL de Mudança de Status</strong> – Quando um pedido tiver seu status alterado, será enviando um post HTTP para a URL de Mudança de Status, previamente cadastrada no <a href="/Checkout-Backoffice/">Backoffice Checkout Cielo</a>. O POST de mudança de status não contem dados do carrinho, apenas dados de identificação do pedido. A URL deve conter uma pagina preparada para o receber os parâmetros  nos formatos definidos na tabela <a href="#parâmetros-para-integração-com-post-de-mudança-de-status">Parâmetros para integração com o POST de Mudança de Status</a> via a linguagem/modulo com o qual seu site foi desenvolvido.</li>
-</ul>
-
-<h2 id="url-de-retorno">URL de Retorno</h2>
-
-<p>A URL de Retorno é a que a Cielo utilizará para redirecionar o cliente de volta para a loja assim que o pagamento for concluído. Essa página da loja deverá estar preparada para receber o cliente ao fim do fluxo e avisá-lo que o processo foi concluído e que ele receberá mais informações em breve.</p>
-
-<h2 id="url-de-notificação">URL de Notificação</h2>
-
-<p>A URL de Notificação é a que a Cielo utilizará para enviar os dados da transação, do carrinho e da autorização ao fim do fluxo de integração. Ao receber a notificação, a loja terá todas as informações sobre o carrinho, pedido e poderá utilizar essas informações para alimentar seu sistema.</p>
-
-<h3 id="parâmetros-para-integração-com-post-de-notificação">Parâmetros para integração com POST de notificação</h3>
+<h2 id="registro-header">Registro Header</h2>
 
 <table><thead>
 <tr>
-<th>Parâmetro</th>
-<th>Descrição</th>
-<th>Tipo do campo</th>
-<th>Tamanho mínimo</th>
-<th>Tamanho máximo</th>
+<th>SEQ</th>
+<th>DESCRIÇÃO</th>
+<th>POS</th>
+<th>TAM</th>
+<th>FOR</th>
+<th>COMENTÁRIOS</th>
+<th>Consistências EDI</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>checkout_cielo_order_number</td>
-<td>Identificador único gerado pelo CHECKOUT CIELO</td>
-<td>Alfanumérico</td>
+<td>001</td>
+<td>Tipo de registro</td>
 <td>1</td>
-<td>32</td>
-</tr>
-<tr>
-<td>amount</td>
-<td>Preço unitário do produto, em centavos (ex: R$ 1,00 = 100)</td>
-<td>Numérico</td>
-<td>1</td>
-<td>10</td>
-</tr>
-<tr>
-<td>order_number</td>
-<td>Número do pedido enviado pela loja</td>
-<td>Alfanumérico</td>
-<td>1</td>
-<td>32</td>
-</tr>
-<tr>
-<td>created_date</td>
-<td>Data da criação do pedido (dd/MM/yyyy HH:mm:ss)</td>
-<td>Alfanumérico</td>
-<td>1</td>
-<td>20</td>
-</tr>
-<tr>
-<td>customer_name</td>
-<td>Nome do consumidor. Se enviado, esse valor já vem preenchido na tela do CHECKOUT CIELO</td>
-<td>Alfanumérico</td>
-<td>1</td>
-<td>289</td>
-</tr>
-<tr>
-<td>customer_identity</td>
-<td>Identificação do consumidor (CPF ou CNPJ) Se enviado, esse valor já vem preenchido na tela do CHECKOUT CIELO</td>
-<td>Alfanumérico</td>
-<td>1</td>
-<td>14</td>
-</tr>
-<tr>
-<td>customer_email</td>
-<td>E-mail do consumidor. Se enviado, esse valor já vem preenchido na tela do CHECKOUT CIELO</td>
-<td>Alfanumérico</td>
-<td>1</td>
-<td>64</td>
-</tr>
-<tr>
-<td>customer_phone</td>
-<td>Telefone do consumidor. Se enviado, esse valor já vem preenchido na tela do CHECKOUT CIELO</td>
-<td>Numérico</td>
-<td>1</td>
-<td>11</td>
-</tr>
-<tr>
-<td>discount_amount</td>
-<td>Valor do desconto fornecido (enviado somente se houver desconto)</td>
-<td>Numérico</td>
-<td>1</td>
-<td>10</td>
-</tr>
-<tr>
-<td>shipping_type</td>
-<td>Modalidade de frete</td>
-<td>Numérico</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>shipping_name</td>
-<td>Nome do frete</td>
-<td>Alfanumérico</td>
-<td>1</td>
-<td>128</td>
-</tr>
-<tr>
-<td>shipping_price</td>
-<td>Valor do serviço de frete, em centavos (ex: R$ 10,00 = 1000)</td>
-<td>Numérico</td>
-<td>1</td>
-<td>10</td>
-</tr>
-<tr>
-<td>shipping_address_zipcode</td>
-<td>CEP do endereço de entrega</td>
-<td>Numérico</td>
-<td>1</td>
-<td>8</td>
-</tr>
-<tr>
-<td>shipping_address_district</td>
-<td>Bairro do endereço de entrega</td>
-<td>Texto</td>
-<td>1</td>
-<td>64</td>
-</tr>
-<tr>
-<td>shipping_address_city</td>
-<td>Cidade do endereço de entrega</td>
-<td>Alfanumérico</td>
-<td>1</td>
-<td>64</td>
-</tr>
-<tr>
-<td>shipping_address_state</td>
-<td>Estado de endereço de entrega</td>
-<td>Alfanumérico</td>
-<td>1</td>
-<td>64</td>
-</tr>
-<tr>
-<td>shipping_address_line1</td>
-<td>Endereço de entrega</td>
-<td>Alfanumérico</td>
-<td>1</td>
-<td>256</td>
-</tr>
-<tr>
-<td>shipping_address_line2</td>
-<td>Complemento do endereço de entrega</td>
-<td>Alfanumérico</td>
-<td>1</td>
-<td>256</td>
-</tr>
-<tr>
-<td>shipping_address_number</td>
-<td>Número do endereço de entrega</td>
-<td>Numérico</td>
-<td>1</td>
-<td>8</td>
-</tr>
-<tr>
-<td>payment_method_type</td>
-<td>Cód. do tipo de meio de pagamento</td>
-<td>Numérico</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>payment_method_brand</td>
-<td>Bandeira (somente para transações com meio de pagamento cartão de crédito)</td>
-<td>Numérico</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>payment_method_bank</td>
-<td>Banco emissor (Para transações de Boleto e Débito Automático)</td>
-<td>Numérico</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>payment_maskedcredicard</td>
-<td>Cartão Mascarado (Somente para transações com meio de pagamento cartão de crédito)</td>
-<td>Alfanumérico</td>
-<td>1</td>
-<td>20</td>
-</tr>
-<tr>
-<td>payment_installments</td>
-<td>Número de parcelas</td>
-<td>Numérico</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>payment_antifrauderesult</td>
-<td>Status das transações de cartão de Crédito no Antifraude</td>
-<td>Numérico</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>payment_boletonumber</td>
-<td>Numero do boleto gerado</td>
-<td>String</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>payment_boletoexpirationdate</td>
-<td>Data de vencimento para transações realizadas com boleto bancário</td>
-<td>Numérico</td>
-<td>1</td>
-<td>10</td>
-</tr>
-<tr>
-<td>payment_status</td>
-<td>Status da transação</td>
-<td>Numérico</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>tid</td>
-<td>TID Cielo gerado no momento da autorização da transação</td>
-<td>Alfanumérico</td>
-<td>1</td>
-<td>32</td>
-</tr>
-</tbody></table>
-
-<aside class="notice">A página destino do POST de Notificação deve seguir a formatação dos parâmetros com todos os nomes em MINUSCULO</aside>
-
-<h3 id="recebimento-do-post-de-notificação">Recebimento do POST de notificação</h3>
-
-<ul>
-<li>Quando acessada pelo servidor da Braspag, enviando o POST da tabela acima, a URL cadastrada para Notificação deverá exibir um código informando que recebeu a mudança de status e a processou com sucesso. <strong>Código:</strong><code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code></li>
-<li>Se a URL for acessada pelo nosso servidor e não exibir o código de confirmação, o servidor irá tentar novamente por três vezes, a cada hora. Caso o <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code> ainda não seja exibido, será entendido que o servidor da loja não responde.</li>
-<li>A URL de Notificação somente pode utilizar <strong>porta 80</strong> (padrão para http) ou <strong>porta 443</strong> (padrão para https).</li>
-</ul>
-
-<h2 id="url-de-mudança-de-status">URL de Mudança de Status</h2>
-
-<p>A URL de Mudança de Status é a que a Cielo utilizará para notificar a loja sobre as mudanças de status das transações. Uma mudança de status, de Autorizado para Cancelado, por exemplo, pode ocorrer a qualquer momento. Se o administrador da loja cancelar um pedido no Backoffice Cielo, então a Cielo enviará para a URL de Mudança de Status uma notificação semelhante a enviada para a URL de notificação. A única diferença dessa notificação é que não conterá os dados do carrinho, mas apenas do pedido e o novo status da autorização.</p>
-
-<aside class="warning">A URL de mudança de status é fornecida pelo lojista. Nessa URL serão postadas as informações de todos os pedidos que tiverem seu status alterado.</aside>
-
-<h3 id="parâmetros-para-integração-com-post-de-mudança-de-status">Parâmetros para integração com POST de Mudança de Status</h3>
-
-<table><thead>
-<tr>
-<th>Parâmetro</th>
-<th>Descrição</th>
-<th>Tipo do campo</th>
-<th>Tamanho mínimo</th>
-<th>Tamanho máximo</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>checkout_cielo_order_number</td>
-<td>Identificador único gerado pelo CHECKOUT CIELO.</td>
-<td>Alfanumérico</td>
-<td>1</td>
-<td>32</td>
-</tr>
-<tr>
-<td>amount</td>
-<td>Preço unitário do produto, em centavos (ex: R$ 1,00 = 100)</td>
-<td>Numérico</td>
-<td>1</td>
-<td>10</td>
-</tr>
-<tr>
-<td>order_number</td>
-<td>Número do pedido enviado pela loja</td>
-<td>Alfanumérico</td>
-<td>1</td>
-<td>32</td>
-</tr>
-<tr>
-<td>payment_status</td>
-<td>Status da transação</td>
-<td>Numérico</td>
-<td>1</td>
-<td>1</td>
-</tr>
-</tbody></table>
-
-<h3 id="recebimento-do-post-de-mudança-de-status">Recebimento do POST de Mudança de Status</h3>
-
-<ul>
-<li>Quando acessada pelo servidor da Braspag, enviando o POST, a URL cadastrada para Retorno de Mudança de Status, deverá exibir um código informando que recebeu a mudança de status e a processou com sucesso: <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code></li>
-<li>Se a URL de mudança de status da loja for acessada pelo servidor da Braspag não exibir o código de confirmação, o servidor irá tentar novamente por três vezes.</li>
-<li>Caso o <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code> ainda não seja exibido, será entendido que o servidor da loja não responde, e será enviado um e-mail ao responsável pela loja, informando que o pedido em questão foi pago.</li>
-<li>Ou seja, o código fonte da página indicando Sucesso deverá conter APENAS <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code> <strong>e nada mais</strong>.</li>
-</ul>
-
-<aside class="notice">Na tela de pedidos, dentro de cada transação, há a opção de reenvio do POST de mudança de status. Basta clicar nos botões azuis, marcados na imagem abaixo</aside>
-
-<p><img alt="Reenvio de notificação" src="images/checkout-reenviar-notificacao.png" /></p>
-
-<h1 id="parâmetros-de-integração">Parâmetros de integração</h1>
-
-<h2 id="cart">Cart</h2>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"Discount"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
-    </span><span class="s2">"Items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<p>Parâmetro de requisição com informações sobre o carrinho de compras. Veja também o parâmetro <a href="#item">Item</a></p>
-
-<table><thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Discount</td>
-<td><a href="#discount">Discount</a></td>
-<td>Opcional</td>
-<td>n/a</td>
-<td>Informações do desconto sobre o carrinho de compras.</td>
-</tr>
-<tr>
-<td>Items</td>
-<td><a href="#item">Item[]</a></td>
-<td>Sim</td>
-<td>n/a</td>
-<td>Lista de itens do carrinho de compras <em>(deve conter no mínimo 1 item)</em>.</td>
-</tr>
-</tbody></table>
-
-<h3 id="discount">Discount</h3>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Percent"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Value"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<p>Parâmetro de requisição com informações sobre descontos.</p>
-
-<aside class="notice">Independentemente do tipo do desconto, ele deverá ser calculado antes da soma do valor do frete.</aside>
-
-<table><thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Type</td>
-<td>Alphanumeric</td>
-<td>Condicional</td>
-<td>n/a</td>
-<td>Tipo do desconto a ser aplicado: &quot;Amount&rdquo;, &ldquo;Percent&rdquo;. Obrigatório caso <code class="prettyprint">Value</code> for maior ou igual a zero.</td>
-</tr>
-<tr>
-<td>Value</td>
-<td>Numeric</td>
-<td>Condicional</td>
-<td>0..18</td>
-<td>Valor do desconto a ser aplicado <em>(pode ser valor absoluto ou percentual)</em>. Obrigatório caso <code class="prettyprint">Type</code> for &ldquo;Amount&rdquo; ou &ldquo;Percent&rdquo;.</td>
-</tr>
-</tbody></table>
-
-<h4 id="discount.type-=-amount">Discount.Type = Amount</h4>
-
-<p>Caso o tipo de desconto escolhido seja o <code class="prettyprint">Amount</code>, deverá ser inserido o <strong>valor em centavos</strong>.
-Ex.: 100 = 1,00.</p>
-
-<h4 id="discount.type-percent">Discount.Type Percent</h4>
-
-<p>Caso o tipo de desconto escolhido seja o <code class="prettyprint">Percentual</code>, deverá ser inserido o <strong>valor em número inteiro</strong>.
-Ex.: 10 = 10%.</p>
-
-<h3 id="item">Item</h3>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nome do produto"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Descrição do produto"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"UnitPrice"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Asset"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Sku"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sku do item no carrinho"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<p>Parâmetro de requisição com informações sobre o item do carrinho de compras. Veja também o parâmetro <a href="#cart">Cart</a></p>
-
-<table><thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Name</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
-<td>1..128</td>
-<td>Nome do item no carrinho.</td>
-</tr>
-<tr>
-<td>Description</td>
-<td>Alphanumeric</td>
-<td>Opcional</td>
-<td>0.256</td>
-<td>Descrição do item no carrinho.</td>
-</tr>
-<tr>
-<td>UnitPrice</td>
-<td>Numeric</td>
-<td>Sim</td>
-<td>1..18</td>
-<td>Preço unitário do item no carrinho <em>(</em><em>em centavos.</em>* Ex: R$ 1,00 = 100)*.</td>
-</tr>
-<tr>
-<td>Quantity</td>
-<td>Numeric</td>
-<td>Sim</td>
-<td>1..9</td>
-<td>Quantidade do item no carrinho.</td>
-</tr>
-<tr>
-<td>Type</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
-<td>n/a</td>
-<td>Tipo do item no carrinho.</td>
-</tr>
-<tr>
-<td>Sku</td>
-<td>Alphanumeric</td>
-<td>Opcional</td>
-<td>0..32</td>
-<td>Sku do item no carrinho.</td>
-</tr>
-<tr>
-<td>Weight</td>
-<td>Numeric</td>
-<td>Condicional</td>
-<td>0..9</td>
-<td>Peso em gramas do item no carrinho.</td>
-</tr>
-</tbody></table>
-
-<h4 id="tipos-de-item">Tipos de item</h4>
-
-<table><thead>
-<tr>
-<th>Tipo</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Asset</td>
-<td>Material Físico</td>
-</tr>
-<tr>
-<td>Digital</td>
-<td>Produtos Digitais</td>
-</tr>
-<tr>
-<td>Service</td>
-<td>Serviços</td>
-</tr>
-<tr>
-<td>Payment</td>
-<td>Outros pagamentos</td>
-</tr>
-</tbody></table>
-
-<h2 id="shipping">Shipping</h2>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"SourceZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14400000"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"TargetZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11000000"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Address"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
-    </span><span class="s2">"Services"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<p>Parâmetro de requisição com informações sobre endereço e serviço de entrega dos produtos.</p>
-
-<table><thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Type</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
-<td>n/a</td>
-<td>Tipo do frete: &ldquo;Correios&rdquo;, &ldquo;FixedAmount&rdquo;, &ldquo;Free&rdquo;, &ldquo;WithoutShippingPickUp&rdquo;, &ldquo;WithoutShipping&rdquo;.</td>
-</tr>
-<tr>
-<td>SourceZipCode</td>
-<td>Numeric</td>
-<td>Condicional</td>
-<td>8</td>
-<td>CEP de origem do carrinho de compras.</td>
-</tr>
-<tr>
-<td>TargetZipCode</td>
-<td>Numeric</td>
-<td>Opcional</td>
-<td>8</td>
-<td>CEP do endereço de entrega do comprador.</td>
-</tr>
-<tr>
-<td>Address</td>
-<td><a href="#address">Address</a></td>
-<td>Opcional</td>
-<td>n/a</td>
-<td>Informações sobre o endereço de entrega do comprador.</td>
-</tr>
-<tr>
-<td>Services</td>
-<td><a href="#service">Service[]</a></td>
-<td>Condicional</td>
-<td>n/a</td>
-<td>Lista de serviços de frete.</td>
-</tr>
-</tbody></table>
-
-<h3 id="address">Address</h3>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"Street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Endereço de entrega"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Complement"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"District"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bairro da entrega"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"City"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cidade de entrega"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"State"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SP"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<p>Parâmetro de requisição com informações sobre o endereço do comprador. Veja também o parâmetro <a href="#customer">Customer</a></p>
-
-<table><thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Street</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
-<td>1..256</td>
-<td>Rua, avenida, travessa, etc, do endereço de entrega do comprador.</td>
-</tr>
-<tr>
-<td>Number</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
-<td>1..8</td>
-<td>Número do endereço de entrega do comprador.</td>
-</tr>
-<tr>
-<td>Complement</td>
-<td>Alphanumeric</td>
-<td>Opcional</td>
-<td>0..256</td>
-<td>Complemento do endereço de entrega do comprador.</td>
-</tr>
-<tr>
-<td>District</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
-<td>1..64</td>
-<td>Bairro do endereço de entrega do comprador.</td>
-</tr>
-<tr>
-<td>City</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
-<td>1..64</td>
-<td>Cidade do endereço de entrega do comprador.</td>
-</tr>
-<tr>
-<td>State</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
 <td>2</td>
-<td>Estado (UF) do endereço de entrega do comprador.</td>
-</tr>
-</tbody></table>
-
-<h3 id="service">Service</h3>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Serviço de frete"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Price"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Deadline"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<p>Parâmetro de requisição com informações sobre o serviço de frete que será utilizado.</p>
-
-<table><thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Name</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
-<td>1..128</td>
-<td>Nome do serviço de frete.</td>
+<td>N</td>
+<td>Identifica o tipo de registro header</td>
+<td>Obrigatoriamente igual a “00”</td>
 </tr>
 <tr>
-<td>Price</td>
-<td>Numeric</td>
-<td>Sim</td>
-<td>1..18</td>
-<td>Preço do serviço de frete (em centavos. Ex: R$ 1,00 = 100).</td>
+<td>002</td>
+<td>Data do depósito</td>
+<td>3</td>
+<td>8</td>
+<td>N</td>
+<td>Data de geração e transmissão do movimento</td>
+<td>Campo Obrigatório Formato deve ser DDMMAAAA</td>
 </tr>
 <tr>
-<td>Deadline</td>
-<td>Numeric</td>
-<td>Condicional</td>
-<td>0..9</td>
-<td>Prazo de entrega (em dias).</td>
-</tr>
-</tbody></table>
-
-<h2 id="payment">Payment</h2>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"BoletoDiscount"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"DebitDiscount"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<p>Parâmetro de requisição com informações sobre o desconto para pagamento via boleto ou débito online.</p>
-
-<table><thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>BoletoDiscount</td>
-<td>Numeric</td>
-<td>Condicional</td>
-<td>0..3</td>
-<td>Desconto, em porcentagem, para pagamentos a serem realizados com boleto.</td>
+<td>003</td>
+<td>Número do resumo de operações (RO)</td>
+<td>11</td>
+<td>7</td>
+<td>N</td>
+<td>Informado pelo estabelecimento, identifica o lote de transações</td>
+<td>Campo Obrigatório. Não enviar o mesmo lote num período de 30 dias do envio anterior</td>
 </tr>
 <tr>
-<td>DebitDiscount</td>
-<td>Numeric</td>
-<td>Condicional</td>
-<td>0..3</td>
-<td>Desconto, em porcentagem, para pagamentos a serem realizados com débito online.</td>
-</tr>
-</tbody></table>
-
-<h2 id="customer">Customer</h2>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"Identity"</span><span class="p">:</span><span class="w"> </span><span class="mi">11111111111</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"FullName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fulano Comprador da Silva"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fulano@email.com"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11999999999"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<p>Parâmetro de requisição com informações sobre o comprador. Veja também o parâmetro <a href="#address">Address</a></p>
-
-<table><thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Identity</td>
-<td>Numeric</td>
-<td>Condicional</td>
-<td>0..14</td>
-<td>CPF ou CNPJ do comprador.</td>
+<td>004</td>
+<td>Reservado para o estabelecimento</td>
+<td>18</td>
+<td>10</td>
+<td>X</td>
+<td>Uso exclusivo do estabelecimento, não é utilizado pela CIELO</td>
+<td>Nenhuma verificação</td>
 </tr>
 <tr>
-<td>FullName</td>
-<td>Alphanumeric</td>
-<td>Condicional</td>
-<td>0..288</td>
-<td>Nome completo do comprador.</td>
+<td>005</td>
+<td>Não utilizar</td>
+<td>28</td>
+<td>3</td>
+<td>N</td>
+<td>Constante = Zeros</td>
+<td>Não lido</td>
 </tr>
 <tr>
-<td>Email</td>
-<td>Alphanumeric</td>
-<td>Condicional</td>
-<td>0..64</td>
-<td>Email do comprador.</td>
+<td>006</td>
+<td>Número do estabelecimento Cielo</td>
+<td>31</td>
+<td>10</td>
+<td>N</td>
+<td>N.o da maquineta (contrato CIELO)</td>
+<td>Campo Obrigatório. Rejeição se &lt; 0 ou não numérico</td>
 </tr>
 <tr>
-<td>Phone</td>
-<td>Numeric</td>
-<td>Condicional</td>
-<td>0..11</td>
-<td>Telefone do comprador.</td>
-</tr>
-</tbody></table>
-
-<h2 id="options">Options</h2>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"AntifraudEnabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<p>Parâmetro de requisição para configurar o sistema de anti-fraude para a transação.</p>
-
-<table><thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>AntifraudEnabled</td>
-<td>Boolean</td>
-<td>Conditional</td>
-<td>n/a</td>
-<td>Habilitar ou não a análise de fraude para o pedido.</td>
-</tr>
-</tbody></table>
-
-<h2 id="settings">Settings</h2>
-
-<p>Parâmetro de resposta, recebido em caso de sucesso.</p>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"CheckoutUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://cieloecommerce.cielo.com.br/transacional/order/index?id=123"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CheckoutCielo"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> 
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<table><thead>
-<tr>
-<th>Campo</th>
-<th>Tipo</th>
-<th>Obrigatório</th>
-<th>Tamanho</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>CheckoutUrl</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
-<td>1..128</td>
-<td>URL de checkout do pedido. <strong>Formato:</strong> <code class="prettyprint">https://cieloecommerce.cielo.com.br/transacional/order/index?id={id}</code></td>
+<td>007</td>
+<td>Código da moeda</td>
+<td>41</td>
+<td>3</td>
+<td>N</td>
+<td>“986” - R$, “840” - US$</td>
+<td>Rejeitado se diferente de 986 ou 840</td>
 </tr>
 <tr>
-<td>Profile</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
-<td>1..16</td>
-<td>Perfil do lojista: fixo &ldquo;CheckoutCielo&rdquo;.</td>
-</tr>
-<tr>
-<td>Version</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
+<td>008</td>
+<td>Indicador do processo</td>
+<td>44</td>
 <td>1</td>
-<td>Versão do serviço de criação de pedido <em>(versão: 1)</em>.</td>
+<td>X</td>
+<td>“P” – Produção</td>
+<td>Rejeita se diferente de “P”</td>
+</tr>
+<tr>
+<td>009</td>
+<td>Indicador de venda</td>
+<td>45</td>
+<td>1</td>
+<td>X</td>
+<td>“V” – venda</td>
+<td>Campo Obrigatório</td>
+</tr>
+<tr>
+<td>010</td>
+<td>Indicação de estabelecimento especial</td>
+<td>46</td>
+<td>01</td>
+<td>X</td>
+<td>Constante = brancos</td>
+<td>Somente deverá ser diferente de branco caso a equipe de sistemas assim determinar.</td>
+</tr>
+<tr>
+<td>011</td>
+<td>Não utilizar</td>
+<td>47</td>
+<td>204</td>
+<td>X</td>
+<td>Constante = brancos</td>
+<td>não lido</td>
 </tr>
 </tbody></table>
 
-<h1 id="configurações-de-pagamento">Configurações de Pagamento</h1>
-
-<h2 id="cartão-de-crédito">Cartão de Crédito</h2>
-
-<p>O Checkout Cielo aceita as principais bandeiras de crédito do Brasil e do mundo. São elas: Visa, MasterCard, American Express (Amex), Elo, Diners, Discover, JCB e Aura.</p>
-
-<h3 id="recebendo-uma-venda-de-cartão-de-crédito">Recebendo uma Venda de Cartão de Crédito</h3>
-
-<p>A partir da criação de uma transação, ela pode assumir diversos status. As transições de status podem ser realizadas através da troca de mensagens entre a loja e a Cielo, ou de forma automática, por exemplo, quando o prazo para a captura de transação autorizada expirar.</p>
-
-<p>Pedidos por meio de cartão de crédito serão incluídos no <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a> como <strong>“AUTORIZADO”</strong> ou <strong>“NÃO AUTORIZADO”</strong>, dependendo do resultado da autorização na Cielo. Caso haja algum problema no processamento deste pedido (consumidor fechou a tela, por exemplo), ele constará como <strong>“NÃO FINALIZADO”</strong>.</p>
-
-<h3 id="análise-de-fraude">Análise de Fraude</h3>
-
-<p>Pedidos <strong>“AUTORIZADOS”</strong> serão enviados online, ou seja, no ato da venda, para análise da ferramenta de antifraude, quando  este desenvolvimento estiver devidamente padronizado na integração. O resultado desta análise será traduzido no campo <strong>“Indicação AF”</strong> no Relatório de Pedido, para cada pedido.</p>
-
-<p>Esta análise indicará um <strong>“BAIXO RISCO”</strong> ou “ALTO RISCO” para a venda em questão. Esta sugestão é o que deve guiar a decisão de se confirmar  ou cancelar a venda. A analise será apresentada no “Detalhes do Pedido”, como abaixo:</p>
-
-<p><img alt="Análise de risco" src="images/checkout-cielo-analise-risco.png" /></p>
-
-<h2 id="cartão-de-débito">Cartão de débito</h2>
-
-<p>O Checkout Cielo aceita as principais bandeiras de cartão de débito do mercado: Visa e MasterCard. As transações de cartão de débito possuem como participantes os bancos emissores, que por sua vez usam dos mesmos recursos para transações online (token, cartão de senhas e etc) para o processo de autenticação. Consulte a relação de emissores participantes no Suporte Cielo e-Commerce.</p>
+<h3 id="legenda">Legenda</h3>
 
 <ul>
-<li><strong>E-mail</strong>: <a href="mailto:cieloecommerce@cielo.com.br">cieloecommerce@cielo.com.br</a></li>
-<li><strong>Telefones</strong>:
+<li><strong>POS</strong> = Posição inicial do Campo no Arquivo;</li>
+<li><strong>TAM</strong> = Tamanho do Campo</li>
+<li><strong>FOR</strong> = Formatos válidos para o conteúdo do campo, sendo:
 
 <ul>
-<li><strong>Capitais</strong>: (sem DDD) 4002.9700</li>
-<li><strong>Demais Localidades</strong>: 0800.570.1700</li>
-<li><strong>Do exterior</strong>: +55 (11) 2860.1348</li>
+<li><strong>N</strong> = Numérico</li>
+<li><strong>X</strong> = Alfanumérico</li>
 </ul></li>
 </ul>
 
-<p>A autenticação da transação garantirá uma segurança extra ao lojista contra contestações dos consumidores (chargeback). O produto débito obrigatoriamente exige uma transação autenticada, caso contrário, a transação não é autorizada. A autenticação é obrigatória para transações de débito e opcional para o crédito.</p>
+<h2 id="registro-detalhe">Registro Detalhe</h2>
 
-<h3 id="passo-a-passo-da-transação-de-cartão-de-débito:">Passo a passo da transação de cartão de débito:</h3>
+<table><thead>
+<tr>
+<th>SEQ</th>
+<th>DESCRIÇÃO</th>
+<th>POS</th>
+<th>TAM</th>
+<th>FOR</th>
+<th>COMENTÁRIOS</th>
+<th>Consistências EDI</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>Tipo de registro</td>
+<td>1</td>
+<td>2</td>
+<td>N</td>
+<td>Identifica o tipo de registro detalhe</td>
+<td>Somente aceito se igual a “01”</td>
+</tr>
+<tr>
+<td>002</td>
+<td>N. do comprovante de venda (CV)</td>
+<td>3</td>
+<td>7</td>
+<td>N</td>
+<td>É um número sequencial atribuído pelo estabelecimento, identifica a transação dentro do lote.</td>
+<td>Campo Obrigatório; Deve ser numérico; Não pode estar duplicado no lote.</td>
+</tr>
+<tr>
+<td>003</td>
+<td>Número do cartão</td>
+<td>10</td>
+<td>19</td>
+<td>N</td>
+<td>N. do cartão alinhado à direita, com zeros à esquerda.</td>
+<td>Campo Obrigatório; Deve ter entre 16 a 19 dígitos.</td>
+</tr>
+<tr>
+<td>004</td>
+<td>Código de autorização</td>
+<td>29</td>
+<td>6</td>
+<td>X</td>
+<td>Na remessa, preencher com zeros. No retorno, voltará com o código da autorização.</td>
+<td>Nenhuma consistência no momento do envio.</td>
+</tr>
+<tr>
+<td>005</td>
+<td>Data da venda</td>
+<td>35</td>
+<td>8</td>
+<td>N</td>
+<td>Formato DDMMAAAA</td>
+<td>Somente aceito o formato especificado</td>
+</tr>
+<tr>
+<td>006</td>
+<td>Opção da venda</td>
+<td>43</td>
+<td>1</td>
+<td>N</td>
+<td>‘0’ – À vista, ‘2’ - Parcelado lojista, ‘4’ – Parcelado lojista – Cia Aerea</td>
+<td>Campo Obrigatório. Dentro de um mesmo lote todas as transações devem ter a mesma opção de venda.</td>
+</tr>
+<tr>
+<td>007</td>
+<td>Valor da venda *</td>
+<td>44</td>
+<td>15</td>
+<td>N</td>
+<td>Venda à vista =&gt; valor da venda. Venda parcelada =&gt; valor total das parcelas + valor entrada + taxa embarque</td>
+<td>Campo Obrigatório - Tem que respeitar a “opção de venda” - Não pode ser menor zero/não numérico</td>
+</tr>
+<tr>
+<td>008</td>
+<td>Quantidade de parcelas</td>
+<td>59</td>
+<td>3</td>
+<td>N</td>
+<td>Venda à vista =&gt; preencher com zeros. Venda parcelada =&gt; quantidade de parcelas</td>
+<td>Campo Obrigatório - Tem que respeitar a “opção de venda” - Não pode ser menor zero\ não numérico.</td>
+</tr>
+<tr>
+<td>009</td>
+<td>Valor Financiado *</td>
+<td>62</td>
+<td>15</td>
+<td>N</td>
+<td>Venda à vista =&gt; preencher com zeros. Venda parcelada =&gt; Valor original financiado</td>
+<td>Não pode ser menor zero \ não numérico</td>
+</tr>
+<tr>
+<td>010</td>
+<td>Valor Entrada *</td>
+<td>77</td>
+<td>15</td>
+<td>N</td>
+<td>Venda à vista =&gt; preencher com zeros. Venda parcelada =&gt; Valor da entrada. <strong>Apenas Cias. Aéreas</strong></td>
+<td>Não pode ser menor zero \ não numérico</td>
+</tr>
+<tr>
+<td>011</td>
+<td>Taxa Embarque *</td>
+<td>92</td>
+<td>15</td>
+<td>N</td>
+<td><strong>Preencher apenas para Cias. Aéras</strong>. Caso contrário preencher com zeros</td>
+<td>Não pode ser menor zero \ não numérico</td>
+</tr>
+<tr>
+<td>012</td>
+<td>Valor parcela *</td>
+<td>107</td>
+<td>15</td>
+<td>N</td>
+<td>Venda à vista =&gt; preencher com zeros. Venda parcelada =&gt; Valor parcela (sem arredondar)</td>
+<td>Campo Obrigatório. Não pode ser &lt;0 ou não numérico</td>
+</tr>
+<tr>
+<td>013</td>
+<td>No do resumo de operações (RO)</td>
+<td>122</td>
+<td>7</td>
+<td>N</td>
+<td>Igual ao No do RO informado no registro header</td>
+<td>Obrigatório o uso do mesmo número do header</td>
+</tr>
+<tr>
+<td>014</td>
+<td>Não utilizar</td>
+<td>129</td>
+<td>3</td>
+<td>N</td>
+<td>Constante = zeros</td>
+<td>Não lido</td>
+</tr>
+<tr>
+<td>015</td>
+<td>Número do estabelecimento</td>
+<td>132</td>
+<td>10</td>
+<td>N</td>
+<td>N.o da maquineta (contrato CIELO)</td>
+<td>Deverá ser o mesmo do header</td>
+</tr>
+<tr>
+<td>016</td>
+<td>Reservado para o estabelecimento</td>
+<td>142</td>
+<td>30</td>
+<td>X</td>
+<td>Uso exclusivo do estabelecimento, não é utilizado pela CIELO</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>017</td>
+<td>Status da venda (código retorno). Detalhe no campo 023</td>
+<td>172</td>
+<td>2</td>
+<td>N</td>
+<td>Na remessa preencher com zeros, No retorno, será formatado pela CIELO contendo status conforme tabela ANEXO I</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>018</td>
+<td>Data prevista de liquidação</td>
+<td>174</td>
+<td>8</td>
+<td>N</td>
+<td>Na remessa preencher com zeros; No retorno, será formatado pela CIELO com a data prevista de liquidação.</td>
+<td>Não lido</td>
+</tr>
+<tr>
+<td>019</td>
+<td>Validade do cartão</td>
+<td>182</td>
+<td>4</td>
+<td>X</td>
+<td>Formato = AAMM</td>
+<td>Campo obrigatório</td>
+</tr>
+<tr>
+<td>020</td>
+<td>Não utilizar</td>
+<td>186</td>
+<td>7</td>
+<td>N</td>
+<td>Constantes = zero</td>
+<td>Não lido</td>
+</tr>
+<tr>
+<td>021</td>
+<td>Não utilizar</td>
+<td>193</td>
+<td>15</td>
+<td>N</td>
+<td>Constantes = zero</td>
+<td>Não lido</td>
+</tr>
+<tr>
+<td>022</td>
+<td>Não utilizar</td>
+<td>208</td>
+<td>03</td>
+<td>X</td>
+<td>Informar brancos</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>023</td>
+<td>Código do Erro</td>
+<td>211</td>
+<td>04</td>
+<td>X</td>
+<td>Na remessa preencher com brancos. No retorno, caso haja erro será retornado pela Cielo conforme ANEXO II</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>024</td>
+<td>Referência</td>
+<td>215</td>
+<td>11</td>
+<td>X</td>
+<td>Constante = brancos</td>
+<td>Deve ser brancos</td>
+</tr>
+<tr>
+<td>025</td>
+<td>Cartão Novo</td>
+<td>226</td>
+<td>19</td>
+<td>X</td>
+<td>Na remessa preencher com brancos. No retorno, caso tenha convênio “renova fácil” virá o número cartão alinhado a esquerda com brancos direita.</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>026</td>
+<td>Vencto Novo</td>
+<td>245</td>
+<td>04</td>
+<td>N</td>
+<td>Na remessa preencher com brancos. No retorno, caso tenha convênio “renova fácil” virá a data do vencto. Cartão novo</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>027</td>
+<td>Não utilizar</td>
+<td>249</td>
+<td>02</td>
+<td>X</td>
+<td>Constante = brancos</td>
+<td>Não lido</td>
+</tr>
+</tbody></table>
 
-<ol>
-<li>Cliente acessa o internet banking</li>
-<li>Digita a senha do cartão</li>
-<li>Banco confirma a senha</li>
-<li>Transação realizada</li>
-</ol>
+<h2 id="registro-trailler">Registro Trailler</h2>
 
-<h2 id="boleto">Boleto</h2>
+<table><thead>
+<tr>
+<th>SEQ</th>
+<th>DESCRIÇÃO</th>
+<th>POS</th>
+<th>TAM</th>
+<th>FOR</th>
+<th>COMENTÁRIOS</th>
+<th>Consistências EDI</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>Tipo de registro</td>
+<td>1</td>
+<td>2</td>
+<td>N</td>
+<td>Identifica o tipo de registro detalhe trailler</td>
+<td>Obrigatório o uso do código “99”</td>
+</tr>
+<tr>
+<td>002</td>
+<td>Quantidade de registros</td>
+<td>3</td>
+<td>7</td>
+<td>N</td>
+<td>Inclusive header e trailler</td>
+<td>Rejeição se &lt;0 ou não numérico</td>
+</tr>
+<tr>
+<td>003</td>
+<td>Valor total bruto (*)</td>
+<td>10</td>
+<td>15</td>
+<td>N</td>
+<td>Informado pelo estabelecimento – Valor total do lote, somatória do campo 007 do registro detalhe.</td>
+<td>Rejeição se &lt;0 ou não numérico. Rejeita se valor diferente da somatória do campo 07</td>
+</tr>
+<tr>
+<td>004</td>
+<td>Valor total aceito (*)</td>
+<td>25</td>
+<td>15</td>
+<td>N</td>
+<td>Na remessa preencher com zeros; No retorno, será formatado pela Cielo com o valor total aceito.</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>005</td>
+<td>Valor totalliquido (*)</td>
+<td>40</td>
+<td>15</td>
+<td>N</td>
+<td>Na remessa preencher com zeros; No retorno, será formatado pela Cielo com o valor total líquido.</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>006</td>
+<td>Data prevista de crédito</td>
+<td>55</td>
+<td>8</td>
+<td>N</td>
+<td>Na remessa preencher com zeros; No retorno, será formatado pela Cielo com a data prevista de pagamento.</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>007</td>
+<td>Não utilizar</td>
+<td>63</td>
+<td>188</td>
+<td>X</td>
+<td>Constante = brancos</td>
+<td>Não lido</td>
+</tr>
+</tbody></table>
 
-<p>Todo boleto gerado (emitido) aparece com o status de “PENDENTE” no Relatório de Pedidos. Sua troca de status vai depender de ações manuais do proprio lojista. Para isso, acesse o <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a> (incluir link do manual) na seção Pedidos</p>
+<aside class="notice">( * ) - Estes campos devem ser considerados com 2 (duas) casas decimais, sem vírgulas, pontos ou qualquer outro caractere para separar números.</aside>
 
-<h3 id="possiveis-status-do-boleto">Possiveis Status do Boleto</h3>
+<h1 id="demais-regras-sobre-cancelamento-de-vendas">Demais regras sobre cancelamento de vendas</h1>
+
+<p>O cancelamento de qualquer transação só será aceito se houver saldo disponível na Agenda Financeira do Estabelecimento Comercial para cobrir o valor do cancelamento solicitado.</p>
 
 <ul>
-<li><strong>PENDENTE</strong> – boleto emitido pelo processo de transação. Status continua até alteração manual pelo lojista.</li>
-<li><strong>PAGO</strong> – Status usado quando o botão &ldquo;Conciliar” é ativado pelo lojista. Esse status pode ser revertido para pendente utiliando o Botão “Desfazer conciliação”.</li>
-<li><strong>EXPIRADO</strong> – Status ativo após 10 dias da criação do boleto, caso esse não tenha sito conciliado nesse periodo. Boletos com status “EXPIRADO” podem ser conciliados.</li>
-</ul>
-
-<h3 id="conciliando-um-boleto">Conciliando um Boleto</h3>
-
-<p>Cabe ao lojista através de uma Conciliação Manual com seu extrato bancário, confirmar o pagamento do mesmo.</p>
-
-<p><img alt="Conciliando um boleto" src="images/checkout-cielo-conciliar-boleto.png" /></p>
-
-<p>Para realizar a Conciliação você deve:</p>
-
-<ol>
-<li>Acessar o relatório de pedidos no <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>;</li>
-<li>Filtrar os pedidos por Meio de Pagamento “Boleto” e status “PENDENTE” e identificar o boleto em questão pelo Valor;</li>
-<li>Clicar no sinal de + no final da linha para acessar a página de “Detalhes”;</li>
-<li>Clicar no botão de “ Confirmar Pagamento ” e informar a data de pagamento, para seu futuro controle;</li>
-</ol>
-
-<p>O pedido passa para status <strong>PAGO</strong>.</p>
-
-<p>O Comprador também verá o pedido como <strong>PAGO</strong> no “Backoffice do Comprador”</p>
-
-<p>Desfazendo a conciliação (pagamento) de um Boleto. Caso a conciliação tenha sido feito errada, basta:</p>
-
-<ol>
-<li>Encontrar o Pedido;</li>
-<li>Entrar no seu detalhe e clicar no botão “Desfazer Pagamento”;</li>
-<li>O Pedido voltará para o Status de “PENDENTE”.</li>
-</ol>
-
-<h3 id="boletos-expirados">Boletos Expirados</h3>
-
-<p>Se o boleto não for conciliado dentro de um prazo de 10 dias após seu vencimento, seu Status será alterado para <strong>“EXPIRADO”</strong>, para um melhor controle dos boletos vencidos. Boletos EXPIRADOS podem ser conciliados.</p>
-
-<aside class="notice">Validade do Boleto – Caso o boleto expire em um dia não útil, como Sábado, ele será valido até o próximo dia útil.</aside>
-
-<p><img alt="Boleto" src="images/checkout-cielo-boleto.png" /></p>
-
-<h2 id="débito-online">Débito Online</h2>
-
-<p>Pedidos vendidos por meio de Débito online serão incluídos no <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a> como PENDENTE, PAGO, NÃO AUTORIZADO ou NÃO FINALIZADO, dependendo do resultado da autorização junto ao Banco.</p>
+<li>O cancelamento pode ser solicitado até 365 dias da data de autorização.</li>
+<li>Para cancelamentos de vendas, os campos 004, 005, 006, 007 e 008 da linha de Detalhe devem ser preenchidos com as mesmas informações da venda, respeitando o horário e data de Autorização e Captura do Brasil.</li>
+<li>É permitido o cancelamento Total ou Parcial da venda.</li>
+<li>Cancelamentos parciais podem ser enviados até o valor total da transação, obedecendo as seguintes condições:
 
 <ul>
-<li><strong>Pendente</strong> - Corresponde quando o comprador ao finalizar o pedido e não obtem resposta por parte do Banco, ou seja, não conseguir nem carregar a página do Banco para inserir os dados para o Débito.</li>
-<li><strong>Pago</strong> - Corresponde quando o comprador conseguir realizar o pagamento do débito com sucesso.</li>
-<li><strong>Não Autorizado</strong> - Apresentado para o Lojista quando o comprador tentar realizar uma transação via débito e não ter saldo para a transação.</li>
-<li><strong>Não Finalizado</strong> - Apresentado para o Lojista caso o comprador tenha algum problema para finalizar o pagamento do meio Débito, seja fechando a janela do banco ou simplesmente nem chegando à tela do banco.</li>
+<li><strong>Transações a Vista</strong>: podem ser enviados mais de um cancelamento parcial da mesma transação no mesmo dia, desde que sejam enviadas em Lotes diferentes.</li>
+<li><strong>Transações Parcelado Loja</strong>: não permite cancelamento parcial da mesma transação no mesmo dia.</li>
+</ul></li>
+<li>Cancelamentos de transações autorizadas por meio do canal EDI, só podem ser solicitados após o recebimento do arquivo retorno da transação de autorização (até 48 horas após o envio do arquivo).</li>
 </ul>
 
-<h2 id="diferença-entre-estorno-e-cancelamento">Diferença entre estorno e cancelamento</h2>
+<h1 id="layout-de-arquivos-de-remessa-e-retorno-de-cancelamentos-(-não-pci-)">Layout de Arquivos de Remessa e Retorno de Cancelamentos ( Não PCI )</h1>
+
+<p>Layout utilizado para cancelamentos de transações por meio do canal EDI, por exemplo: transações recorrentes.</p>
+
+<h2 id="chave-sem-certificação-pci:">Chave sem certificação PCI:</h2>
 
 <ul>
-<li><strong>Cancelamento:</strong> é feito no mesmo dia da captura, devolvendo o limite ao cartão do comprador em até 72h conforme regras do banco emissor do cartão. Não é apresentado na fatura do comprador;</li>
-<li><strong>Estorno:</strong> a partir do dia seguinte da captura, o valor é “devolvido” na fatura do comprador em até 300 dias. É apresentado na fatura do comprador.</li>
+<li>Número da Maquineta;</li>
+<li>Número do cartão;</li>
+<li>Data,</li>
+<li>Valor</li>
+<li>Autorização da transação original;</li>
 </ul>
 
-<h2 id="captura/cancelamento-automático">Captura/Cancelamento Automático</h2>
+<h2 id="registro-header">Registro Header</h2>
 
-<aside class="notice">Veja a diferença entre cancelamento e estorno em <a href="#diferença-entre-estorno-e-cancelamento">Diferença entre estorno e cancelamento</a></aside>
+<table><thead>
+<tr>
+<th>SEQ</th>
+<th>DESCRIÇÃO</th>
+<th>POS</th>
+<th>TAM</th>
+<th>FOR</th>
+<th>COMENTÁRIOS</th>
+<th>Consistências EDI</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>Tipo de registro</td>
+<td>1</td>
+<td>2</td>
+<td>N</td>
+<td>Identifica o tipo de registro header</td>
+<td>Obrigatoriamente deve ser “00”</td>
+</tr>
+<tr>
+<td>002</td>
+<td>Data do depósito</td>
+<td>3</td>
+<td>8</td>
+<td>N</td>
+<td>Data de geração e transmissão do movimento</td>
+<td>Campo Obrigatório. Formato deve ser DDMMAAAA</td>
+</tr>
+<tr>
+<td>003</td>
+<td>Número do resumo de operações (RO)</td>
+<td>11</td>
+<td>7</td>
+<td>N</td>
+<td>Informado pelo estabelecimento, identifica o lote de transações.</td>
+<td>Campo Obrigatório. Não enviar o mesmo lote num período de 30 dias do envio anterior</td>
+</tr>
+<tr>
+<td>004</td>
+<td>Reservado para o estabelecimento</td>
+<td>18</td>
+<td>10</td>
+<td>X</td>
+<td>Uso exclusivo do estabelecimento, não é utilizado pela CIELO</td>
+<td>Nenhuma verificação</td>
+</tr>
+<tr>
+<td>005</td>
+<td>Não utilizar</td>
+<td>28</td>
+<td>3</td>
+<td>N</td>
+<td>Constante = Zeros</td>
+<td>Não lido</td>
+</tr>
+<tr>
+<td>006</td>
+<td>Número do estabelecimento Cielo</td>
+<td>31</td>
+<td>10</td>
+<td>N</td>
+<td>N.º da maquineta (contrato CIELO)</td>
+<td>Campo Obrigatório. Rejeitado se &lt; ou = 0 ou não numérico</td>
+</tr>
+<tr>
+<td>007</td>
+<td>Código da moeda</td>
+<td>41</td>
+<td>3</td>
+<td>N</td>
+<td>“986” - R$. “840” - US$</td>
+<td>Rejeitado se diferente de 986 ou 840</td>
+</tr>
+<tr>
+<td>008</td>
+<td>Indicador do processo</td>
+<td>44</td>
+<td>1</td>
+<td>X</td>
+<td>“P” – Produção</td>
+<td>Rejeita se diferente de “P”</td>
+</tr>
+<tr>
+<td>009</td>
+<td>Indicador de cancelamento de vendas</td>
+<td>45</td>
+<td>1</td>
+<td>X</td>
+<td>“C” – cancelamento de venda Credito à vista. “P” – cancelamento de venda Parcelado Loja. “D” – cancelamento de venda Débito</td>
+<td>Se campo diferente de “C” ou “P” ou “D” o lote será recusado.</td>
+</tr>
+<tr>
+<td>010</td>
+<td>Indicação de estabelecimento especial</td>
+<td>46</td>
+<td>01</td>
+<td>X</td>
+<td>Constante = brancos</td>
+<td>Somente deverá ser diferente de branco caso a equipe de sistemas assim determinar.</td>
+</tr>
+<tr>
+<td>011</td>
+<td>Não utilizar</td>
+<td>47</td>
+<td>204</td>
+<td>X</td>
+<td>Constante = brancos</td>
+<td>Não lido</td>
+</tr>
+</tbody></table>
 
-<h3 id="captura-automática">Captura automática</h3>
+<h2 id="registro-detalhe">Registro Detalhe</h2>
 
-<p>As vendas <strong>“AUTORIZADAS”</strong>, e com <strong>“BAIXO RISCO”</strong> na ferramenta de  antifraude poderão ser <strong>CAPTURADAS</strong> automaticamente pelo sistema. Para isso é preciso configurar no o <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>. Após essa configuração, o status apresentado será <strong>“PAGO”</strong>. Esta venda será então confirmada (capturada) na Cielo.</p>
+<table><thead>
+<tr>
+<th>SEQ</th>
+<th>DESCRIÇÃO</th>
+<th>POS</th>
+<th>TAM</th>
+<th>FOR</th>
+<th>COMENTÁRIOS</th>
+<th>Consistências EDI</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>Tipo de registro</td>
+<td>1</td>
+<td>2</td>
+<td>N</td>
+<td>Identifica o tipo de registro detalhe</td>
+<td>Somente aceito se igual a “01”</td>
+</tr>
+<tr>
+<td>002</td>
+<td>Nº do comprovante de venda (CV)</td>
+<td>3</td>
+<td>7</td>
+<td>N</td>
+<td>É um número sequencial atribuído pelo estabelecimento, identifica a transação dentro do lote.</td>
+<td>Campo Obrigatório; Deve ser numérico; Não pode estar duplicado no lote.</td>
+</tr>
+<tr>
+<td>003</td>
+<td>Número do cartão</td>
+<td>10</td>
+<td>19</td>
+<td>N</td>
+<td>Nº do cartão alinhado à direita, com zeros à esquerda</td>
+<td>Campo Obrigatório; deve ter entre 16 a 19 dígitos.</td>
+</tr>
+<tr>
+<td>004</td>
+<td>Código de autorização</td>
+<td>29</td>
+<td>6</td>
+<td>X</td>
+<td>Preencher com o código de autorização da venda.</td>
+<td>Campo Obrigatório</td>
+</tr>
+<tr>
+<td>005</td>
+<td>Data da venda</td>
+<td>35</td>
+<td>8</td>
+<td>N</td>
+<td>DDMMAAAA</td>
+<td>Campo Obrigatório somente aceito o formato especificado</td>
+</tr>
+<tr>
+<td>006</td>
+<td>Opção da venda</td>
+<td>43</td>
+<td>1</td>
+<td>N</td>
+<td>‘0’ – À vista, ‘2’ - Parcelado lojista, ‘4’ – Parcelado lojista Cia. Aérea</td>
+<td>Campo Obrigatório. Dentro de um mesmo lote todas as transações devem ter a mesma opção de venda</td>
+</tr>
+<tr>
+<td>007</td>
+<td>Valor da venda *</td>
+<td>44</td>
+<td>15</td>
+<td>N</td>
+<td>Venda vista =&gt; valor venda, Venda parcelada =&gt; somatória das parcelas e valor de entrada.</td>
+<td>Campo Obrigatório. Tem que respeitar a “opção de venda”</td>
+</tr>
+<tr>
+<td>008</td>
+<td>Quantidade de parcelas</td>
+<td>59</td>
+<td>3</td>
+<td>N</td>
+<td>Venda à vista =&gt; preencher com zeros, Venda parcelada =&gt; quantidade de parcelas</td>
+<td>Campo Obrigatório. Tem que respeitar a “opção de venda”</td>
+</tr>
+<tr>
+<td>009</td>
+<td>Valor financiado *</td>
+<td>62</td>
+<td>15</td>
+<td>N</td>
+<td>Venda à vista =&gt; preencher com zeros, Venda parcelada =&gt; Valor original financiado</td>
+<td>Campo Obrigatório. Tem que respeitar a “opção de venda”</td>
+</tr>
+<tr>
+<td>010</td>
+<td>Valor entrada *</td>
+<td>77</td>
+<td>15</td>
+<td>N</td>
+<td>Venda à vista =&gt; preencher com zeros, Venda parcelada =&gt; Valor da entrada. <strong>Apenas Cias. Aéreas</strong></td>
+<td>Campo Obrigatório. Tem que respeitar a “opção de venda”</td>
+</tr>
+<tr>
+<td>011</td>
+<td>Valor Taxa de Embarque *</td>
+<td>92</td>
+<td>15</td>
+<td>N</td>
+<td>Preencher <strong>apenas para Cias. Aéras</strong>. Caso contrário preencher com zeros</td>
+<td>Rejeitado se diferente de zero ou não numérico</td>
+</tr>
+<tr>
+<td>012</td>
+<td>Valor parcela *</td>
+<td>107</td>
+<td>15</td>
+<td>N</td>
+<td>Venda à vista =&gt; preencher com zeros, Venda parcelada =&gt; Valor da parcela (não fazer arredondamento)</td>
+<td>Campo Obrigatório. Tem que respeitar a “opção de venda“</td>
+</tr>
+<tr>
+<td>013</td>
+<td>Nº do resumo de operações (RO)</td>
+<td>122</td>
+<td>7</td>
+<td>N</td>
+<td>Igual ao Nº do RO informado no registro header</td>
+<td>Obrigatório o uso do mesmo número do header</td>
+</tr>
+<tr>
+<td>014</td>
+<td>Não utilizar</td>
+<td>129</td>
+<td>3</td>
+<td>N</td>
+<td>Constante = zeros</td>
+<td>Não lido</td>
+</tr>
+<tr>
+<td>015</td>
+<td>Número do estabelecimento</td>
+<td>132</td>
+<td>10</td>
+<td>N</td>
+<td>N.º da maquineta (contrato CIELO)</td>
+<td>Deverá ser o mesmo do header</td>
+</tr>
+<tr>
+<td>016</td>
+<td>Reservado para o estabelecimento</td>
+<td>142</td>
+<td>30</td>
+<td>X</td>
+<td>Uso exclusivo do estabelecimento, não é utilizado pela CIELO</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>017</td>
+<td>Status da venda (código retorno). Detalhe no campo 023</td>
+<td>172</td>
+<td>2</td>
+<td>N</td>
+<td>Na remessa preencher com zeros. No retorno, será formatado pela CIELO contendo status conforme tabela ANEXO I</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>018</td>
+<td>Data prevista de liquidação</td>
+<td>174</td>
+<td>8</td>
+<td>N</td>
+<td>Na remessa preencher com zeros; No retorno, será formatado pela CIELO com a data prevista de liquidação.</td>
+<td>Não lido</td>
+</tr>
+<tr>
+<td>019</td>
+<td>Validade do cartão</td>
+<td>182</td>
+<td>4</td>
+<td>X</td>
+<td>Formato = AAMM. Pode ser preenchido com zeros</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>020</td>
+<td>Número do resumo de operações (RO) original</td>
+<td>186</td>
+<td>7</td>
+<td>N</td>
+<td>Informar o número original do RO da venda</td>
+<td>Campo Obrigatório. Rejeitado se &lt; ou = 0 ou não numérico</td>
+</tr>
+<tr>
+<td>021</td>
+<td>Valor do reembolso / cancelamento</td>
+<td>193</td>
+<td>15</td>
+<td>N</td>
+<td>Valor a ser reembolsado</td>
+<td>Campo Obrigatório. Rejeitado se &lt; ou = 0 ou não numérico</td>
+</tr>
+<tr>
+<td>022</td>
+<td>Não utilizar</td>
+<td>208</td>
+<td>03</td>
+<td>X</td>
+<td>Constante = brancos</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>023</td>
+<td>Código do Erro</td>
+<td>211</td>
+<td>04</td>
+<td>X</td>
+<td>No remessa preencher com brancos. No retorno, caso haja erro será retornado pela Cielo conforme ANEXO II</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>024</td>
+<td>Número referência</td>
+<td>215</td>
+<td>11</td>
+<td>X</td>
+<td>Constante = brancos</td>
+<td>Deve ser brancos</td>
+</tr>
+<tr>
+<td>025</td>
+<td>Cartão Novo</td>
+<td>226</td>
+<td>19</td>
+<td>X</td>
+<td>Na remessa preencher com brancos. No retorno, caso tenha convênio “renova fácil” virá o número cartão alinhado a esquerda com brancos direita.</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>026</td>
+<td>Vencto Novo</td>
+<td>245</td>
+<td>04</td>
+<td>N</td>
+<td>Na remessa preencher com brancos. No retorno, caso tenha convênio “renova fácil” virá a data do vencto. do cartão novo.</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>027</td>
+<td>Não utilizar</td>
+<td>249</td>
+<td>02</td>
+<td>X</td>
+<td>Constante = brancos</td>
+<td>Não lido</td>
+</tr>
+</tbody></table>
 
-<p><img alt="Cancelamento e captura automático" src="images/checkout-cielo-cancelamento-captura-automatico.png" /></p>
+<h2 id="registro-trailler">Registro Trailler</h2>
 
-<h3 id="cancelamento-automático">Cancelamento Automático</h3>
+<table><thead>
+<tr>
+<th>SEQ</th>
+<th>DESCRIÇÃO</th>
+<th>POS</th>
+<th>TAM</th>
+<th>FOR</th>
+<th>COMENTÁRIOS</th>
+<th>Consistências EDI</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>Tipo de registro</td>
+<td>1</td>
+<td>2</td>
+<td>N</td>
+<td>Identifica o tipo de registro detalhe trailler</td>
+<td>Obrigatório o uso do código “99”</td>
+</tr>
+<tr>
+<td>002</td>
+<td>Quantidade de registros</td>
+<td>3</td>
+<td>7</td>
+<td>N</td>
+<td>Inclusive header e trailler</td>
+<td>Rejeição se &lt;0 ou não numérico</td>
+</tr>
+<tr>
+<td>003</td>
+<td>Valor total bruto (*)</td>
+<td>10</td>
+<td>15</td>
+<td>N</td>
+<td>Informado pelo estabelecimento – valor total do lote, somatória do campo 007 do registro detalhe</td>
+<td>Rejeição se &lt;0 ou não numérico. Rejeita se valor diferente da somatória do campo 07</td>
+</tr>
+<tr>
+<td>004</td>
+<td>Valor total aceito (*)</td>
+<td>25</td>
+<td>15</td>
+<td>N</td>
+<td>Na remessa preencher com zeros; No retorno, será formatado na Cielo com valor total aceito.</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>005</td>
+<td>Valor total liquido (*)</td>
+<td>40</td>
+<td>15</td>
+<td>N</td>
+<td>Na remessa preencher com zeros; No retorno, será formatado pela Cielo com o valor total líquido.</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>006</td>
+<td>Data prevista de crédito</td>
+<td>55</td>
+<td>8</td>
+<td>N</td>
+<td>Na remessa preencher com zeros; No retorno, será formatado pela Cielo com a data prevista de pagamento.</td>
+<td>Sem verificações</td>
+</tr>
+<tr>
+<td>007</td>
+<td>Não utilizar</td>
+<td>63</td>
+<td>188</td>
+<td>X</td>
+<td>Constante = brancos</td>
+<td>Não lido</td>
+</tr>
+</tbody></table>
 
-<p>As vendas “AUTORIZADAS”, e com “ALTO RISCO”  na ferramenta de  antifraude poderão ser CANCELADAS automaticamente pelo sistema. Para isso é preciso configurar no o <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>. Após essa configuração, o status apresentado será “CANCELADO”. Esta venda será então cancelada (desfeita) na Cielo.</p>
+<aside class="notice">( * ) - Estes campos devem ser considerados com 2 (duas) casas decimais, sem vírgulas, pontos ou qualquer outro caractere para separar números.</aside>
 
-<p><img alt="Cancelamento e captura automático" src="images/checkout-cielo-cancelamento-captura-automatico.png" /></p>
+<h1 id="anexos">Anexos</h1>
 
-<aside class="warning">Atenção! Você tem a opção de escolher a melhor integração para o seu negócio, a captura/cancelamento manual ou automático é feito diretamente pelo seu Backoffice.</aside>
+<h2 id="anexo-i---tabela-de-códigos-de-retorno">ANEXO I - Tabela de Códigos de Retorno</h2>
 
-<p><img alt="Cancelamento e captura automáticos" src="images/checkout-cielo-anti-fraude-cancelamento-captura.png" /></p>
+<table><thead>
+<tr>
+<th>Código de Rejeição</th>
+<th>Descritivo da Ocorrência</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>00</td>
+<td>Transação OK (Transação Aceita)</td>
+</tr>
+<tr>
+<td>01</td>
+<td>Erro no arquivo</td>
+</tr>
+<tr>
+<td>02</td>
+<td>Código de autorização inválido</td>
+</tr>
+<tr>
+<td>03</td>
+<td>Estabelecimento inválido</td>
+</tr>
+<tr>
+<td>04</td>
+<td>Lote misturado</td>
+</tr>
+<tr>
+<td>05</td>
+<td>Número de parcelas inválido</td>
+</tr>
+<tr>
+<td>06</td>
+<td>Diferença de valor no RO</td>
+</tr>
+<tr>
+<td>07</td>
+<td>Número do RO inválido (registro BH)</td>
+</tr>
+<tr>
+<td>08</td>
+<td>Valor de entrada inválido</td>
+</tr>
+<tr>
+<td>09</td>
+<td>Valor da taxa de embarque inválido</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Valor da parcela inválido</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Código de transação inválido</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Transação inválida</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Valor inválido</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Não aplicável</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Valor do cancelamento inválido</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Transação original não localizada (para cancelamento)</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Nº de itens informados no RO não compatível com os CV’s</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Número de referência inválido</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Cancelamento para parcelado de transação já cancelada</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Valor do cancelamento maior que o valor da venda</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Valor do cancelamento maior que o permitido (alçada)</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Número do RO original inválido (registro I2)</td>
+</tr>
+<tr>
+<td>42</td>
+<td>Cartão cancelado</td>
+</tr>
+<tr>
+<td>54</td>
+<td>Não é permitido cancelamento parcial de um plano parcelado que está sendo contestado pelo portador.</td>
+</tr>
+<tr>
+<td>56</td>
+<td>Tipo de plano de cartão inválido</td>
+</tr>
+<tr>
+<td>59</td>
+<td>Tipo cartão inválido 60 Data inválida</td>
+</tr>
+<tr>
+<td>71</td>
+<td>Transação rejeitada pelo banco emissor</td>
+</tr>
+<tr>
+<td>72</td>
+<td>Transação rejeitada pelo banco emissor</td>
+</tr>
+<tr>
+<td>73</td>
+<td>Cartão com problema - reter o cartão</td>
+</tr>
+<tr>
+<td>74</td>
+<td>Autorização negada</td>
+</tr>
+<tr>
+<td>75</td>
+<td>Erro</td>
+</tr>
+<tr>
+<td>76</td>
+<td>Transação rejeitada pelo banco emissor</td>
+</tr>
+<tr>
+<td>77</td>
+<td>Erro de sintaxe - refaça a transação</td>
+</tr>
+<tr>
+<td>78</td>
+<td>Não foi encontrada autorização no emissor</td>
+</tr>
+<tr>
+<td>79</td>
+<td>Cartão cancelado</td>
+</tr>
+<tr>
+<td>80</td>
+<td>Cartão cancelado</td>
+</tr>
+<tr>
+<td>81</td>
+<td>Fundos insuficientes</td>
+</tr>
+<tr>
+<td>82</td>
+<td>Cartão vencido ou data do vencimento errada</td>
+</tr>
+<tr>
+<td>87</td>
+<td>Cartão não permitido</td>
+</tr>
+<tr>
+<td>88</td>
+<td>Excedeu o número de transações no período</td>
+</tr>
+<tr>
+<td>89</td>
+<td>Mensagem difere da mensagem original</td>
+</tr>
+<tr>
+<td>92</td>
+<td>Banco emissor sem comunicação</td>
+</tr>
+<tr>
+<td>93</td>
+<td>Cancelamento com mais de 365 dias</td>
+</tr>
+<tr>
+<td>94</td>
+<td>Duplicidade de linhas aéreas</td>
+</tr>
+<tr>
+<td>95</td>
+<td>Sem saldo em aberto</td>
+</tr>
+<tr>
+<td>99</td>
+<td>Outros motivos</td>
+</tr>
+</tbody></table>
 
-<h2 id="captura/cancelamento-manual">Captura/Cancelamento manual</h2>
+<h2 id="anexo-ii-–-detalhamento-do-erro-para-status-venda-informado-no-campo-23">ANEXO II – Detalhamento do erro para Status Venda informado no campo 23</h2>
 
-<aside class="notice">Veja a diferença entre cancelamento e estorno em <a href="#diferença-entre-estorno-e-cancelamento">Diferença entre estorno e cancelamento</a></aside>
+<table><thead>
+<tr>
+<th>CÓDIGO</th>
+<th>Complemento Erro</th>
+<th>Ação EC</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>E001</td>
+<td>Lote excedeu número de registros</td>
+<td>Rever estrutura do arquivo</td>
+</tr>
+<tr>
+<td>E001</td>
+<td>Estrutura do lote incorreta</td>
+<td>Rever estrutura do arquivo</td>
+</tr>
+<tr>
+<td>E001</td>
+<td>Meio de transmissão inválido</td>
+<td>Contatar Cielo</td>
+</tr>
+<tr>
+<td>E002</td>
+<td>Reveja os dados do cartão</td>
+<td>Refaça a transação com dados validos</td>
+</tr>
+<tr>
+<td>E005</td>
+<td>Número de Estabelecimento não encontrado</td>
+<td>Confira os dados do Estabelecimento Cielo</td>
+</tr>
+<tr>
+<td>E005</td>
+<td>Problema no seu cadastro na Cielo</td>
+<td>Contatar Cielo</td>
+</tr>
+<tr>
+<td>E010</td>
+<td>Problema no seu cadastro na Cielo</td>
+<td>Contatar Cielo</td>
+</tr>
+<tr>
+<td>E023</td>
+<td>Problema no seu cadastro na Cielo</td>
+<td>Contatar Cielo</td>
+</tr>
+<tr>
+<td>E024</td>
+<td>Tipo de cartão não permitido neste canal</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E044</td>
+<td>Data da transação não confere</td>
+<td>Rever dados da transação original</td>
+</tr>
+<tr>
+<td>E045</td>
+<td>Código de autorização não encontrado</td>
+<td>Confira os dados da transação</td>
+</tr>
+<tr>
+<td>E048</td>
+<td>Data de vencimento cartão incorreta</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E054</td>
+<td>Estrutura do lote incorreta</td>
+<td>Reveja seu arquivo</td>
+</tr>
+<tr>
+<td>E055</td>
+<td>Quantidade de Parcelas invalida</td>
+<td>Verificar a quantidade de parcelas</td>
+</tr>
+<tr>
+<td>E056</td>
+<td>Transação não permitida para seu cadastro</td>
+<td>Não reenviar a transação</td>
+</tr>
+<tr>
+<td>E057</td>
+<td>Cartão cancelado</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E061</td>
+<td>Reveja os dados do cartão</td>
+<td>Refaça a transação com dados validos</td>
+</tr>
+<tr>
+<td>E094</td>
+<td>Transação não permitida para cartão Internacional</td>
+<td>Não reenviar a transação</td>
+</tr>
+<tr>
+<td>E095</td>
+<td>Transação não permitida para cartão Débito</td>
+<td>Não reenviar a transação</td>
+</tr>
+<tr>
+<td>E097</td>
+<td>Parcelado com valor inferior a R$ 5,00</td>
+<td>Refaça ajustando a quantidade de parcelas</td>
+</tr>
+<tr>
+<td>E101</td>
+<td>Transação rejeitada pelo banco Emissor</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E102</td>
+<td>Transação rejeitada pelo banco Emissor</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E103</td>
+<td>Problema no seu cadastro na Cielo</td>
+<td>Contatar Cielo</td>
+</tr>
+<tr>
+<td>E104</td>
+<td>Cartão cancelado</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E105</td>
+<td>Transação rejeitada pelo banco Emissor</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E107</td>
+<td>Transação rejeitada pelo banco Emissor</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E112</td>
+<td>Transação não permitida neste canal</td>
+<td>Contatar Cielo</td>
+</tr>
+<tr>
+<td>E112</td>
+<td>Transação em moeda Dólar, não permitida.</td>
+<td>Não reenviar a transação</td>
+</tr>
+<tr>
+<td>E112</td>
+<td>Transação sem código de autorização</td>
+<td>Refaça incluindo o código de autorização</td>
+</tr>
+<tr>
+<td>E112</td>
+<td>Transação não permitida para Cadastro Recorrente</td>
+<td>Contatar Cielo</td>
+</tr>
+<tr>
+<td>E112</td>
+<td>Transação autorizada anteriormente</td>
+<td>Não reenviar a transação</td>
+</tr>
+<tr>
+<td>E112</td>
+<td>Cartão não permitido para Cadastro Dólar</td>
+<td>Não reenviar a transação</td>
+</tr>
+<tr>
+<td>E112</td>
+<td>Transação Parcelada Não Permitida</td>
+<td>Não reenviar a transação</td>
+</tr>
+<tr>
+<td>E112</td>
+<td>Problema no seu cadastro na Cielo</td>
+<td>Contatar Cielo</td>
+</tr>
+<tr>
+<td>E112</td>
+<td>Transação não permitida</td>
+<td>Não reenviar a transação</td>
+</tr>
+<tr>
+<td>E112</td>
+<td>Transação não permitida para seu cadastro</td>
+<td>Não reenviar a transação</td>
+</tr>
+<tr>
+<td>E112</td>
+<td>Transação cartão Internacional não permitida para seu cadastro</td>
+<td>Não reenviar a transação</td>
+</tr>
+<tr>
+<td>E112</td>
+<td>Dados da transação inválidos</td>
+<td>Reveja dados da transação</td>
+</tr>
+<tr>
+<td>E114</td>
+<td>Reveja os dados do cartão</td>
+<td>Refaça a transação com dados validos</td>
+</tr>
+<tr>
+<td>E141</td>
+<td>Cartão cancelado</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E143</td>
+<td>Cartão cancelado</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E151</td>
+<td>Transação não autorizada pelo banco Emissor</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E154</td>
+<td>Data de vencimento cartão incorreta</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E157</td>
+<td>Cartão cancelado</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E158</td>
+<td>Tipo de cartão não permitido neste canal</td>
+<td>Contatar Cielo</td>
+</tr>
+<tr>
+<td>E162</td>
+<td>Cartão não permitido para esta transação</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E180</td>
+<td>Data da transação não confere</td>
+<td>Rever dados da transação original</td>
+</tr>
+<tr>
+<td>E182</td>
+<td>Código de segurança do cartão inválido</td>
+<td>Rever dados da transação / Contate seu cliente</td>
+</tr>
+<tr>
+<td>E191</td>
+<td>Banco Emissor sem comunicação</td>
+<td>Contatar Cielo</td>
+</tr>
+<tr>
+<td>E192</td>
+<td>Aplicável para Cias Aéreas</td>
+<td>Aplicável para Cias Aéreas</td>
+</tr>
+<tr>
+<td>E205</td>
+<td>Reveja os dados do cartão</td>
+<td>Refaça a transação com dados validos</td>
+</tr>
+<tr>
+<td>E207</td>
+<td>Número do Lote inválido</td>
+<td>Rever o número do Lote</td>
+</tr>
+<tr>
+<td>E207</td>
+<td>Campo Lote não é numérico</td>
+<td>Rever o número do Lote</td>
+</tr>
+<tr>
+<td>E207</td>
+<td>Número de Lote duplicado</td>
+<td>Rever o número do Lote</td>
+</tr>
+<tr>
+<td>E209</td>
+<td>Aplicável para Cias Aéreas</td>
+<td>Rever o valor</td>
+</tr>
+<tr>
+<td>E210</td>
+<td>Quantidade de Parcelas invalida</td>
+<td>Campo zerado quantidade de parcelas</td>
+</tr>
+<tr>
+<td>E210</td>
+<td>Quantidade de Parcelas invalida</td>
+<td>Numero de parcelas excedeu limite</td>
+</tr>
+<tr>
+<td>E210</td>
+<td>Produto não autorizado para seu Estabelecimento</td>
+<td>Contatar Cielo</td>
+</tr>
+<tr>
+<td>E210</td>
+<td>Quantidade de parcelas maior que permitido</td>
+<td>Contatar Cielo para alterar cadastro parcelado</td>
+</tr>
+<tr>
+<td>E211</td>
+<td>Aplicável para Cias Aéreas</td>
+<td>Rever o valor</td>
+</tr>
+<tr>
+<td>E212</td>
+<td>Aplicável para Cias Aéreas</td>
+<td>Rever o valor</td>
+</tr>
+<tr>
+<td>E213</td>
+<td>Valor de cancelamento não permitido</td>
+<td>Reveja os dados da transação</td>
+</tr>
+<tr>
+<td>E214</td>
+<td>Transação não localizada</td>
+<td>Reveja os dados da transação</td>
+</tr>
+<tr>
+<td>E215</td>
+<td>Transação já cancelada</td>
+<td>Contatar Cielo</td>
+</tr>
+<tr>
+<td>E216</td>
+<td>Transação cancelada anteriormente</td>
+<td>Não reenviar a transação</td>
+</tr>
+<tr>
+<td>E217</td>
+<td>Valor de cancelamento maior venda</td>
+<td>Reveja dados da transação</td>
+</tr>
+<tr>
+<td>E218</td>
+<td>Cancelamento não permitido neste canal</td>
+<td>Contatar Cielo</td>
+</tr>
+<tr>
+<td>E219</td>
+<td>Número do RO não localizado</td>
+<td>Reveja os dados da transação</td>
+</tr>
+<tr>
+<td>E220</td>
+<td>Prazo excedido para cancelar transação</td>
+<td>Não reenviar a transação</td>
+</tr>
+<tr>
+<td>E900</td>
+<td>Tipo de Registro Inválido</td>
+<td>Rever estrutura do arquivo</td>
+</tr>
+<tr>
+<td>E901</td>
+<td>Data do Depósito do Header Inválida</td>
+<td>Reveja os dados da transação</td>
+</tr>
+<tr>
+<td>E902</td>
+<td>Número do Resumo de Operações (RO) do Header Inválido</td>
+<td>Reveja o Número do Resumo de Operações (RO)</td>
+</tr>
+<tr>
+<td>E903</td>
+<td>Número do Estabelecimento do Header Inválido</td>
+<td>Reveja o Número de Estabelecimento / Contate a Cielo</td>
+</tr>
+<tr>
+<td>E904</td>
+<td>Moeda do Header Inválida</td>
+<td>Reveja estrutura do Header</td>
+</tr>
+<tr>
+<td>E905</td>
+<td>Indicador de teste do Header Inválido</td>
+<td>Reveja estrutura do Header</td>
+</tr>
+<tr>
+<td>E906</td>
+<td>Indicador de venda do Header Inválido</td>
+<td>Reveja estrutura do Header</td>
+</tr>
+<tr>
+<td>E911</td>
+<td>Número do Comprovante de Venda (CV) Inválido</td>
+<td>Reveja os dados da transação</td>
+</tr>
+<tr>
+<td>E912</td>
+<td>Data da Venda Inválida</td>
+<td>Reveja os dados da transação</td>
+</tr>
+<tr>
+<td>E913</td>
+<td>Opção da Venda Inválida</td>
+<td>Reveja os dados da transação</td>
+</tr>
+<tr>
+<td>E914</td>
+<td>Número do Cartão Inválido</td>
+<td>Reveja os dados da transação / Contate seu Cliente</td>
+</tr>
+<tr>
+<td>E915</td>
+<td>Valor da Venda Inválido</td>
+<td>Reveja os dados da transação</td>
+</tr>
+<tr>
+<td>E916</td>
+<td>Quantidade de Parcelas Inválida</td>
+<td>Reveja os dados da transação</td>
+</tr>
+<tr>
+<td>E917</td>
+<td>Valor Financiado Inválido</td>
+<td>Reveja os dados da transação</td>
+</tr>
+<tr>
+<td>E918</td>
+<td>Valor da Entrada Inválido</td>
+<td>Reveja os dados da transação</td>
+</tr>
+<tr>
+<td>E919</td>
+<td>Valor da Taxa Embarque Inválido</td>
+<td>Aplicável para Cias Aéreas</td>
+</tr>
+<tr>
+<td>E920</td>
+<td>Valor da Parcela Inválido</td>
+<td>Reveja os dados da transação</td>
+</tr>
+<tr>
+<td>E921</td>
+<td>Número do Resumo de Operações (RO) Inválido</td>
+<td>Reveja o Número do Resumo de Operações (RO)</td>
+</tr>
+<tr>
+<td>E922</td>
+<td>Número do Estabelecimento Inválido</td>
+<td>Reveja o Número de Estabelecimento / Contate a Cielo</td>
+</tr>
+<tr>
+<td>E923</td>
+<td>Validade do Cartão Inválido</td>
+<td>Contate seu cliente</td>
+</tr>
+<tr>
+<td>E924</td>
+<td>Número do Resumo de Operações (RO) Original Inválido</td>
+<td>Reveja o Número do Resumo de Operações (RO)</td>
+</tr>
+<tr>
+<td>E925</td>
+<td>Valor do Reembolso Inválido</td>
+<td>Reveja os dados da transação</td>
+</tr>
+<tr>
+<td>E926</td>
+<td>Número de Referencia Inválido</td>
+<td>Reveja os dados da transação</td>
+</tr>
+<tr>
+<td>E930</td>
+<td>Quantidade de Registros do Trailer não confere</td>
+<td>Reveja a quantidade de registros</td>
+</tr>
+<tr>
+<td>E931</td>
+<td>Valor total bruto não confere</td>
+<td>Reveja os dados da transação</td>
+</tr>
+</tbody></table>
 
-<p>As vendas <strong>“AUTORIZADAS”</strong> aguardam uma decisão de confirmação ou cancelamento. E esta decisão deve vir em conformidade com a análise de fraude, caso esta funcionalidade esteja devidamente parametrizada na integração.</p>
-
-<p>A confirmação da venda deve ser feita pelo botão <strong>CAPTURAR</strong>, na aba  <strong>“Pedidos”</strong>, no <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>. Após a confirmação, o status mudará para <strong>“PAGO”</strong>. Esta venda será então confirmada (capturada) na Cielo.</p>
-
-<p>Já o  cancelamento deve ser feito pelo botão <strong>CANCELAR</strong> na mesma seção No <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>. Após o cancelamento, o status mudará para <strong>“CANCELADO”</strong>. Esta venda será então cancelada (desfeita) na Cielo.</p>
-
-<aside class="warning">Atenção! Você tem até 5 dias pra confirmar a venda! Caso isso não seja feito ela não será mais válida na Cielo, e o limite reservado para sua loja/venda será liberado. Este é um procedimento padrão para todas as lojas.</aside>
-
-<aside class="warning">Quando o prazo de confirmação da venda autorizada expira, os pedidos passarão automaticamente para o status “EXPIRADO”. Isso acontecerá no sexto dia após a data de autorização (data da venda)</aside>
-
-<h2 id="estorno-de-venda">Estorno de Venda</h2>
-
-<p>Caso a venda já tenha sido confirmada (status PAGO) ela pode ser ainda, futuramente, estornada. Para isso, basta clicar no botão no Detalhe do Pedido.</p>
-
-<h3 id="vendas-de-cartões-de-crédito-expiradas">Vendas de Cartões de Crédito Expiradas</h3>
-
-<p>Quando o prazo de confirmação da venda autorizada expira, os pedidos passarão automaticamente para o status “EXPIRADO”. Isso acontecerá no sexto dia após a data de autorização (data da venda)</p>
-
-<h2 id="chargeback">Chargeback</h2>
-
-<p>O consumidor (comprador) pode por algum motivo cancelar a compra diretamente com o banco emissor do cartão de crédito. Caso isso ocorra  o lojista receberá da Cielo um aviso de Chargeback de “Não Reconhecimento de compra” ou caso tenha havido uma compra com cartão fraudado, você recebera um aviso de Chargeback por “Fraude”.</p>
-
-<p><img alt="Chargeback" src="images/checkout-cielo-chargeback.png" /></p>
-
-<p>Essa comunicação não é feita via o <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, mas sim pelo extrato de venda da Cielo, destacada como um ajuste financeiro. O extrato de vendas está disponivel no site da Cielo <a href="https://www.cielo.com.br/minha-conta">www.cielo.com.br na aba “Acessar Minha conta”</a>.</p>
-
-<p><img alt="Acessar minha conta" src="images/acessar-minha-conta.png" /></p>
-
-<p>Após esse recebimento, no próprio site da Cielo  é possivel acessar o <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a> e sinalizar o pedido como tendo recebido um Chargeback, pra seu melhor controle. Basta entrar no Detalhe do Pedido e clicar no botão “ChargeBack”, e seu status passará a ser “CHARGEBACK”.</p>
-
-<h2 id="frete">Frete</h2>
-
-<p>O Checkout Cielo suporta diferentes tipos de frete, que podem ser utilizados de maneira diferenciada de acordo com as opções oferecidas em sua loja. As opções disponíveis são:</p>
-
-<ul>
-<li>Correios</li>
-<li>Frete Fixo</li>
-<li>Frete Grátis</li>
-<li>Sem Frete</li>
-</ul>
-
-<p>A maneira e o tipo de frete que ficará ativo em sua loja é configurado no Backoffice do Checkout Cielo. Devido ao aspecto mais técnico, sugerimos que as configurações de frete sejam feitas pelo desenvolvedor. Diferentes métodos de cálculo de frete:</p>
-
-<h3 id="cálculo-de-frete-próprio">Cálculo de frete próprio</h3>
-
-<p>É possível selecionar 1 ou mais opções de frete. Elas serão apresentadas ao consumidor de acordo com a sua escolha entre as opções disponíveis. O valor selecionado pelo consumidor será adicionado ao valor total da compra.</p>
-
-<h3 id="contrato-próprio-com-os-correios">Contrato próprio com os Correios</h3>
-
-<ul>
-<li>O Checkout Cielo usará este número de contrato para fazer o cálculo de frete, utilizando assim a tabela de frete que você possui acordada junto aos Correios. Desse modo, o checkout apresentará todas as opções de frete dos Correios (Sedex, Sedex 10, Sedex. Hoje e PAC, entre outras) para o consumidor escolher, de acordo com o CEP de destino digitado. O valor selecionado pelo Consumidor será adicionado ao valor total da compra.</li>
-<li>Usar o cálculo de frete dos Correios do Checkout Cielo. O Checkout Cielo apresentará todas as opções de frete dos Correios (Sedex, Sedex 10, Sedex Hoje e PAC, entre outras) para o consumidor escolher, de acordo com o CEP de destino digitado. O valor selecionado pelo consumidor será adicionado ao valor total da compra.</li>
-<li>Seleção do Frete no carrinho e não no Checkout Cielo. O Checkout Cielo apresentará somente a tela de escolha do meio de pagamento para o consumidor. O valor do frete já estará embutido no valor final</li>
-</ul>
-
-<aside class="notice">O consumidor não poderá alterar o endereço de entrega na tela do Checkout Cielo</aside>
-
-      </div>
-      <div class="dark-box">
-          <div class="lang-selector">
-                <a href="#" data-language-name="json">JSON</a>
-                <a href="#" data-language-name="shell">Shell</a>
-                <a href="#" data-language-name="php">PHP</a>
-                <a href="#" data-language-name="ruby">Ruby</a>
-                <a href="#" data-language-name="python">Python</a>
-                <a href="#" data-language-name="java">Java</a>
-                <a href="#" data-language-name="csharp">C#</a>
-          </div>
       </div>
     </div>
   </body>
