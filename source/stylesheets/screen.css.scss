@@ -131,6 +131,7 @@ html, body {
     display: block;
     height: 14px;
     background: #FFF;
+	position: absolute;
 }
 
 .languages:after {content: " "; display: block; width:1px;height:1px;clear:both}
