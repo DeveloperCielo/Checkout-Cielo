@@ -37,6 +37,50 @@ html, body {
   -webkit-text-size-adjust: none; /* Never autoresize text */
 }
 
+.links-footer {
+    position: absolute;
+    bottom: 0px;
+    display: block;
+    height: 30px;
+    overflow: hidden;
+    border-top:1px #4e4f57 solid;
+    padding: 20px 0 10px 0;
+    width: $nav-width;
+
+    .link-list {
+        margin-left: 40px;
+    }
+
+    .link-list li {
+        display: block;
+        height: 19px;
+        width: 19px;
+        float: left;
+        margin-left: 43px;
+        text-indent: -1000px;
+        overflow: hidden;
+
+        a {
+            display: block;
+            width: 19px;
+            height: 18px;
+        }
+
+    }
+
+    .link-list li.github a {
+        background-image: url("../images/github.png");
+    }
+
+    .link-list li.cielo a {
+        background-image: url("../images/cielo.png");
+    }
+
+    .link-list li.desenvolvedores a {
+        background-image: url("../images/cielo-desenvolvedores.png");
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 ////////////////////////////////////////////////////////////////////////////////
@@ -49,10 +93,10 @@ html, body {
 }
 
 .languages {
-    padding: 0 15px 0 !important;
+    padding: 5px 0 0px 15px !important;
     display: block;
     height: 14px;
-    margin: 15px 0 0 0 !important;
+    background: #FFF;
 }
 
 .languages:after {content: " "; display: block; width:1px;height:1px;clear:both}
@@ -93,6 +137,7 @@ html, body {
   background-color: $nav-bg;
   font-size: 13px;
   font-weight: bold;
+  box-shadow: 6px -6px 14px rgba(0,0,0,0.25);
 
   // language selector for mobile devices
   .lang-selector {
@@ -219,10 +264,16 @@ html, body {
     }
   }
 
+  .toc-footer-title {
+      padding-left: 45px;
+      padding-top: 1em;
+      color: #FFFFFF;
+      background: url("../images/materiais-complementares.png") no-repeat 15px 22px;
+      border-top: 1px #4e4f57 dashed;
+  }
+
   .toc-footer {
-    padding: 1em 0;
-    margin-top: 1em;
-    border-top: 1px dashed $nav-footer-border-color;
+    padding: 0;
 
     li,a {
       color: $nav-text;
@@ -331,6 +382,7 @@ html, body {
     &.active {
       background-color: $lang-select-active-bg;
       color: $lang-select-active-text;
+      border-bottom: 5px solid $nav-active-bg;
     }
   }
 
@@ -445,21 +497,26 @@ html, body {
     }
 
     th {
-      padding: 5px 10px;
-      border-bottom: 1px solid #ccc;
+      padding: 20px 10px;
       vertical-align: bottom;
+      line-height: 1.2em;
+      background: #24B9F1;
+      color: #FFF;
+      text-shadow: none;
+      text-transform: uppercase;
     }
 
     td {
       padding: 10px;
     }
 
-    tr:last-child {
-      border-bottom: 1px solid #ccc;
+    tr {
+        border-bottom: 1px solid #e5e5e5;
+        line-height: 1.2em;
     }
 
     tr:nth-child(odd)>td {
-      background-color: lighten($main-bg,4.2%);
+      background-color: #EAEAEA;
     }
 
     tr:nth-child(even)>td {
@@ -543,6 +600,12 @@ html, body {
     @include text-shadow(1px 1px 0 #666);
     @include background(linear-gradient(bottom right, #F7E633 0%, #F1D32F 100%));
   }
+}
+
+.content.no-dark-box {
+    &>h1, &>h2, &>h3, &>h4, &>h5, &>h6, &>p, &>table, &>ul, &>ol, &>aside, &>dl {
+      margin-right: 0;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
