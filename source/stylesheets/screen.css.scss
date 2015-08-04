@@ -25,6 +25,39 @@ under the License.
 // GENERAL STUFF
 ////////////////////////////////////////////////////////////////////////////////
 
+@font-face{
+	font-family: 'museo300';
+    src: url('../fonts/museo300-regular-webfont.eot');
+    src: url('../fonts/museo300-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/museo300-regular-webfont.woff') format('woff'),
+         url('../fonts/museo300-regular-webfont.ttf') format('truetype'),
+         url('../fonts/museo300-regular-webfont.svg#Museo300') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face{
+	font-family: 'museo-sans';
+    src: url('../fonts/museosans_500-webfont.eot');
+    src: url('../fonts/museosans_500-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/museosans_500-webfont.woff') format('woff'),
+         url('../fonts/museosans_500-webfont.ttf') format('truetype'),
+         url('../fonts/museosans_500-webfont.svg#MuseoSans500') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'museo700';
+    src: url('../fonts/museo700-regular-webfont.eot');
+    src: url('../fonts/museo700-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/museo700-regular-webfont.woff') format('woff'),
+         url('../fonts/museo700-regular-webfont.ttf') format('truetype'),
+         url('../fonts/museo700-regular-webfont.svg#museo700') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html, body {
   color: $main-text;
   padding: 0;
@@ -64,6 +97,7 @@ html, body {
             display: block;
             width: 19px;
             height: 18px;
+            font-family: "museo-sans", Arial, Helvetica, Sans-serif;
         }
 
     }
@@ -138,6 +172,7 @@ html, body {
   font-size: 13px;
   font-weight: bold;
   box-shadow: 6px -6px 14px rgba(0,0,0,0.25);
+  font-family: "museo-sans", Arial, Helvetica, Sans-serif;
 
   // language selector for mobile devices
   .lang-selector {
@@ -265,6 +300,8 @@ html, body {
   }
 
   .toc-footer-title {
+      @extend %header-font;
+      font-size: 20px;
       padding-left: 45px;
       padding-top: 1em;
       color: #FFFFFF;
@@ -470,7 +507,7 @@ html, body {
   }
 
   h3, h4, h5, h6 {
-    @extend %header-font;
+    @extend %default-font;
     font-size: 12px;
     margin-top: 2.5em;
     margin-bottom: 0.8em;
