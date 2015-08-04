@@ -1,6 +1,6 @@
 <!doctype html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -11,55 +11,73 @@
     <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-      <script src="javascripts/all.js" type="text/javascript"></script>
+    <script src="javascripts/all.js" type="text/javascript"></script>
 
-      <script>
-        $(function() {
-          setupLanguages(["json","shell","php","ruby","python","java","csharp"]);
-        });
-      </script>
-  </head>
+    <script>
+    $(function() {
+        setupLanguages(["json","shell","php","ruby","python","java","csharp"]);
+    });
+    </script>
+    <script async src='//www.google-analytics.com/analytics.js'></script>
+    <script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 
-  <body class="index">
+    ga('create', 'UA-8516386-7', {'cookieDomain': 'auto',
+    'alwaysSendReferrer': true});
+
+    ga("set", "transport", "beacon");
+    ga('send', 'pageview');
+    </script>
+</head>
+
+<body class="index">
     <a href="#" id="nav-button">
-      <span>
-        NAV
-        <img src="images/navbar.png" />
-      </span>
+        <span>
+            NAV
+            <img src="images/navbar.png" />
+        </span>
     </a>
     <div class="tocify-wrapper">
-      <ul class="languages">
-          <li class="english"><a href="english.html" title="English version">English version</a></li>
-          <li class="portuguese"><a href="index.html" title="Versão em português">Versão em português</a></li>
-      </ul>
-      <img src="images/logo.png" />
+        <ul class="languages">
+            <li class="english"><a href="english.html" title="English version">English version</a></li>
+            <li class="portuguese"><a href="index.html" title="Versão em português">Versão em português</a></li>
+        </ul>
+        <img src="images/logo.png" />
         <div class="lang-selector">
-              <a href="#" data-language-name="json">JSON</a>
-              <a href="#" data-language-name="shell">Shell</a>
-              <a href="#" data-language-name="php">PHP</a>
-              <a href="#" data-language-name="ruby">Ruby</a>
-              <a href="#" data-language-name="python">Python</a>
-              <a href="#" data-language-name="java">Java</a>
-              <a href="#" data-language-name="csharp">C#</a>
+            <a href="#" data-language-name="json">JSON</a>
+            <a href="#" data-language-name="shell">Shell</a>
+            <a href="#" data-language-name="php">PHP</a>
+            <a href="#" data-language-name="ruby">Ruby</a>
+            <a href="#" data-language-name="python">Python</a>
+            <a href="#" data-language-name="java">Java</a>
+            <a href="#" data-language-name="csharp">C#</a>
         </div>
         <div class="search">
-          <input type="text" class="search" id="input-search" placeholder="Search">
+            <input type="text" class="search" id="input-search" placeholder="Search">
         </div>
         <ul class="search-results"></ul>
-      <div id="toc">
-      </div>
+        <div id="toc">
+        </div>
+        <h2 class="toc-footer-title">Materiais complementares</h2>
         <ul class="toc-footer">
             <li><a href='/Checkout-Backoffice/'>Backoffice Cielo</a></li>
             <li><a href='/Checkout-FAQ/'>Perguntas Frequêntes</a></li>
         </ul>
+        <div class="links-footer">
+            <ul class="link-list">
+                <li class="cielo"><a href="https://www.cielo.com.br/">Cielo</a></li>
+                <li class="github"><a href="https://github.com/developercielo">Cielo</a></li>
+                <li class="desenvolvedores"><a href="https://www.cielo.com.br/desenvolvedores">Cielo</a></li>
+            </ul>
+        </div>
     </div>
     <div class="page-wrapper">
-      <div class="dark-box"></div>
-      <div class="content">
-        <h1 id="manual-checkout-cielo">Manual Checkout Cielo</h1>
+        <div class="dark-box"></div>
+        <div class="content">
+                <h1 id="manual-checkout-cielo">Manual Checkout Cielo</h1>
 
 <p>O objetivo desta documentação é orientar o desenvolvedor sobre o método de integração da API Checkout Cielo, solução simplificada na qual o consumidor é direcionado para uma página de pagamento online segura da Cielo, proporcionando um alto nível de confiança, dentro das mais rígidas normas de segurança (PCI). Em linhas gerais, o Checkout Cielo é uma solução de pagamento projetada para aumentar a conversão das vendas, simplificar o processo de compra, reduzir fraudes e custos operacionais.
-Nesta documentação estão descritas todas as funcionalidades desta integração, os parâmetros técnicos e principalmente os códigos de exemplos para facilitar o seu desenvolvimento. </p>
+Nesta documentação estão descritas todas as funcionalidades desta integração, os parâmetros técnicos e principalmente os códigos de exemplos para facilitar o seu desenvolvimento.</p>
 
 <p>O Checkout Cielo utiliza uma tecnologia REST que deve ser usada quando houver um <em>“carrinho de compras”</em> a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a compra. Há também opção de integração via botão usada sempre que não houver um <em>“carrinho de compras”</em> em sua loja ou quando se deseja associar uma compra rápida direta a um produto.</p>
 
@@ -85,7 +103,7 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 
 <aside class="warning">Uma transação autorizada somente gera o crédito para o lojista se ela for capturada (ou confirmada).</aside>
 
-<p>Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento dos processos funcionais que farão parte do cotidiano da loja, como o acompanhamento das movimentações financeiras, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  extrato de cobrança, entre outros. Veja o material complementar sobre o <a href="http://developercielo.github.io/Checkout-Backoffice/">BackOffice Checkout Cielo</a>. </p>
+<p>Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento dos processos funcionais que farão parte do cotidiano da loja, como o acompanhamento das movimentações financeiras, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  extrato de cobrança, entre outros. Veja o material complementar sobre o <a href="http://developercielo.github.io/Checkout-Backoffice/">BackOffice Checkout Cielo</a>.</p>
 
 <h2 id="considerações-sobre-a-integração">Considerações sobre a integração</h2>
 
@@ -1392,6 +1410,42 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 </tr>
 </tbody></table>
 
+<h4 id="payment_status">payment_status</h4>
+
+<p>O parâmetro <code class="prettyprint">payment_status</code> poderá vir com um dos seguintes valores:</p>
+
+<table><thead>
+<tr>
+<th>Valor</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>Pendente (Para todos os meios de pagamento)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Pago (Para todos os meios de pagamento)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Negado (Somente para Cartão Crédito)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Cancelado (Para cartões de crédito)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Não Finalizado (Todos os meios de pagamento)</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Autorizado (somente para Cartão de Crédito)</td>
+</tr>
+</tbody></table>
+
 <h3 id="recebimento-do-post-de-mudança-de-status">Recebimento do POST de Mudança de Status</h3>
 
 <ul>
@@ -1869,7 +1923,7 @@ Ex.: 10 = 10%.</p>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"CheckoutUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://cieloecommerce.cielo.com.br/transacional/order/index?id=123"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"Profile"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CheckoutCielo"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> 
+    </span><span class="s2">"Version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
@@ -2097,18 +2151,18 @@ Ex.: 10 = 10%.</p>
 
 <aside class="notice">O consumidor não poderá alterar o endereço de entrega na tela do Checkout Cielo</aside>
 
-      </div>
-      <div class="dark-box">
-          <div class="lang-selector">
-                <a href="#" data-language-name="json">JSON</a>
-                <a href="#" data-language-name="shell">Shell</a>
-                <a href="#" data-language-name="php">PHP</a>
-                <a href="#" data-language-name="ruby">Ruby</a>
-                <a href="#" data-language-name="python">Python</a>
-                <a href="#" data-language-name="java">Java</a>
-                <a href="#" data-language-name="csharp">C#</a>
-          </div>
-      </div>
-    </div>
-  </body>
-</html>
+            </div>
+            <div class="dark-box">
+                <div class="lang-selector">
+                    <a href="#" data-language-name="json">JSON</a>
+                    <a href="#" data-language-name="shell">Shell</a>
+                    <a href="#" data-language-name="php">PHP</a>
+                    <a href="#" data-language-name="ruby">Ruby</a>
+                    <a href="#" data-language-name="python">Python</a>
+                    <a href="#" data-language-name="java">Java</a>
+                    <a href="#" data-language-name="csharp">C#</a>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
