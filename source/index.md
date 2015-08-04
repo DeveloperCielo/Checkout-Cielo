@@ -20,7 +20,7 @@ search: true
 # Manual Checkout Cielo
 
 O objetivo desta documentação é orientar o desenvolvedor sobre o método de integração da API Checkout Cielo, solução simplificada na qual o consumidor é direcionado para uma página de pagamento online segura da Cielo, proporcionando um alto nível de confiança, dentro das mais rígidas normas de segurança (PCI). Em linhas gerais, o Checkout Cielo é uma solução de pagamento projetada para aumentar a conversão das vendas, simplificar o processo de compra, reduzir fraudes e custos operacionais.
-Nesta documentação estão descritas todas as funcionalidades desta integração, os parâmetros técnicos e principalmente os códigos de exemplos para facilitar o seu desenvolvimento. 
+Nesta documentação estão descritas todas as funcionalidades desta integração, os parâmetros técnicos e principalmente os códigos de exemplos para facilitar o seu desenvolvimento.
 
 O Checkout Cielo utiliza uma tecnologia REST que deve ser usada quando houver um *“carrinho de compras”* a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a compra. Há também opção de integração via botão usada sempre que não houver um *“carrinho de compras”* em sua loja ou quando se deseja associar uma compra rápida direta a um produto.
 
@@ -44,7 +44,7 @@ Neste manual será apresentada uma visão geral do Checkout Cielo e o mecanismo 
 
 <aside class="warning">Uma transação autorizada somente gera o crédito para o lojista se ela for capturada (ou confirmada).</aside>
 
-Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento dos processos funcionais que farão parte do cotidiano da loja, como o acompanhamento das movimentações financeiras, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  extrato de cobrança, entre outros. Veja o material complementar sobre o [BackOffice Checkout Cielo](http://developercielo.github.io/Checkout-Backoffice/). 
+Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental que o lojista ou administrador da loja online tenha conhecimento dos processos funcionais que farão parte do cotidiano da loja, como o acompanhamento das movimentações financeiras, status de cada venda, tomada de ações  (captura e cancelamento) com relação às vendas,  extrato de cobrança, entre outros. Veja o material complementar sobre o [BackOffice Checkout Cielo](http://developercielo.github.io/Checkout-Backoffice/).
 
 
 ## Considerações sobre a integração
@@ -896,6 +896,19 @@ A URL de Mudança de Status é a que a Cielo utilizará para notificar a loja so
 |order_number|Número do pedido enviado pela loja|Alfanumérico|1|32|
 |payment_status|Status da transação|Numérico|1|1|
 
+#### payment_status
+
+O parâmetro `payment_status` poderá vir com um dos seguintes valores:
+
+|Valor|Descrição|
+|------|-------------|
+|1|Pendente (Para todos os meios de pagamento)|
+|2|Pago (Para todos os meios de pagamento)|
+|3|Negado (Somente para Cartão Crédito)|
+|5|Cancelado (Para cartões de crédito)|
+|6|Não Finalizado (Todos os meios de pagamento)|
+|7|Autorizado (somente para Cartão de Crédito)|
+
 ### Recebimento do POST de Mudança de Status
 
 * Quando acessada pelo servidor da Braspag, enviando o POST, a URL cadastrada para Retorno de Mudança de Status, deverá exibir um código informando que recebeu a mudança de status e a processou com sucesso: `<status>OK</status>`
@@ -1110,7 +1123,7 @@ Parâmetro de resposta, recebido em caso de sucesso.
 {
     "CheckoutUrl": "https://cieloecommerce.cielo.com.br/transacional/order/index?id=123",
     "Profile": "CheckoutCielo",
-    "Version": 1 
+    "Version": 1
 }
 ```
 
