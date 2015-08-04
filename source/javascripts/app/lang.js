@@ -75,8 +75,13 @@ under the License.
   $(function() {
     $(".lang-selector a").on("click", function() {
       var language = $(this).data("language-name");
+      var e = new CustomEvent('languagechange', { 'detail': language});
+
       pushURL(language);
       activateLanguage(language);
+
+      window.dispatchEvent(e);
+
       return false;
     });
     window.onpopstate = function(event) {

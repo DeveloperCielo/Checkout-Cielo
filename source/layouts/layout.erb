@@ -53,13 +53,17 @@ under the License.
 
         history.pushState = _wr('pushState'), history.replaceState = _wr('replaceState');
 
+        window.onhashchange = function() {
+            ga('send', 'event', 'navigation','click', window.location.href);
+        };
+
         window.addEventListener('replaceState', function(e) {
             ga('send', 'event', 'navigation','scroll', window.location.href);
         });
 
-        window.onhashchange = function() {
-            ga('send', 'event', 'navigation','click', window.location.href);
-        };
+        window.addEventListener('languagechange', function(e) {
+            ga('send', 'event', 'language','change', e.detail);
+        });
     });
 
     </script>
