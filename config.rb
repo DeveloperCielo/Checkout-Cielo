@@ -17,6 +17,9 @@ activate :syntax
 activate :relative_assets
 set :relative_links, true
 
+set :translations, [{:english => '<a href="english.html" title="English version">English version</a>'},
+                    {:portuguese => '<a href="index.html" title="Versão em português">Versão em português</a>'}]
+
 # Build-specific configuration
 configure :build do
   # For example, change the Compass output style for deployment
@@ -34,4 +37,3 @@ configure :build do
   # Or use a different image path
   # set :http_prefix, "/Content/images/"
 end
-

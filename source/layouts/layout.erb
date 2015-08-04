@@ -61,10 +61,13 @@ under the License.
         </span>
     </a>
     <div class="tocify-wrapper">
+        <% if translations %>
         <ul class="languages">
-            <li class="english"><a href="english.html" title="English version">English version</a></li>
-            <li class="portuguese"><a href="index.html" title="Versão em português">Versão em português</a></li>
+            <% translations.each do |translation| %>
+            <li class="<%= translation.keys.first %>"><%= translation.values.first %></li>
+            <% end %>
         </ul>
+        <% end %>
         <%= image_tag "logo.png" %>
         <% if language_tabs %>
         <div class="lang-selector">
