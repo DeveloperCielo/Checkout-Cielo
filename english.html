@@ -17,7 +17,30 @@
     <script>
     $(function() {
         setupLanguages(["json","shell","php","ruby","python","java","csharp"]);
+
+        var _wr = function(type) {
+            var orig = history[type];
+            return function() {
+                var rv = orig.apply(this, arguments);
+                var e = new Event(type);
+
+                e.arguments = arguments;
+                window.dispatchEvent(e);
+                return rv;
+            };
+        };
+
+        history.pushState = _wr('pushState'), history.replaceState = _wr('replaceState');
+
+        window.addEventListener('replaceState', function(e) {
+            ga('send', 'event', 'navigation','scroll', window.location.href);
+        });
+
+        window.onhashchange = function() {
+            ga('send', 'event', 'navigation','click', window.location.href);
+        };
     });
+
     </script>
     <script async src='//www.google-analytics.com/analytics.js'></script>
     <script>
