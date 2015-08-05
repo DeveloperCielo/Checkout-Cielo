@@ -71,7 +71,7 @@ html, body {
 }
 
 .links-footer {
-    position: absolute;
+    position: fixed;
     bottom: 0px;
     display: block;
     height: 30px;
@@ -79,6 +79,7 @@ html, body {
     border-top:1px #4e4f57 solid;
     padding: 20px 0 10px 0;
     width: $nav-width;
+	background-color: #28292d;
 
     .link-list {
         margin-left: 40px;
@@ -167,7 +168,7 @@ html, body {
   z-index: 30;
   top: 0;
   left: 0;
-  bottom: 0;
+  bottom: 61px;
   width: $nav-width;
   background-color: $nav-bg;
   font-size: 13px;
