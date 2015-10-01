@@ -730,6 +730,588 @@ Adicionando o botão na sua página HTML você deve copiar o código HTML do bot
 
 Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter a compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/), e valerão os dados do cadastro.
 
+## Pagamento Recorrente Programado
+
+```json
+{
+    "OrderNumber": "12344",
+    "SoftDescriptor": "Nome que aparecerá na fatura",
+    "Cart": {
+        "Discount": {
+            "Type": "Percent",
+            "Value": 10
+        },
+        "Items": [
+            {
+                "Name": "Nome do produto",
+                "Description": "Descrição do produto",
+                "UnitPrice": 100,
+                "Quantity": 2,
+                "Type": "Asset",
+                "Sku": "Sku do item no carrinho",
+                "Weight": 200
+            }
+        ]
+    },
+    "Shipping": {
+        "Type": "Correios",
+        "SourceZipCode": "14400000",
+        "TargetZipCode": "11000000",
+        "Address": {
+            "Street": "Endereço de entrega",
+            "Number": "123",
+            "Complement": "",
+            "District": "Bairro da entrega",
+            "City": "Cidade de entrega",
+            "State": "SP"
+        },
+        "Services": [
+            {
+                "Name": "Serviço de frete",
+                "Price": 123,
+                "Deadline": 15
+            }
+        ]
+    },
+    "Payment": {
+        "BoletoDiscount": 0,
+        "DebitDiscount": 0,
+        "RecurrentPayment": {
+            "Interval": "Monthly",
+            "EndDate": "2015-12-31"
+        }
+    },
+    "Customer": {
+        "Identity": 11111111111,
+        "FullName": "Fulano Comprador da Silva",
+        "Email": "fulano@email.com",
+        "Phone": "11999999999"
+    },
+    "Options": {
+        "AntifraudEnabled": false
+    }
+}
+```
+
+```shell
+curl -X POST "https://cieloecommerce.cielo.com.br/api/public/v1/orders" \
+     -H "MerchantId: 00000000-0000-0000-0000-000000000000" \
+     -H "Content-Type: application/json" \
+     -d '{
+             "OrderNumber": "12344",
+             "SoftDescriptor": "Nome que aparecerá na fatura",
+             "Cart": {
+                  "Discount": {
+                      "Type": "Percent",
+                      "Value": 10
+                  },
+                  "Items": [
+                      {
+                          "Name": "Nome do produto",
+                          "Description": "Descrição do produto",
+                          "UnitPrice": 100,
+                          "Quantity": 2,
+                          "Type": "Asset",
+                          "Sku": "Sku do item no carrinho",
+                          "Weight": 200
+                      }
+                  ]
+             },
+             "Shipping": {
+                  "Type": "Correios",
+                  "SourceZipCode": "14400000",
+                  "TargetZipCode": "11000000",
+                  "Address": {
+                      "Street": "Endereço de entrega",
+                      "Number": "123",
+                      "Complement": "",
+                      "District": "Bairro da entrega",
+                      "City": "Cidade de entrega",
+                      "State": "SP"
+                  },
+                  "Services": [
+                      {
+                          "Name": "Serviço de frete",
+                          "Price": 123,
+                          "Deadline": 15
+                      }
+                  ]
+             },
+             "Payment": {
+                  "BoletoDiscount": 0,
+                  "DebitDiscount": 0,
+                  "RecurrentPayment": {
+                      "Interval": "Monthly",
+                      "EndDate": "2015-12-31"
+                  }
+             },
+             "Customer": {
+                  "Identity": 11111111111,
+                  "FullName": "Fulano Comprador da Silva",
+                  "Email": "fulano@email.com",
+                  "Phone": "11999999999"
+             },
+             "Options": {
+                  "AntifraudEnabled": false
+             }
+         }'
+```
+
+```php
+<?php
+$order = new stdClass();
+$order->OrderNumber = '1234';
+$order->SoftDescriptor = 'Nome que aparecerá na fatura';
+$order->Cart = new stdClass();
+$order->Cart->Discount = new stdClass();
+$order->Cart->Discount->Type = 'Percent';
+$order->Cart->Discount->Value = 10;
+$order->Cart->Items = array();
+$order->Cart->Items[0] = new stdClass();
+$order->Cart->Items[0]->Name = 'Nome do produto';
+$order->Cart->Items[0]->Description = 'Descrição do produto';
+$order->Cart->Items[0]->UnitPrice = 100;
+$order->Cart->Items[0]->Quantity = 2;
+$order->Cart->Items[0]->Type = 'Asset';
+$order->Cart->Items[0]->Sku = 'Sku do item no carrinho';
+$order->Cart->Items[0]->Weight = 200;
+$order->Shipping = new stdClass();
+$order->Shipping->Type = 'Correios';
+$order->Shipping->SourceZipCode = '14400000';
+$order->Shipping->TargetZipCode = '11000000';
+$order->Shipping->Address = new stdClass();
+$order->Shipping->Address->Street = 'Endereço de entrega';
+$order->Shipping->Address->Number = '123';
+$order->Shipping->Address->Complement = '';
+$order->Shipping->Address->District = 'Bairro da entrega';
+$order->Shipping->Address->City = 'Cidade da entrega';
+$order->Shipping->Address->State = 'SP';
+$order->Shipping->Services = array();
+$order->Shipping->Services[0] = new stdClass();
+$order->Shipping->Services[0]->Name = 'Serviço de frete';
+$order->Shipping->Services[0]->Price = 123;
+$order->Shipping->Services[0]->DeadLine = 15;
+$order->Payment = new stdClass();
+$order->Payment->BoletoDiscount = 0;
+$order->Payment->DebitDiscount = 0;
+$order->Payment->RecurrentPayment = new stdClass();
+$order->Payment->RecurrentPayment->Interval = 'Monthly';
+$order->Payment->RecurrentPayment->EndDate = '2015-12-31';
+$order->Customer = new stdClass();
+$order->Customer->Identity = 11111111111;
+$order->Customer->FullName = 'Fulano Comprador da Silva';
+$order->Customer->Email = 'fulano@email.com';
+$order->Customer->Phone = '11999999999';
+$order->Options = new stdClass();
+$order->Options->AntifraudEnabled = false;
+
+$curl = curl_init();
+
+curl_setopt($curl, CURLOPT_URL, 'https://cieloecommerce.cielo.com.br/api/public/v1/orders');
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($order));
+curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+    'MerchantId: 00000000-0000-0000-0000-000000000000',
+    'Content-Type: application/json'
+));
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+
+$json = json_decode($response);
+```
+
+```python
+from urllib2 import Request, urlopen
+from json import dumps
+
+json = dumps({
+    "OrderNumber": "12344",
+    "SoftDescriptor": "Nome que aparecerá na fatura",
+    "Cart": {
+        "Discount": {
+            "Type": "Percent",
+            "Value": 10
+        },
+        "Items": [
+            {
+                "Name": "Nome do produto",
+                "Description": "Descrição do produto",
+                "UnitPrice": 100,
+                "Quantity": 2,
+                "Type": "Asset",
+                "Sku": "Sku do item no carrinho",
+                "Weight": 200
+            }
+        ]
+    },
+    "Shipping": {
+        "Type": "Correios",
+        "SourceZipCode": "14400000",
+        "TargetZipCode": "11000000",
+        "Address": {
+            "Street": "Endereço de entrega",
+            "Number": "123",
+            "Complement": "",
+            "District": "Bairro da entrega",
+            "City": "Cidade de entrega",
+            "State": "SP"
+        },
+        "Services": [
+            {
+                "Name": "Serviço de frete",
+                "Price": 123,
+                "Deadline": 15
+            }
+        ]
+    },
+    "Payment": {
+        "BoletoDiscount": 0,
+        "DebitDiscount": 0,
+        "RecurrentPayment": {
+            "Interval": "Monthly",
+            "EndDate": "2015-12-31"
+        }
+    },
+    "Customer": {
+        "Identity": 11111111111,
+        "FullName": "Fulano Comprador da Silva",
+        "Email": "fulano@email.com",
+        "Phone": "11999999999"
+    },
+    "Options": {
+        "AntifraudEnabled": false
+    }
+})
+
+headers = {"Content-Type": "application/json", "MerchantId": "00000000-0000-0000-0000-000000000000"}
+request = Request("https://cieloecommerce.cielo.com.br/api/public/v1/orders", data=json, headers=headers)
+response = urlopen(request).read()
+
+print response
+```
+
+```ruby
+require 'rubygems' if RUBY_VERSION < '1.9'
+require 'rest-client'
+require 'json'
+
+request = JSON.generate({
+    "OrderNumber" => "12344",
+    "SoftDescriptor" => "Nome que aparecerá na fatura",
+    "Cart" => {
+        "Discount" => {
+            "Type" => "Percent",
+            "Value" => 10
+        },
+        "Items" => [
+            {
+                "Name" => "Nome do produto",
+                "Description" => "Descrição do produto",
+                "UnitPrice" => 100,
+                "Quantity" => 2,
+                "Type" => "Asset",
+                "Sku" => "Sku do item no carrinho",
+                "Weight" => 200
+            }
+        ]
+    },
+    "Shipping" => {
+        "Type" => "Correios",
+        "SourceZipCode" => "14400000",
+        "TargetZipCode" => "11000000",
+        "Address" => {
+            "Street" => "Endereço de entrega",
+            "Number" => "123",
+            "Complement" => "",
+            "District" => "Bairro da entrega",
+            "City" => "Cidade de entrega",
+            "State" => "SP"
+        },
+        "Services" => [
+            {
+                "Name" => "Serviço de frete",
+                "Price" => 123,
+                "Deadline" => 15
+            }
+        ]
+    },
+    "Payment" => {
+        "BoletoDiscount" => 0,
+        "DebitDiscount" => 0,
+        "RecurrentPayment" => {
+            "Interval" => "Monthly",
+            "EndDate" => "2015-12-31"
+        }
+    },
+    "Customer" => {
+        "Identity" => 11111111111,
+        "FullName" => "Fulano Comprador da Silva",
+        "Email" => "fulano@email.com",
+        "Phone" => "11999999999"
+    },
+    "Options" => {
+        "AntifraudEnabled" => false
+    }
+})
+
+headers  = {:content_type => "application/json",:merchantid => "00000000-0000-0000-0000-000000000000"}
+response = RestClient.post "https://cieloecommerce.cielo.com.br/api/public/v1/orders", request, headers
+
+puts response
+```
+
+```java
+String json = "{"
+            + "    \"OrderNumber\": \"12344\","
+            + "    \"SoftDescriptor\": \"Nome que aparecerá na fatura\","
+            + "    \"Cart\": {"
+            + "        \"Discount\": {"
+            + "            \"Type\": \"Percent\","
+            + "            \"Value\": 10"
+            + "        },"
+            + "        \"Items\": ["
+            + "            {"
+            + "                \"Name\": \"Nome do produto\","
+            + "                \"Description\": \"Descrição do produto\","
+            + "                \"UnitPrice\": 100,"
+            + "                \"Quantity\": 2,"
+            + "                \"Type\": \"Asset\","
+            + "                \"Sku\": \"Sku do item no carrinho\","
+            + "                \"Weight\": 200"
+            + "            }"
+            + "        ]"
+            + "    },"
+            + "    \"Shipping\": {"
+            + "        \"Type\": \"Correios\","
+            + "        \"SourceZipCode\": \"14400000\","
+            + "        \"TargetZipCode\": \"11000000\","
+            + "        \"Address\": {"
+            + "            \"Street\": \"Endereço de entrega\","
+            + "            \"Number\": \"123\","
+            + "            \"Complement\": \"\","
+            + "            \"District\": \"Bairro da entrega\","
+            + "            \"City\": \"Cidade de entrega\","
+            + "            \"State\": \"SP\""
+            + "        },"
+            + "        \"Services\": ["
+            + "            {"
+            + "                \"Name\": \"Serviço de frete\","
+            + "                \"Price\": 123,"
+            + "                \"Deadline\": 15"
+            + "            }"
+            + "        ]"
+            + "    },"
+            + "    \"Payment\": {"
+            + "        \"BoletoDiscount\": 0,"
+            + "        \"DebitDiscount\": 0",
+            + "        \"RecurrentPayment\": {"
+            + "            \"Interval\": \"Monthly\","
+            + "            \"EndDate\": \"2015-12-31\""
+            + "         }"
+            + "     },"
+            + "     \"Customer\": {"
+            + "         \"Identity\": 11111111111,"
+            + "         \"FullName\": \"Fulano Comprador da Silva\","
+            + "         \"Email\": \"fulano@email.com\","
+            + "         \"Phone\": \"11999999999\""
+            + "     },"
+            + "     \"Options\": {"
+            + "         \"AntifraudEnabled\": false"
+            + "     }"
+            + "}";
+
+URL url;
+HttpURLConnection connection;
+BufferedReader bufferedReader;
+
+try {
+    url = new URL("https://cieloecommerce.cielo.com.br/api/public/v1/orders");
+
+    connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestMethod("POST");
+    connection.addRequestProperty("MerchantId", "0000000-0000-0000-0000-000000000000");
+    connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+    connection.setDoOutput(true);
+
+    DataOutputStream jsonRequest = new DataOutputStream(
+                connection.getOutputStream());
+
+    jsonRequest.writeBytes(json);
+    jsonRequest.flush();
+    jsonRequest.close();
+
+    bufferedReader = new BufferedReader(new InputStreamReader(
+                connection.getInputStream()));
+
+    String responseLine;
+    StringBuffer jsonResponse = new StringBuffer();
+
+    while ((responseLine = bufferedReader.readLine()) != null) {
+        jsonResponse.append(responseLine);
+    }
+
+    bufferedReader.close();
+
+    connection.disconnect();
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+```csharp
+HttpWebRequest request = (HttpWebRequest)
+                         WebRequest.Create("https://cieloecommerce.cielo.com.br/api/public/v1/orders");
+
+request.Method = "POST";
+request.Headers["Content-Type"] = "text/json";
+request.Headers["MerchantId"] = "06eadc0b-2e32-449b-be61-6fd4f1811708";
+
+string json = "{"
+            + "    \"OrderNumber\": \"12344\","
+            + "    \"SoftDescriptor\": \"Nome que aparecerá na fatura\","
+            + "    \"Cart\": {"
+            + "        \"Discount\": {"
+            + "            \"Type\": \"Percent\","
+            + "            \"Value\": 10"
+            + "        },"
+            + "        \"Items\": ["
+            + "            {"
+            + "                \"Name\": \"Nome do produto\","
+            + "                \"Description\": \"Descrição do produto\","
+            + "                \"UnitPrice\": 100,"
+            + "                \"Quantity\": 2,"
+            + "                \"Type\": \"Asset\","
+            + "                \"Sku\": \"Sku do item no carrinho\","
+            + "                \"Weight\": 200"
+            + "            }"
+            + "        ]"
+            + "    },"
+            + "    \"Shipping\": {"
+            + "        \"Type\": \"Correios\","
+            + "        \"SourceZipCode\": \"14400000\","
+            + "        \"TargetZipCode\": \"11000000\","
+            + "        \"Address\": {"
+            + "            \"Street\": \"Endereço de entrega\","
+            + "            \"Number\": \"123\","
+            + "            \"Complement\": \"\","
+            + "            \"District\": \"Bairro da entrega\","
+            + "            \"City\": \"Cidade de entrega\","
+            + "            \"State\": \"SP\""
+            + "        },"
+            + "        \"Services\": ["
+            + "            {"
+            + "                \"Name\": \"Serviço de frete\","
+            + "                \"Price\": 123,"
+            + "                \"Deadline\": 15"
+            + "            }"
+            + "        ]"
+            + "    },"
+            + "    \"Payment\": {"
+            + "        \"BoletoDiscount\": 0,"
+            + "        \"DebitDiscount\": 0,"
+            + "        \"RecurrentPayment\": {"
+            + "            \"Interval\": \"Monthly\","
+            + "            \"EndDate\": \"2015-12-31\""
+            + "         }"
+            + "     },"
+            + "     \"Customer\": {"
+            + "         \"Identity\": 11111111111,"
+            + "         \"FullName\": \"Fulano Comprador da Silva\","
+            + "         \"Email\": \"fulano@email.com\","
+            + "         \"Phone\": \"11999999999\""
+            + "     },"
+            + "     \"Options\": {"
+            + "         \"AntifraudEnabled\": false"
+            + "     }"
+            + "}";
+
+using (var writer = new StreamWriter(request.GetRequestStream()))
+{
+    writer.Write(json);
+	writer.Close();
+}
+
+HttpWebResponse response = (HttpWebResponse) request.GetResponse();
+```
+
+A Recorrência é um processo de agendamento automático de transações de crédito, ou seja, é uma transação que se repetirá automaticamente, sem a necessidade do comprador acessar a tela transacional, de acordo com as regras definidas no momento do agendamento.
+
+Transações recorrentes são ideais para modelos de negócios que envolvam o conceito de assinatura, plano ou mensalidade na sua forma de cobrança. Alguns exemplos de negócios são: escolas, academias, editoras, serviços de hospedagem, entre outros.
+Diferença entre transações recorrentes e parceladas:
+
+* **Parceladas**: Se trata de uma transação dividida em vários meses. O valor total da venda compromete o limite do cartão de crédito do comprador independentemente do valor da parcela inicial (ver exemplo abaixo). O lojista recebe o valor da venda parceladamente e não corre o risco de uma das parcelas ser negada.
+    * **EX**: Venda de R$1.000,00 parcelado em 2 vezes. Apesar de o comprador pagar apenas R$500,00 na primeira parcela, o valor do limite de crédito consumido é o integral, ou seja, R$1.000,00. Se o limite do cartão for inferior ou o montante não estiver liberado, a R$1.000,00 a transação será negada
+* **Recorrentes**: São transações diferentes realizadas no mesmo cartão em momentos previamente agendados. A primeira venda agenda as futuras vendas a partir de um intervalo de tempo pré definido (ver exemplo abaixo).  A cada intervalo haverá uma cobrança no cartão de crédito. O pagamento recorrente bloqueia do limite do cartão apenas o valor debitado na data da primeira venda recorrente e do valor total da venda.
+    * **EX**: Venda de R$ 1.000,00 em 15/01/2015, com recorrência mensal e data final em 01/06/2015. Todo dia 15 haverá uma nova cobrança de R$1.000,00 no cartão do comprador, se repetindo até 15/05/2015, última data válida antes da data final.
+
+Uma transação de recorrência no Checkout Cielo possui duas configurações: “Intervalo” e “Data de encerramento”.
+
+* **Intervalo** – padrão de repetição e intervalo de tempo entre cada transação. Esse intervalo temporal entre as transações podem ser: Mensal, Bimestral, Trimestral, Semestral e Anual.
+* **Data de encerramento** – Data que o processo de recorrência deixa de ocorrer.
+
+Os dados do cartão de crédito do comprador ficam armazenados de forma segura dentro do Checkout Cielo, permitindo sua reutilização em uma transação recorrente. Esses dados não são acessados pelo lojista e essa inteligência é controlada pelo Checkout Cielo.
+
+### Requisição
+
+Exceto o objeto `Payment` que contém um novo elemento específico para a recorrência chamado `RecurrentPayment`, todos os outros objetos são iguais à integração com o Carrinho.
+
+#### Objeto Payment da Recorrência
+
+|Campo|Tipo|Obrigatório|Tamanho|Descrição|
+|-----|----|-----------|-------|---------|
+|BoletoDiscount|Numeric|Condicional|0..3|Desconto, em porcentagem, para pagamentos a serem realizados com boleto.|
+|DebitDiscount|Numeric|Condicional|0..3|Desconto, em porcentagem, para pagamentos a serem realizados com débito online.|
+|**RecurrentPayment**|[RecurrentPayment](#recurrentpayment)|Condicional|Objeto necessário para pagamentos recorrentes|
+
+### Resposta
+
+```json
+{
+    "message": "The request is invalid.",
+    "modelState": {
+        "[Shipping.Type]": [
+            "[Shipping.Type] pedidos com recorrência devem possuir o Shipping.Type 'WithoutShipping'."
+        ]
+    }
+}
+```
+
+#### Erro na recorrência
+
+**Exemplo**: Bem Físico
+
+Como a recorrência só existe na API, se o desenvolvedor mandar como Bem Físico, a API obriga o envio do tipo de frete. Se no contrato técnico tiver o nó da recorrência, ele só pode mandar “Sem frete”, que não é um tipo válido para bens físicos (produtos). Sendo assim ele receberá a seguinte  resposta:
+
+## Botão de recorrência
+
+Uma maneira de realizar a recorrência dentro do Checkout é criar um botão recorrente.
+
+Basta cadastrar o produto, incluindo um intervalo de cobrança e uma data para encerramento (Opcional), como no exemplo abaixo:
+
+![Botão recorrência](/images/checkout-botao-recorrencia.png)
+
+<aside class="warning">Caso um botão seja utilizado após a “Data final” cadastrada, a transação apresentará um erro exibindo “Oppss” na tela transacional. Data pode ser editada na tela de edição do botão dentro de “Detalhes do Produto”</aside>
+
+## Retentativa
+
+Caso uma das transações não seja autorizada, o Checkout Cielo executa a retentativa automaticamente, considerando:
+
+* Intervalo de tempo entre as tentativas: 1 dia
+* Quantidade de retentativas: 3 (três), uma por dia, por 3 dias corridos a partir do dia seguinte da transação original não autorizada.
+
+<aside class="notice">Essa regra da retentativa não pode ser modificada pelo lojista.</aside>
+
+### Notificações ao Lojista
+
+Todas as notificações/respostas de cada pedido de compra feito na loja podem ser enviados ao lojista. Para isso, basta que:
+
+* Seja configurada a URL de notificação e URL de Status no backoffice do lojista
+* A mudança de Status da retentativa será notificada pela Url de Mudança de Status.
+
 ## Modo de teste do Checkout Cielo
 
 O modo de teste Checkout Cielo é método de fazer testes de integração do Checkout Cielo com o seu site, sem o consumo de créditos. O modo de Teste Checkout Cielo permite realizar transações, testando a integração utilizando diferentes meios de pagamento simulados.
@@ -1071,7 +1653,11 @@ Parâmetro de requisição com informações sobre o serviço de frete que será
 ```json
 {
     "BoletoDiscount": 0,
-    "DebitDiscount": 10
+    "DebitDiscount": 10,
+    "RecurrentPayment": {
+        "Interval": "Monthly",
+        "EndDate": "2015-12-31"
+    }
 }
 ```
 
@@ -1081,6 +1667,33 @@ Parâmetro de requisição com informações sobre o desconto para pagamento via
 |-----|----|-----------|-------|---------|
 |BoletoDiscount|Numeric|Condicional|0..3|Desconto, em porcentagem, para pagamentos a serem realizados com boleto.|
 |DebitDiscount|Numeric|Condicional|0..3|Desconto, em porcentagem, para pagamentos a serem realizados com débito online.|
+|RecurrentPayment|[RecurrentPayment](#recurrentpayment)|Condicional|Objeto necessário para pagamentos recorrentes|
+
+## RecurrentPayment
+
+```json
+{
+    "Interval": "Monthly",
+    "EndDate": "2015-12-31"
+}
+```
+
+Parâmetro de requisição com informações sobre a recorrência.
+
+|Campo|Tipo|Obrigatório|Tamanho|Descrição|
+|-----|----|-----------|-------|---------|
+|Interval|Alphanumeric|Sim|n/a|Tipo de intervalo de recorrência; Veja a tabela [Intervalo de Recorrência](#intervalo-de-recorrência)|
+|EndDate|Date|Não|n/a|Data final da recorrência no formado YYYY-MM-DD|
+
+### Intervalo de Recorrência
+
+|Valor|Descrição|
+|-----|---------|
+|Monthly|Transações mensais.|
+|Bimonthly|Transações bimestrais.|
+|Quarterly|Transações trimestrais.|
+|SemiAnnual|Transações semestrais.|
+|Annual|Transações anuais.|
 
 ## Customer
 
@@ -1153,6 +1766,39 @@ Pedidos **“AUTORIZADOS”** serão enviados online, ou seja, no ato da venda
 Esta análise indicará um **“BAIXO RISCO”** ou “ALTO RISCO” para a venda em questão. Esta sugestão é o que deve guiar a decisão de se confirmar  ou cancelar a venda. A analise será apresentada no “Detalhes do Pedido”, como abaixo:
 
 ![Análise de risco](/images/checkout-cielo-analise-risco.png)
+
+## Pagamento Recorrente Programado
+
+A Recorrência é um processo de agendamento automático de transações de crédito, ou seja, é uma transação que se repetirá automaticamente, sem a necessidade do comprador acessar a tela transacional, de acordo com as regras definidas no momento do agendamento.
+
+### Consultando transações
+
+As transações de Recorrência ficam disponíveis no Backoffice Checkout Cielo como as outras vendas de sua loja na aba “PEDIDOS” (veja imagem abaixo).
+
+A primeira transação da recorrência é uma transação normal, seguindo as regras e preferências definidas pelo lojista no Backoffice.
+
+<aside class="warning"><strong>IMPORTANTE</strong>: O valor e data de cobrança das transações recorrentes serão sempre os mesmos da transação inicial. O agendamento passa a funcionar automaticamente a partir da data em que a primeira transação for autorizada.</aside>
+
+![Consultando transações](/images/checkout-consulta-recorrencia.png)
+
+Esta tela mostra a que a 1° transação da recorrência foi autorizada e deverá ser capturada manualmente.  As demais transações da recorrência sempre serão capturadas automaticamente, independente se primeira transação foi capturada ou cancelada. Se o Cliente tiver configurado Captura automática, a captura da recorrência também será automática.
+
+<aside class="warning"><strong>IMPORTANTE</strong>: Somente a 1° transação é submetida a análise do antifraude</aside>
+
+### Cancelamento de Recorrência no Checkout Cielo.
+
+O cancelamento da recorrência ocorre dentro do Backoffice do Checkout Cielo, também na aba “PEDIDOS”.  Basta acessar uma transação de recorrência (marcada com o símbolo “Recorrente”), entrar em Detalhes (o símbolo de “+”)
+
+![Cancelamento de recorrência](/images/checkout-cancelar-recorrencia.png)
+
+Na tela acima, há duas opções de Cancelamento pelos botões:
+
+* **Cancelar** – cancela a transação em questão, sem efetuar o cancelamento das futuras transações de recorrência.
+* **Cancelar Recorrência** -  cancela o agendamento de futuras transações como um todo, encerrando a recorrência. Não cancela a transação atual nem as que já ocorreram.
+
+<aside class="warning">A Recorrência ocorre somente para Cartões de crédito e para produtos tipo “SERVIÇO” e “BENS DIGITAIS”.</aside>
+<aside class="warning">A Recorrência é iniciada no momento da AUTORIZAÇAO, NÃO NA CAPTURA. Se a recorrência não tiver uma data para ser finalizada, ela se repetirá automaticamente até ser cancelada manualmente.</aside>
+<aside class="warning">A Recorrência deve ser habilitada em sua Afiliação, do contrario, as transações agendadas serão negadas. </aside>
 
 ## Cartão de débito
 
