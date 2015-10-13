@@ -108,7 +108,7 @@
 <p>O objetivo desta documentação é orientar o desenvolvedor sobre o método de integração da API Checkout Cielo, solução simplificada na qual o consumidor é direcionado para uma página de pagamento online segura da Cielo, proporcionando um alto nível de confiança, dentro das mais rígidas normas de segurança (PCI). Em linhas gerais, o Checkout Cielo é uma solução de pagamento projetada para aumentar a conversão das vendas, simplificar o processo de compra, reduzir fraudes e custos operacionais.
 Nesta documentação estão descritas todas as funcionalidades desta integração, os parâmetros técnicos e principalmente os códigos de exemplos para facilitar o seu desenvolvimento.</p>
 
-<p>O Checkout Cielo utiliza uma tecnologia REST que deve ser usada quando houver um <em>“carrinho de compras”</em> a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a compra. Há também opção de integração via botão usada sempre que não houver um <em>“carrinho de compras”</em> em sua loja ou quando se deseja associar uma compra rápida direta a um produto.</p>
+<p>O Checkout Cielo utiliza uma tecnologia REST que deve ser usada quando houver um <em>“carrinho de compras”</em> a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a compra. Há também opção de <a href="#botão-de-produto">integração via botão</a> usada sempre que não houver um <em>“carrinho de compras”</em> em sua loja ou quando se deseja associar uma compra rápida direta a um produto.</p>
 
 <p>Durante a integração com o Checkout Cielo, alguns passos e alguns redirecionamentos ocorrerão. A imagem abaixo ilustra esse fluxo:</p>
 
@@ -144,6 +144,32 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 </ul>
 
 <aside class="notice">Veja a seção <a href="#certificado-extended-validation">Certificado Extended Validation</a> para informações sobre os certificados Cielo</aside>
+
+<h2 id="histórico-de-versões">Histórico de versões</h2>
+
+<ul>
+<li><strong>Versão 1.3</strong> - 21/01/2015
+
+<ul>
+<li>Troca de nomes – Solução Integrada para Checkout Cielo</li>
+</ul></li>
+<li><strong>Versão 1.2</strong> - 09/01/2015
+
+<ul>
+<li>Inclusão dos seguintes parâmetros no Post de notificação: <code class="prettyprint">discount_amount</code>, <code class="prettyprint">shipping_address_state</code>, <code class="prettyprint">payment_boleto</code>, <code class="prettyprint">number</code>, <code class="prettyprint">tid</code>;</li>
+<li>Alteração do parâmetro numero do pedido no Post de Mudança de Status</li>
+</ul></li>
+<li><strong>Versão 1.1</strong> - 08/01/2015
+
+<ul>
+<li>Alinhamento dos fluxos de pagamento; inclusão de informações sobre os meios de pagamento; inclusão da tela de configurações do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a></li>
+</ul></li>
+<li><strong>Versão 1.0</strong> - 24/11/2014
+
+<ul>
+<li>Versão inicial</li>
+</ul></li>
+</ul>
 
 <h2 id="produtos-e-serviços">Produtos e serviços</h2>
 
@@ -216,32 +242,6 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 </tr>
 </tbody></table>
 
-<h2 id="histórico-de-versões">Histórico de versões</h2>
-
-<ul>
-<li><strong>Versão 1.3</strong> - 21/01/2015
-
-<ul>
-<li>Troca de nomes – Solução Integrada para Checkout Cielo</li>
-</ul></li>
-<li><strong>Versão 1.2</strong> - 09/01/2015
-
-<ul>
-<li>Inclusão dos seguintes parâmetros no Post de notificação: <code class="prettyprint">discount_amount</code>, <code class="prettyprint">shipping_address_state</code>, <code class="prettyprint">payment_boleto</code>, <code class="prettyprint">number</code>, <code class="prettyprint">tid</code>;</li>
-<li>Alteração do parâmetro numero do pedido no Post de Mudança de Status</li>
-</ul></li>
-<li><strong>Versão 1.1</strong> - 08/01/2015
-
-<ul>
-<li>Alinhamento dos fluxos de pagamento; inclusão de informações sobre os meios de pagamento; inclusão da tela de configurações do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a></li>
-</ul></li>
-<li><strong>Versão 1.0</strong> - 24/11/2014
-
-<ul>
-<li>Versão inicial</li>
-</ul></li>
-</ul>
-
 <h2 id="suporte-cielo">Suporte Cielo</h2>
 
 <p>Após a leitura deste manual, caso ainda persistam dúvidas (técnicas ou não), a Cielo disponibiliza o suporte técnico 24 horas por dia, 7 dias por semana em idiomas (Português e Inglês), nos seguintes contatos:</p>
@@ -258,11 +258,120 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 <li>Email: <a href="mailto:cieloecommerce@cielo.com.br">cieloecommerce@cielo.com.br</a></li>
 </ul>
 
-<h1 id="integração">Integração</h1>
+<h2 id="modo-de-teste-do-checkout-cielo">Modo de teste do Checkout Cielo</h2>
+
+<p>O modo de teste Checkout Cielo é método de fazer testes de integração do Checkout Cielo com o seu site, sem o consumo de créditos. O modo de Teste Checkout Cielo permite realizar transações, testando a integração utilizando diferentes meios de pagamento simulados.</p>
+
+<h3 id="ativação-do-modo-de-teste.">Ativação do Modo de Teste.</h3>
+
+<p>O modo de teste pode ser ativado na aba Configurações:</p>
+
+<p><img alt="Modo de teste" src="images/checkout-cielo-modo-teste.png" /></p>
+
+<p>Nessa área há um caixa de seleção, que quando marcada, habilitará o modo de teste do Checkout Cielo. O modo somente se iniciará quando a seleção for salva.</p>
+
+<p><img alt="Ativação Modo de teste" src="images/checkout-cielo-modo-teste-ativacao.png" /></p>
+
+<p>Quando a opção for salva, uma tarja vermelha será exibida na parte superior da tela. Ela será exibida em todas as telas do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a> e na tela de checkout do Checkout Cielo.</p>
+
+<p>Essa tarja indica que a sua loja Checkout Cielo está agora operando em ambiente de teste, ou seja, toda a transação realizada nesse modo será considerada como teste.</p>
+
+<p><img alt="Modo de teste ativado" src="images/checkout-cielo-modo-teste-ativado.png" /></p>
+
+<h3 id="como-transacionar-no-modo-de-teste.">Como transacionar no Modo de teste.</h3>
+
+<p>A realização de transações no modo de teste ocorre de forma normal. As informações da transação são enviadas via POST, utilizando os parâmetros como descrito no tópico <a href="#integração-carrinho-de-compras">Integração com carrinho</a>, entretanto, os meios de pagamentos a serem usados serão meios simulados.</p>
+
+<p>Para realizar transações de teste com diferentes meios de pagamento, siga as seguintes regras:</p>
+
+<p><strong>a - Transações com Cartão de crédito:</strong></p>
+
+<p>Para testar cartões de crédito é necessário que dois dados importantes sejam definidos, o status da autorização do cartão e o retorno da analise de fraude.</p>
+
+<p><strong>Status da Autorização do Cartão de Crédito</strong></p>
+
+<table><thead>
+<tr>
+<th>Digito final do Cartão</th>
+<th>Status retornado</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>0, 1, 2, 3 ou 4</td>
+<td>Autorizado</td>
+</tr>
+<tr>
+<td>5, 6, 7, 8 ou 9</td>
+<td>Não autorizado</td>
+</tr>
+</tbody></table>
+
+<ul>
+<li><strong>Exemplo:</strong> Transação autorizada, Alto Risco;</li>
+<li><strong>Numero do Cartão de credito:</strong> 5404434242930107</li>
+<li><strong>Nome do Cliente:</strong> Maria Alto</li>
+</ul>
+
+<p><strong>b - Boleto Bancario</strong></p>
+
+<p>Basta realizar o processo de compra normalmente sem nenhuma alteração no procedimento. O boleto gerado no modo de teste sempre será um boleto simulado.</p>
+
+<p><strong>c - Debito online</strong></p>
+
+<p>É necessário informa o status da transação de Debito online para que seja retornado o status desejado. Esse processo ocorre como no antifraude do cartão de crédito descrito acima, com a alteração do nome do comprador.</p>
+
+<p><strong>Status do Débito</strong>
+|Sobre nome do cliente|Status|
+|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;|
+|Pago|Pago|
+|Qualquer nome.|Não autorizado|</p>
+
+<ul>
+<li><strong>Exemplo:</strong> Status não Autorizado.</li>
+<li><strong>Nome do Cliente:</strong> Maria Pereira</li>
+</ul>
+
+<p><strong>d - Transações de teste</strong></p>
+
+<p>Todas as transações realizadas no modo de teste serão exibidas como transações normais na aba Pedidos do Checkout Cielo, entretanto, elas serão marcadas como transações de teste e não serão contabilizadas em conjunto com as transações realizadas fora do ambiente de teste.</p>
+
+<p><img alt="Transações de teste" src="images/checkout-cielo-modo-teste-transacoes-de-teste.png" /></p>
+
+<p>Essas transações terão o simbolo de teste as diferenciando de suas outras transações. Elas podem ser capturadas ou canceladas utilizando os mesmos procedimentos das transações reais.</p>
+
+<p><img alt="Transações de teste" src="images/checkout-cielo-modo-teste-transacoes-de-teste-cancelamento.png" /></p>
+
+<aside class="notice">É muito importante que ao liberar sua loja para a realização de vendas para seus clientes que ela não esteja em modo de teste. Transações realizadas nesse ambiente poderão ser finalizadas normalmente, mas não serão descontadas do cartão do cliente e não poderão ser “transferidas” para o ambiente de venda padrão.</aside>
+
+<h2 id="certificado-extended-validation">Certificado Extended Validation</h2>
+
+<p>O Certificado Extended Validation para servidor web oferece autenticidade e integridade dos dados de um web site, proporcionando aos clientes das lojas virtuais a garantia de que estão realmente acessando o site que desejam, e não uma um site fraudador.</p>
+
+<p>Empresas especializadas são responsáveis por fazer a validação do domínio e, dependendo do tipo de certificado, também da entidade detentora do domínio.</p>
+
+<h3 id="o-que-é-certificado-extended-validation?">O que é Certificado Extended Validation?</h3>
+
+<p>O Certificado EV foi lançado no mercado recentemente e garante um nível de segurança maior para os clientes das lojas virtuais.</p>
+
+<p>Trata-se de um certificado de maior confiança e quando o https for acessado a barra de endereço ficará verde, dando mais confiabilidade aos visitantes do site.</p>
+
+<p>Como instalar o Certificado Extended Validation no servidor da Loja?</p>
+
+<p>Basta instalar os três arquivos a seguir na Trustedstore do servidor. A Cielo não oferece suporte para a instalação do Certificado. Caso não esteja seguro sobre como realizar a instalação do Certificado EV, então você deverá ser contatado o suporte do fornecedor do seu servidor.</p>
+
+<ul>
+<li><a href="attachment/Raiz.crt">Certificado Raiz</a></li>
+<li><a href="attachment/Intermediaria.crt">Certificado Intermediária</a></li>
+<li><a href="attachment/ecommerce.cielo.com.br.crt">Certificado E-Commerce Cielo</a></li>
+</ul>
+
+<aside class="notice">Caso seu servidor seja uma distribuição Linux e você tenha familiaridade e acesso ssh, então o <a href="./attachment/cielo.sh">Instalador Linux - cielo.sh</a> poderá ajudá-lo com a instalação. <strong>Apenas utilize o instalador se você souber o que está fazendo</strong>. Na dúvida, entre em contato com o suporte do fornecedor do seu servidor.</aside>
+
+<h1 id="integração-para-vendas-de-produtos-ou-serviços">Integração para vendas de produtos ou serviços</h1>
 
 <h2 id="carrinho-de-compras">Carrinho de Compras</h2>
 
-<p>Este  tipo  de  integração deve  ser  usada sempre  que  houver  um  “carrinho  de  compras”  a  ser  enviado,  ou  seja,  no  caso  do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar a um carrinho e depois então finalizar a venda. Se você não possui um carrinho de compras implementado, veja a seção de <a href="#integração-via-botão">integração via botão</a> Checkout Cielo.</p>
+<p>Este  tipo  de  integração deve  ser  usada sempre  que  houver  um  “carrinho  de  compras”  a  ser  enviado,  ou  seja,  no  caso  do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar a um carrinho e depois então finalizar a venda. Se você não possui um carrinho de compras implementado, veja a seção de <a href="#botão-de-produto">integração via botão</a> Checkout Cielo.</p>
 
 <h3 id="endpoint">Endpoint</h3>
 
@@ -910,7 +1019,7 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 <li><strong>Depois da Exibição da tela de Checkout (quando a venda é finalizada)</strong> - Significa que há algum impedimento de cadastro que limita a venda. Coisas como afiliação bloqueada, erro nos dados salvos no cadastro ou até problemas no próprio checkout.</li>
 </ul>
 
-<h2 id="botão">Botão</h2>
+<h2 id="botão-de-produto">Botão de Produto</h2>
 
 <p>Integração via Botão é um método de compra usada sempre que não houver um “carrinho de compras” em sua loja ou quando se deseja associar uma compra rápida direta a um produto, como uma promoção numa homepage pulando a etapa do carrinho.</p>
 
@@ -1036,6 +1145,29 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 <aside class="notice">O código deve ser inserido dentro da área adequada no seu HTML.</aside>
 
 <p>Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter a compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, e valerão os dados do cadastro.</p>
+
+<h1 id="integração-com-recorrência-programada">Integração com Recorrência Programada</h1>
+
+<p>A Recorrência é um processo de agendamento automático de transações de crédito, ou seja, é uma transação que se repetirá automaticamente, sem a necessidade do comprador acessar a tela transacional, de acordo com as regras definidas no momento do agendamento.</p>
+
+<aside class="notice">Caso uma das transações não seja autorizada, o Checkout Cielo executa a retentativa automaticamente; para mais detalhes sobre a retentativa automática, veja a seção <a href="#retentativa">Retentativa</a>.</aside>
+
+<p>Transações recorrentes são ideais para modelos de negócios que envolvam o conceito de assinatura, plano ou mensalidade na sua forma de cobrança. Alguns exemplos de negócios são: escolas, academias, editoras, serviços de hospedagem, entre outros.</p>
+
+<p>Diferença entre transações recorrentes e parceladas:</p>
+
+<ul>
+<li><strong>Parceladas</strong>: Se trata de uma transação dividida em vários meses. O valor total da venda compromete o limite do cartão de crédito do comprador independentemente do valor da parcela inicial (ver exemplo abaixo). O lojista recebe o valor da venda parceladamente e não corre o risco de uma das parcelas ser negada.
+
+<ul>
+<li><strong>EX</strong>: Venda de R$1.000,00 parcelado em 2 vezes. Apesar de o comprador pagar apenas R$500,00 na primeira parcela, o valor do limite de crédito consumido é o integral, ou seja, R$1.000,00. Se o limite do cartão for inferior ou o montante não estiver liberado, a R$1.000,00 a transação será negada</li>
+</ul></li>
+<li><strong>Recorrentes</strong>: São transações diferentes realizadas no mesmo cartão em momentos previamente agendados. A primeira venda agenda as futuras vendas a partir de um intervalo de tempo pré definido (ver exemplo abaixo).  A cada intervalo haverá uma cobrança no cartão de crédito. O pagamento recorrente bloqueia do limite do cartão apenas o valor debitado na data da primeira venda recorrente e do valor total da venda.
+
+<ul>
+<li><strong>EX</strong>: Venda de R$ 1.000,00 em 15/01/2015, com recorrência mensal e data final em 01/06/2015. Todo dia 15 haverá uma nova cobrança de R$1.000,00 no cartão do comprador, se repetindo até 15/05/2015, última data válida antes da data final.</li>
+</ul></li>
+</ul>
 
 <h2 id="pagamento-recorrente-programado">Pagamento Recorrente Programado</h2>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
@@ -1531,24 +1663,6 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 <span class="n">HttpWebResponse</span> <span class="n">response</span> <span class="p">=</span> <span class="p">(</span><span class="n">HttpWebResponse</span><span class="p">)</span> <span class="n">request</span><span class="p">.</span><span class="nf">GetResponse</span><span class="p">();</span>
 </code></pre>
 
-<p>A Recorrência é um processo de agendamento automático de transações de crédito, ou seja, é uma transação que se repetirá automaticamente, sem a necessidade do comprador acessar a tela transacional, de acordo com as regras definidas no momento do agendamento.</p>
-
-<p>Transações recorrentes são ideais para modelos de negócios que envolvam o conceito de assinatura, plano ou mensalidade na sua forma de cobrança. Alguns exemplos de negócios são: escolas, academias, editoras, serviços de hospedagem, entre outros.
-Diferença entre transações recorrentes e parceladas:</p>
-
-<ul>
-<li><strong>Parceladas</strong>: Se trata de uma transação dividida em vários meses. O valor total da venda compromete o limite do cartão de crédito do comprador independentemente do valor da parcela inicial (ver exemplo abaixo). O lojista recebe o valor da venda parceladamente e não corre o risco de uma das parcelas ser negada.
-
-<ul>
-<li><strong>EX</strong>: Venda de R$1.000,00 parcelado em 2 vezes. Apesar de o comprador pagar apenas R$500,00 na primeira parcela, o valor do limite de crédito consumido é o integral, ou seja, R$1.000,00. Se o limite do cartão for inferior ou o montante não estiver liberado, a R$1.000,00 a transação será negada</li>
-</ul></li>
-<li><strong>Recorrentes</strong>: São transações diferentes realizadas no mesmo cartão em momentos previamente agendados. A primeira venda agenda as futuras vendas a partir de um intervalo de tempo pré definido (ver exemplo abaixo).  A cada intervalo haverá uma cobrança no cartão de crédito. O pagamento recorrente bloqueia do limite do cartão apenas o valor debitado na data da primeira venda recorrente e do valor total da venda.
-
-<ul>
-<li><strong>EX</strong>: Venda de R$ 1.000,00 em 15/01/2015, com recorrência mensal e data final em 01/06/2015. Todo dia 15 haverá uma nova cobrança de R$1.000,00 no cartão do comprador, se repetindo até 15/05/2015, última data válida antes da data final.</li>
-</ul></li>
-</ul>
-
 <p>Uma transação de recorrência no Checkout Cielo possui duas configurações: “Intervalo” e “Data de encerramento”.</p>
 
 <ul>
@@ -1622,135 +1736,6 @@ Diferença entre transações recorrentes e parceladas:</p>
 <p><img alt="Botão recorrência" src="images/checkout-botao-recorrencia.png" /></p>
 
 <aside class="warning">Caso um botão seja utilizado após a “Data final” cadastrada, a transação apresentará um erro exibindo “Oppss” na tela transacional. Data pode ser editada na tela de edição do botão dentro de “Detalhes do Produto”</aside>
-
-<h2 id="retentativa">Retentativa</h2>
-
-<p>Caso uma das transações não seja autorizada, o Checkout Cielo executa a retentativa automaticamente, considerando:</p>
-
-<ul>
-<li>Intervalo de tempo entre as tentativas: 1 dia</li>
-<li>Quantidade de retentativas: 3 (três), uma por dia, por 3 dias corridos a partir do dia seguinte da transação original não autorizada.</li>
-</ul>
-
-<aside class="notice">Essa regra da retentativa não pode ser modificada pelo lojista.</aside>
-
-<h3 id="notificações-ao-lojista">Notificações ao Lojista</h3>
-
-<p>Todas as notificações/respostas de cada pedido de compra feito na loja podem ser enviados ao lojista. Para isso, basta que:</p>
-
-<ul>
-<li>Seja configurada a URL de notificação e URL de Status no backoffice do lojista</li>
-<li>A mudança de Status da retentativa será notificada pela Url de Mudança de Status.</li>
-</ul>
-
-<h2 id="modo-de-teste-do-checkout-cielo">Modo de teste do Checkout Cielo</h2>
-
-<p>O modo de teste Checkout Cielo é método de fazer testes de integração do Checkout Cielo com o seu site, sem o consumo de créditos. O modo de Teste Checkout Cielo permite realizar transações, testando a integração utilizando diferentes meios de pagamento simulados.</p>
-
-<h3 id="ativação-do-modo-de-teste.">Ativação do Modo de Teste.</h3>
-
-<p>O modo de teste pode ser ativado na aba Configurações:</p>
-
-<p><img alt="Modo de teste" src="images/checkout-cielo-modo-teste.png" /></p>
-
-<p>Nessa área há um caixa de seleção, que quando marcada, habilitará o modo de teste do Checkout Cielo. O modo somente se iniciará quando a seleção for salva.</p>
-
-<p><img alt="Ativação Modo de teste" src="images/checkout-cielo-modo-teste-ativacao.png" /></p>
-
-<p>Quando a opção for salva, uma tarja vermelha será exibida na parte superior da tela. Ela será exibida em todas as telas do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a> e na tela de checkout do Checkout Cielo.</p>
-
-<p>Essa tarja indica que a sua loja Checkout Cielo está agora operando em ambiente de teste, ou seja, toda a transação realizada nesse modo será considerada como teste.</p>
-
-<p><img alt="Modo de teste ativado" src="images/checkout-cielo-modo-teste-ativado.png" /></p>
-
-<h3 id="como-transacionar-no-modo-de-teste.">Como transacionar no Modo de teste.</h3>
-
-<p>A realização de transações no modo de teste ocorre de forma normal. As informações da transação são enviadas via POST, utilizando os parâmetros como descrito no tópico <a href="#integração-carrinho-de-compras">Integração com carrinho</a>, entretanto, os meios de pagamentos a serem usados serão meios simulados.</p>
-
-<p>Para realizar transações de teste com diferentes meios de pagamento, siga as seguintes regras:</p>
-
-<p><strong>a - Transações com Cartão de crédito:</strong></p>
-
-<p>Para testar cartões de crédito é necessário que dois dados importantes sejam definidos, o status da autorização do cartão e o retorno da analise de fraude.</p>
-
-<p><strong>Status da Autorização do Cartão de Crédito</strong></p>
-
-<table><thead>
-<tr>
-<th>Digito final do Cartão</th>
-<th>Status retornado</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>0, 1, 2, 3 ou 4</td>
-<td>Autorizado</td>
-</tr>
-<tr>
-<td>5, 6, 7, 8 ou 9</td>
-<td>Não autorizado</td>
-</tr>
-</tbody></table>
-
-<ul>
-<li><strong>Exemplo:</strong> Transação autorizada, Alto Risco;</li>
-<li><strong>Numero do Cartão de credito:</strong> 5404434242930107</li>
-<li><strong>Nome do Cliente:</strong> Maria Alto</li>
-</ul>
-
-<p><strong>b - Boleto Bancario</strong></p>
-
-<p>Basta realizar o processo de compra normalmente sem nenhuma alteração no procedimento. O boleto gerado no modo de teste sempre será um boleto simulado.</p>
-
-<p><strong>c - Debito online</strong></p>
-
-<p>É necessário informa o status da transação de Debito online para que seja retornado o status desejado. Esse processo ocorre como no antifraude do cartão de crédito descrito acima, com a alteração do nome do comprador.</p>
-
-<p><strong>Status do Débito</strong>
-|Sobre nome do cliente|Status|
-|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;|
-|Pago|Pago|
-|Qualquer nome.|Não autorizado|</p>
-
-<ul>
-<li><strong>Exemplo:</strong> Status não Autorizado.</li>
-<li><strong>Nome do Cliente:</strong> Maria Pereira</li>
-</ul>
-
-<p><strong>d - Transações de teste</strong></p>
-
-<p>Todas as transações realizadas no modo de teste serão exibidas como transações normais na aba Pedidos do Checkout Cielo, entretanto, elas serão marcadas como transações de teste e não serão contabilizadas em conjunto com as transações realizadas fora do ambiente de teste.</p>
-
-<p><img alt="Transações de teste" src="images/checkout-cielo-modo-teste-transacoes-de-teste.png" /></p>
-
-<p>Essas transações terão o simbolo de teste as diferenciando de suas outras transações. Elas podem ser capturadas ou canceladas utilizando os mesmos procedimentos das transações reais.</p>
-
-<p><img alt="Transações de teste" src="images/checkout-cielo-modo-teste-transacoes-de-teste-cancelamento.png" /></p>
-
-<aside class="notice">É muito importante que ao liberar sua loja para a realização de vendas para seus clientes que ela não esteja em modo de teste. Transações realizadas nesse ambiente poderão ser finalizadas normalmente, mas não serão descontadas do cartão do cliente e não poderão ser “transferidas” para o ambiente de venda padrão.</aside>
-
-<h2 id="certificado-extended-validation">Certificado Extended Validation</h2>
-
-<p>O Certificado Extended Validation para servidor web oferece autenticidade e integridade dos dados de um web site, proporcionando aos clientes das lojas virtuais a garantia de que estão realmente acessando o site que desejam, e não uma um site fraudador.</p>
-
-<p>Empresas especializadas são responsáveis por fazer a validação do domínio e, dependendo do tipo de certificado, também da entidade detentora do domínio.</p>
-
-<h3 id="o-que-é-certificado-extended-validation?">O que é Certificado Extended Validation?</h3>
-
-<p>O Certificado EV foi lançado no mercado recentemente e garante um nível de segurança maior para os clientes das lojas virtuais.</p>
-
-<p>Trata-se de um certificado de maior confiança e quando o https for acessado a barra de endereço ficará verde, dando mais confiabilidade aos visitantes do site.</p>
-
-<p>Como instalar o Certificado Extended Validation no servidor da Loja?</p>
-
-<p>Basta instalar os três arquivos a seguir na Trustedstore do servidor. A Cielo não oferece suporte para a instalação do Certificado. Caso não esteja seguro sobre como realizar a instalação do Certificado EV, então você deverá ser contatado o suporte do fornecedor do seu servidor.</p>
-
-<ul>
-<li><a href="attachment/Raiz.crt">Certificado Raiz</a></li>
-<li><a href="attachment/Intermediaria.crt">Certificado Intermediária</a></li>
-<li><a href="attachment/ecommerce.cielo.com.br.crt">Certificado E-Commerce Cielo</a></li>
-</ul>
-
-<aside class="notice">Caso seu servidor seja uma distribuição Linux e você tenha familiaridade e acesso ssh, então o <a href="./attachment/cielo.sh">Instalador Linux - cielo.sh</a> poderá ajudá-lo com a instalação. <strong>Apenas utilize o instalador se você souber o que está fazendo</strong>. Na dúvida, entre em contato com o suporte do fornecedor do seu servidor.</aside>
 
 <h1 id="urls-do-checkout-cielo">URLs do Checkout Cielo</h1>
 
@@ -1993,7 +1978,7 @@ Diferença entre transações recorrentes e parceladas:</p>
 <h3 id="recebimento-do-post-de-notificação">Recebimento do POST de notificação</h3>
 
 <ul>
-<li>Quando acessada pelo servidor da Braspag, enviando o POST da tabela acima, a URL cadastrada para Notificação deverá exibir um código informando que recebeu a mudança de status e a processou com sucesso. <strong>Código:</strong><code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code></li>
+<li>Quando acessada pelo servidor da Cielo, enviando o POST da tabela acima, a URL cadastrada para Notificação deverá exibir um código informando que recebeu a mudança de status e a processou com sucesso. <strong>Código:</strong><code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code></li>
 <li>Se a URL for acessada pelo nosso servidor e não exibir o código de confirmação, o servidor irá tentar novamente por três vezes, a cada hora. Caso o <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code> ainda não seja exibido, será entendido que o servidor da loja não responde.</li>
 <li>A URL de Notificação somente pode utilizar <strong>porta 80</strong> (padrão para http) ou <strong>porta 443</strong> (padrão para https).</li>
 </ul>
@@ -2084,8 +2069,8 @@ Diferença entre transações recorrentes e parceladas:</p>
 <h3 id="recebimento-do-post-de-mudança-de-status">Recebimento do POST de Mudança de Status</h3>
 
 <ul>
-<li>Quando acessada pelo servidor da Braspag, enviando o POST, a URL cadastrada para Retorno de Mudança de Status, deverá exibir um código informando que recebeu a mudança de status e a processou com sucesso: <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code></li>
-<li>Se a URL de mudança de status da loja for acessada pelo servidor da Braspag não exibir o código de confirmação, o servidor irá tentar novamente por três vezes.</li>
+<li>Quando acessada pelo servidor da Cielo, enviando o POST, a URL cadastrada para Retorno de Mudança de Status, deverá exibir um código informando que recebeu a mudança de status e a processou com sucesso: <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code></li>
+<li>Se a URL de mudança de status da loja for acessada pelo servidor da Cielo não exibir o código de confirmação, o servidor irá tentar novamente por três vezes.</li>
 <li>Caso o <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code> ainda não seja exibido, será entendido que o servidor da loja não responde, e será enviado um e-mail ao responsável pela loja, informando que o pedido em questão foi pago.</li>
 <li>Ou seja, o código fonte da página indicando Sucesso deverá conter APENAS <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code> <strong>e nada mais</strong>.</li>
 </ul>
@@ -2692,6 +2677,26 @@ Ex.: 10 = 10%.</p>
 <h2 id="pagamento-recorrente-programado">Pagamento Recorrente Programado</h2>
 
 <p>A Recorrência é um processo de agendamento automático de transações de crédito, ou seja, é uma transação que se repetirá automaticamente, sem a necessidade do comprador acessar a tela transacional, de acordo com as regras definidas no momento do agendamento.</p>
+
+<h3 id="retentativa">Retentativa</h3>
+
+<p>Caso uma das transações não seja autorizada, o Checkout Cielo executa a retentativa automaticamente, considerando:</p>
+
+<ul>
+<li>Intervalo de tempo entre as tentativas: 1 dia</li>
+<li>Quantidade de retentativas: 3 (três), uma por dia, por 3 dias corridos a partir do dia seguinte da transação original não autorizada.</li>
+</ul>
+
+<aside class="notice">Essa regra da retentativa não pode ser modificada pelo lojista.</aside>
+
+<h4 id="notificações-ao-lojista">Notificações ao Lojista</h4>
+
+<p>Todas as notificações/respostas de cada pedido de compra feito na loja podem ser enviados ao lojista. Para isso, basta que:</p>
+
+<ul>
+<li>Seja configurada a URL de notificação e URL de Status no backoffice do lojista</li>
+<li>A mudança de Status da retentativa será notificada pela Url de Mudança de Status.</li>
+</ul>
 
 <h3 id="consultando-transações">Consultando transações</h3>
 
