@@ -39,6 +39,148 @@ Após o portador do cartão (consumidor) selecionar suas compras e apertar o bot
 6. O Checkout Cielo envia o POST de notificação para a URL de Notificação, configurada no Backoffice
 7. A loja processa o pedido de compra utilizando os dados do POST de notificação e, se a transação estiver autorizada, libera o pedido.
 
+# Certificado Extended Validation
+
+## O que é Certificado SSL?
+
+O Certificado SSL para servidor web oferece autenticidade e integridade dos dados de um web site, proporcionando aos clientes das lojas virtuais a garantia de que estão realmente acessando o site que desejam, e não uma um site fraudador.
+
+Empresas especializadas são responsáveis por fazer a validação do domínio e, dependendo do tipo de certificado, também da entidade detentora do domínio.
+
+### Internet Explorer:
+
+![Certificado EV Internet Explorer](./images/certificado-ie.jpg)
+
+### Firefox
+
+![Certificado EV Firefox](./images/certificado-firefox.jpg)
+
+### Google Chrome
+
+![Certificado EV Google Chrome](./images/certificado-chrome.jpg)
+
+## O que é Certificado EV SSL?
+
+O Certificado EV foi lançado no mercado recentemente e garante um nível de segurança maior para os clientes das lojas virtuais.
+
+Trata-se de um certificado de maior confiança e quando o https for acessado a barra de endereço ficará verde, dando mais confiabilidade aos visitantes do site.
+
+## Como instalar o Certificado Extended Validation no servidor da Loja?
+
+Basta instalar os três arquivos a seguir na Trustedstore do servidor. A Cielo não oferece suporte para a instalação do Certificado. Caso não esteja seguro sobre como realizar a instalação do Certificado EV, então você deverá ser contatado o suporte do fornecedor do seu servidor.
+
+* [Certificado Raiz](./attachment/Raiz.crt)
+* [Certificado Intermediária](./attachment/Intermediaria.crt)
+* [Certificado E-Commerce Cielo](./attachment/ecommerce.cielo.com.br.crt)
+
+<aside class="notice">Caso seu servidor seja uma distribuição Linux e você tenha familiaridade e acesso ssh, então o <a href="./attachment/cielo.sh">Instalador Linux - cielo.sh</a> poderá ajudá-lo com a instalação. <strong>Apenas utilize o instalador se você souber o que está fazendo</strong>. Na dúvida, entre em contato com o suporte do fornecedor do seu servidor.</aside>
+
+## Passo a Passo para a Instalação
+
+### Instalação no Servidor da Loja Virtual
+
+O passo a passo para a instalação do Certificado EV deverá ser contatado o suporte do fornecedor do seu servidor.
+
+<aside class="warning">A Cielo não oferece suporte para a instalação do Certificado.</aside>
+
+### Acesso do Cliente à Loja Virtual
+
+Normalmente, o browser faz a atualização do Certificado automaticamente, caso não o faça e o cliente entre em contato deverá ser informado os seguintes passos:
+
+#### 1o Passo:
+
+Salvar os três arquivos abaixo em uma pasta nova, ou que relembre facilmente, pois será utilizada posteriormente:
+
+* [Certificado Raiz](./attachment/Raiz.crt)
+* [Certificado Intermediária](./attachment/Intermediaria.crt)
+* [Certificado E-Commerce Cielo](./attachment/ecommerce.cielo.com.br.crt)
+
+#### 2o Passo:
+
+No “Internet Explorer”, clique no menu “Ferramentas” e acesse as “Opções da Internet”:
+
+![Instalar IE](./images/certificado-instalar-ie-1.jpg)
+
+No “Firefox”, clique no menu “Abrir Menu” e acesse “Avançado” e “Opções”:
+
+![Instalar FF](./images/certificado-instalar-ff-1.jpg)
+
+No “Chrome”, clique no “Personalizar e Controlar o Google Chrome” e acesse “Configurações” e “Mostrar configurações avançadas... “Alterar Configurações de Proxy e “Conteúdo” e Certificados:
+
+![Instalar GC](./images/certificado-instalar-gc-1.jpg)
+
+#### 3o Passo:
+
+No Internet Explorer, em “Certificados”, clique em “Importar”.
+
+![Instalar IE](./images/certificado-instalar-ie-2.jpg)
+
+No Firefox clique em “Ver Certificados”, clique em “Importar”
+
+![Instalar FF](./images/certificado-instalar-ff-2.jpg)
+
+No Chrome clique em “Gerenciar Certificados”, clique em “Importar”
+
+![Instalar GC](./images/certificado-instalar-gc-2.jpg)
+
+#### 4o Passo:
+
+No Internet Explorer e Chrome “Assistente para Importação de Certificados”, clique em “Avançar”.
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-3.jpg)
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-4.jpg)
+
+No Firefox “Aba Servidores ”, clique em “Importar”
+
+![Instalar FF](./images/certificado-instalar-ff-3.jpg)
+
+#### 5o Passo:
+
+No Chrome e Internet Explorer “Assistente para Importação de Certificados”, clique em “Procurar”, procure a pasta onde estão os arquivos e selecione o arquivo “ecommerce.cielo.com.br.crt, clique em “Abrir” e em seguida “Avançar”.
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-5.jpg)
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-6.jpg)
+
+#### 6o Passo:
+
+Selecionar a opção desejada: adicionar o Certificado em uma pasta padrão ou procurar a pasta de sua escolha.
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-7.jpg)
+
+#### 7o Passo:
+
+Clique em “Concluir”.
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-8.jpg)
+
+#### 8o Passo:
+
+Clique em “Ok” para concluir a importação.
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-9.jpg)
+
+<aside class="notice">No Firefox não consta a mensagem de Importação com Êxito, apenas conclui a importação.</aside>
+
+O Certificado poderá ser visualizado na aba padrão “Outras Pessoas” ou na escolhida pelo cliente.
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-10.jpg)
+
+#### 9o Passo:
+
+Repita o mesmo procedimento para os 3 arquivos enviados.
+
+## Dúvidas
+
+Em caso de dúvidas em qualquer etapa ou outras informações técnicas, entre em contato com o Suporte Web do Cielo e-Commerce nos seguintes canais:
+
+* **Email:** [cieloecommerce@cielo.com.br](mailto:cieloecommerce@cielo.com.br)
+* **Capitais:** 4002-9700
+* **Demais Cidades:** 0800 570 1700
+
+Horário de atendimento: 24h por dia, 7 dias por semana.
+
 # Visão Geral
 
 Neste manual será apresentada uma visão geral do Checkout Cielo e o mecanismo tecnológico da integração com carrinho ou com botão. Para todo pedido de compra, a meta é revertê-lo em uma venda. Uma venda com cartão pode ser caracterizada por uma transação autorizada e capturada.
@@ -163,28 +305,6 @@ Essas transações terão o simbolo de teste as diferenciando de suas outras tra
 ![Transações de teste](/images/checkout-cielo-modo-teste-transacoes-de-teste-cancelamento.png)
 
 <aside class="notice">É muito importante que ao liberar sua loja para a realização de vendas para seus clientes que ela não esteja em modo de teste. Transações realizadas nesse ambiente poderão ser finalizadas normalmente, mas não serão descontadas do cartão do cliente e não poderão ser “transferidas” para o ambiente de venda padrão.</aside>
-
-## Certificado Extended Validation
-
-O Certificado Extended Validation para servidor web oferece autenticidade e integridade dos dados de um web site, proporcionando aos clientes das lojas virtuais a garantia de que estão realmente acessando o site que desejam, e não uma um site fraudador.
-
-Empresas especializadas são responsáveis por fazer a validação do domínio e, dependendo do tipo de certificado, também da entidade detentora do domínio.
-
-### O que é Certificado Extended Validation?
-
-O Certificado EV foi lançado no mercado recentemente e garante um nível de segurança maior para os clientes das lojas virtuais.
-
-Trata-se de um certificado de maior confiança e quando o https for acessado a barra de endereço ficará verde, dando mais confiabilidade aos visitantes do site.
-
-Como instalar o Certificado Extended Validation no servidor da Loja?
-
-Basta instalar os três arquivos a seguir na Trustedstore do servidor. A Cielo não oferece suporte para a instalação do Certificado. Caso não esteja seguro sobre como realizar a instalação do Certificado EV, então você deverá ser contatado o suporte do fornecedor do seu servidor.
-
-* [Certificado Raiz](./attachment/Raiz.crt)
-* [Certificado Intermediária](./attachment/Intermediaria.crt)
-* [Certificado E-Commerce Cielo](./attachment/ecommerce.cielo.com.br.crt)
-
-<aside class="notice">Caso seu servidor seja uma distribuição Linux e você tenha familiaridade e acesso ssh, então o <a href="./attachment/cielo.sh">Instalador Linux - cielo.sh</a> poderá ajudá-lo com a instalação. <strong>Apenas utilize o instalador se você souber o que está fazendo</strong>. Na dúvida, entre em contato com o suporte do fornecedor do seu servidor.</aside>
 
 # Fluxo de integração
 
