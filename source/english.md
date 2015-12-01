@@ -23,6 +23,146 @@ The goal of this documentation is to orientate the developer about the integrati
 
 Cielo Checkout uses a REST technology that should be used when a “shopping cart” must to be sent, in other words, the customer can browse on website, choose one or more products to add on shopping cart and then finish the purchase. There is also an option of integration by button that is always used if you have not a “shopping cart” at your store or when you want to associate a quick purchase directly to a product.
 
+# Extended Validation Certificate
+
+## What is SSL Certificate?
+
+The Extended Validation Certificate for web server offers authenticity and integrity of data from a web site, provides customers of virtual stores the guarantee that they are actually accessing the site they want, and not a fraudster site.
+
+Specialized companies are responsible for making domain validation and depending on the type of certificate, also the owner of the domain entity.
+
+## What is EV SSL Certificate?
+
+The EV Certificate was released in the market recently and ensures a higher level of security for customers of online stores.
+
+It is a certificate of greater confidence and when https is accessed, the address bar turns green, giving more reliability to site visitors.
+
+### Internet Explorer:
+
+![Certificado EV Internet Explorer](./images/certificado-ie.jpg)
+
+### Firefox
+
+![Certificado EV Firefox](./images/certificado-firefox.jpg)
+
+### Google Chrome
+
+![Certificado EV Google Chrome](./images/certificado-chrome.jpg)
+
+## How to install the Extended Validation Certificate in the shop server?
+
+You just need to install the three following files on the Trustedstore server. Cielo does not support the installation of the certificate. If you are unsure on how to perform install the EV Certificate, then you should contact your server vendor support.
+
+* [Root Certificate](./attachment/Raiz.crt)
+* [Intermediate Certificate](./attachment/Intermediaria.crt)
+* [E-Commerce Cielo Certificate](./attachment/ecommerce.cielo.com.br.crt)
+
+<aside class="notice">If your server is a Linux distribution and you have familiarity and ssh access, then <a href="./attachment/cielo.sh">the Linux Installer - cielo.sh</a> can help you with the installation. Only use the installer if you know what you're doing. When in doubt, contact your server vendor support.</aside>
+
+## Step by Step Installation
+
+### INSTALLATION ON THE SERVER OF ONLINE STORE
+
+To install the EV Certificate you shall contact your server vendor support.
+
+<aside class="warning">Cielo does not support the installation of the certificate.</aside>
+
+### CUSTOMER ACCESS TO ONLINE STORE
+
+Normally, the browser makes a Certificate update automatically, in  case of failure and client contacted you to inform it, follow the steps:
+
+#### 1st STEP:
+
+Save the three files below into a new folder, or recall easily to be used later:
+
+* [Root Certificate](./attachment/Raiz.crt)
+* [Intermediate Certificate](./attachment/Intermediaria.crt)
+* [E-Commerce Cielo Certificate](./attachment/ecommerce.cielo.com.br.crt)
+
+#### 2nd STEP:
+
+In the "Internet Explorer", click on "Tools" menu and access the "Internet Options":
+
+![Instalar IE](./images/certificado-instalar-ie-1.jpg)
+
+In the "Firefox" browser, click on "Open Menu" and go to "Advanced" and "Options":
+
+![Instalar FF](./images/certificado-instalar-ff-1.jpg)
+
+In "Chrome", click on  "Customize and control Google Chrome" and go to "Settings" and "Show advanced settings ..." “Change Proxy Settings” and "Content" and Certificates:
+
+![Instalar GC](./images/certificado-instalar-gc-1.jpg)
+
+#### 3rd STEP:
+
+In Internet Explorer, on "Certificates", click "Import".
+
+![Instalar IE](./images/certificado-instalar-ie-2.jpg)
+
+In Firefox click "View Certificates", click "Import"
+
+![Instalar FF](./images/certificado-instalar-ff-2.jpg)
+
+In Chrome click "Manage Certificates", click "Import"
+
+![Instalar GC](./images/certificado-instalar-gc-2.jpg)
+
+#### 4th STEP:
+
+In Internet Explorer and in Chrome, "Certificate import wizard", click "Next"
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-3.jpg)
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-4.jpg)
+
+In Firefox "Abba servers," click "Import"
+
+![Instalar FF](./images/certificado-instalar-ff-3.jpg)
+
+#### 5th STEP:
+
+In Chrome and Internet Explorer "Certificate Import Assistent", click "Browse", find the folder where the files are and select the file "ecommerce.cielo.com.br.crt, click" Open "and then" Advance".
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-5.jpg)
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-6.jpg)
+
+#### 6th STEP:
+
+Select the desired option: add the certificate in a default folder or browse to the folder of your choice.
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-7.jpg)
+
+#### 7th STEP:
+
+Click "Finish".
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-8.jpg)
+
+#### 8th STEP:
+
+Click "Ok" to complete the import.
+
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-9.jpg)
+
+<aside class="notice">At Firefox does not appear the message “Import Successfully”, it just completes the import.</aside>
+
+The certificate can be viewed in the default tab "Others" or chosen by the customer.
+
+#### 9th STEP:
+
+Repeat the same procedure for the 3 uploaded files.
+
+### Questions:
+
+If you have questions at any stage or other technical information, contact the Support Web Cielo e-Commerce in the following channels:
+
+* **Email:** [cieloecommerce@cielo.com.br](mailto:cieloecommerce@cielo.com.br)
+* **Metropolitan region:** 4002-9700
+* **Other Cities:** 0800 570 1700
+
+Hours: 24 hours a day, 7 days a week.
+
 # Overview
 
 In this guide will be presented an overview of Cielo Checkout and the technical mechanism of integration with shopping cart or button. For every purchase order, the target is convert it in a sale. A sale with card can be characterized by an authorized and captured transaction.
@@ -772,27 +912,6 @@ These transaction will have a symbol of test to distinguish of other transaction
 
 ![Transações de teste](/images/checkout-cielo-modo-teste-transacoes-de-teste-cancelamento.png)
 
-## Extended Validation Certificate
-
-The Extended Validation Certificate to web server offers authenticity and integrity of data in a website, providing to virtual store’s customers the guarantee of they are really accessing the website that they want and not a fraudster website.
-
-Specialized companies are responsible for doing the domain and, depending of the type of certificate, there is also a holder authority of domain.
-
-### What is Extended Validation Certificate?
-The Certificate EV has been launched recently on the market and ensure a higher level of security for virtual store customer.
-
-This is the largest reliability and when accessing https, the address line becomes green, giving more reliability to visitors on website.
-
-How to install the Extended Validation Certificate on the store server?
-
-It’s simple: you just need to install the next three archives at Trustedstore server. Cielo doesn’t offer support to Certificate installation. In case of you are not sure about doing a EV Certificate installation, then you have to be contacted by support of provider’ server.
-
-* [Root Certificate](/attachment/Raiz.crt)
-* [Intermediate Certificate](/attachment/Intermediaria.crt)
-* [Cielo E-Commerce Certificate](/attachment/ecommerce.cielo.com.br.crt)
-
-<aside class="notice"<a href="/attachment/cielo.sh">Linux Installer- cielo.sh</a> can help you with the installation. Use only the installer, if you know what you are doing. If you have any questions, get in touch with provider support of your server.</aside>
-
 # Integration Parameters
 
 ## Cart
@@ -979,7 +1098,7 @@ for the Brazilian legal entities)|
 }
 ```
 
-Request parameter to configure the anti fraud system for a transaction. 
+Request parameter to configure the anti fraud system for a transaction.
 
 |Field|Type|Mandatory|Size|Description|
 |-----|----|-----------|-------|---------|
@@ -993,7 +1112,7 @@ Response parameter, received in case of success.
 {
     "CheckoutUrl": "https://cieloecommerce.cielo.com.br/transacional/order/index?id=123",
     "Profile": "CheckoutCielo",
-    "Version": 1 
+    "Version": 1
 }
 ```
 
@@ -1040,7 +1159,7 @@ The transaction authentication will guarantee an extra security to the retail ag
 ### Step by step of a debit card transaction
 
 1. Customer access the internet banking
-2. Type the card password 
+2. Type the card password
 3. Bank confirms the password
 4. Realised Transaction
 
@@ -1064,12 +1183,12 @@ To realise the Conciliation you will need:
 
 1. Access the order report on Cielo Checkout Backoffice;
 2. Filter the order by Payment Method “Boleto” and status “PENDENT” and identify the boleto in question by value/amount;
-3. Click in the symbol + in the end of the line to access the page of “Details”; 
+3. Click in the symbol + in the end of the line to access the page of “Details”;
 4. Click in the button of “Confirm Payment” and inform the date of payment, for your forward control;
 
 The order pass for PAID status.
 
-The Customer also will see the order as PAID on “Customer Backoffice” 
+The Customer also will see the order as PAID on “Customer Backoffice”
 
 To undo the conciliation (payment) of a Boleto, if the conciliation has been done in a wrong form, you just need:
 
