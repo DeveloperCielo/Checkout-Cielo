@@ -408,9 +408,12 @@ O parâmetro `payment_status` poderá vir com um dos seguintes valores:
 |1|Pendente (Para todos os meios de pagamento)|
 |2|Pago (Para todos os meios de pagamento)|
 |3|Negado (Somente para Cartão Crédito)|
+|4|Expirado (Cartões de Crédito e Boleto)|
 |5|Cancelado (Para cartões de crédito)|
 |6|Não Finalizado (Todos os meios de pagamento)|
 |7|Autorizado (somente para Cartão de Crédito)|
+|8|Chargeback (somente para Cartão de Crédito)|
+
 
 ### Recebimento do POST de Mudança de Status
 
