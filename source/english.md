@@ -12,7 +12,7 @@ language_tabs:
 
 toc_footers:
   - <a href='/Checkout-Backoffice/'>Backoffice Cielo</a>
-  - <a href='/Checkout-FAQ/'>Perguntas Frequêntes</a>
+  - <a href='/Checkout-FAQ/'>FAQ</a>
 
 search: true
 ---
