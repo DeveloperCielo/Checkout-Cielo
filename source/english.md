@@ -1,7 +1,7 @@
 ---
 title: Cielo Checkout Guide
 
-language_tabs:
+language_tabs:int
   - json: JSON
   - shell: Shell
   - php: PHP
@@ -21,7 +21,7 @@ search: true
 
 The goal of this documentation is to orientate the developer about the integration method of Cielo Checkout API, a simplified solution where the customer is redirected to an online payment page secured by Cielo, providing a high level of security, attending the more strict safety regulations (PCI). In general, Cielo Checkout is a payment solution projected to increase conversion rates, make easier the purchase process, reduce frauds and operational costs. At this documentation, we described all functionalities of the integration, technical parameter and specially the examples of codes to facilitate your development.
 
-Cielo Checkout uses a REST technology that should be used when a “shopping cart” must to be sent, in other words, the customer can browse on website, choose one or more products to add on shopping cart and then finish the purchase. There is also an option of integration by button that is always used if you have not a “shopping cart” at your store or when you want to associate a quick purchase directly to a product.
+Cielo Checkout uses a REST technology that should be used when a “shopping cart” must to be sent, in other words, the customer can browse on website, choose one or more products to add on shopping cart and then finish the purchase. There is also an option of [integration by button](https://developercielo.github.io/Checkout-Cielo/#shipping) that is always used if you have not a “shopping cart” at your store or when you want to associate a quick purchase directly to a product.
 
 # Extended Validation Certificate
 
@@ -36,6 +36,10 @@ Specialized companies are responsible for making domain validation and depending
 The EV Certificate was released in the market recently and ensures a higher level of security for customers of online stores.
 
 It is a certificate of greater confidence and when https is accessed, the address bar turns green, giving more reliability to site visitors.
+
+"During the Cielo Checkout's integration, you will find some steps and redirections. Observe the flow bellow:
+
+![Fluxo de integração Checkout Cielo](/images/fluxo-checkout.svg)
 
 ### Internet Explorer:
 
