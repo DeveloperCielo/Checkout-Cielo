@@ -1,7 +1,7 @@
 ---
 title: Cielo Checkout Guide
 
-language_tabs:int
+language_tabs:
   - json: JSON
   - shell: Shell
   - php: PHP
@@ -173,7 +173,7 @@ The certificate can be viewed in the default tab "Others" or chosen by the custo
 
 Repeat the same procedure for the 3 uploaded files.
 
-### Questions:
+## Questions:
 
 If you have questions at any stage or other technical information, contact the Support Web Cielo e-Commerce in the following channels:
 
@@ -182,6 +182,8 @@ If you have questions at any stage or other technical information, contact the S
 * **Other Cities:** 0800 570 1700
 
 Hours: 24 hours a day, 7 days a week.
+
+
 
 # Overview
 
@@ -200,7 +202,7 @@ After the conclusion of the integration stage with Cielo, it’s essential that 
 
 <aside class="notice">See the section [Certificated Extended Validation](#certificado-extended-validation) for more information</aside>
 
-## Historic of versions
+## Changelog
 
 * **Version 1.3** - 01/21/2015
     - Change of names – Solution integrated for Cielo Checkout
@@ -237,7 +239,7 @@ After reading this documentation, if you still have questions (technical or not)
     * Option 1: *Technical support*
     * Option 2: *E-commerce credential*
 * Email: [cieloecommerce@cielo.com.br](mailto:cieloecommerce@cielo.com.br)
-* 
+
 ## Cielo Checkout testing mode
 
 The Cielo Checkout testing mode is a method to do integration tests on your website, without the credit usage. The Cielo Checkout testing mode allows to execute transactions using different payment methods mock (simulative).
@@ -319,40 +321,30 @@ Durante a integração com o Checkout Cielo, alguns passos e alguns redirecionam
 ![Fluxo de integração Checkout Cielo](/images/fluxo-checkout.svg)
 
 1. Cielo API returns the CheckoutURL, which should be used by the store to redirect the client to safety payment environment of Cielo (Cielo Checkout page)
-
 2. The store redirects the client to the URL returned by Cielo
-
 3. The cardholder enters the payment details and completes the purchase
-
 4. The Cielo Checkout redirects the client to the Return URL chosen by the store, set in [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/) this solution
-
 5. The store notifies the customer that the process has been completed and that it will receive more information about the purchase and payment by e-mail.
-
 6. The Cielo Checkout sends a notification POST to the Notification URL, set in Backoffice
-
 7. The store process the purchase order using the data from notification POST and, if the transaction is authorized, the order is freed.
 
 ## Cielo's Checkout URLs
 
 The store must configure three URLs (notification, feedback and status) in your [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/), the "Settings" tab. See the screenshot below:
 
-• **Return URL** - website in which the buyer will be redirected to the order of purchase. No data is exchanged or sent to that URL. This URL takes only the buyer, after finalizing the purchase, a page defined by the store. This page should be set at [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/), tab "Settings"
+* **Return URL** - website in which the buyer will be redirected to the order of purchase. No data is exchanged or sent to that URL. This URL takes only the buyer, after finalizing the purchase, a page defined by the store. This page should be set at [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/), tab "Settings"
+* **Notification URL** - At the end of a transaction is sent an HTTP POST with all the data of the sale to the Notification URL previously registered in the Backoffice Checkout Cielo. The notification POST is sent only when the transaction is completed, regardless of whether there was a change of the transaction status. The URL must contain a page prepared to receive the parameters defined in the Parameters table formats for integration with notification via POST language / module with which your site has been developed, which will receive the HTTP POST.
+* **Status Change URL** - When an application has changed their status, will be sending a HTTP post to the Status Change URL previously registered in the [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/). The POST of status change does not contain the data of the shopping cart, only the identification data. The URL should contain a page prepared to receive the parameters defined in the [Parameters table formats for integration](https://developercielo.github.io/Checkout-Cielo/english.html#integration-parameters) with the Status Change POST via language / module with which your site was developed.
 
-• **Notification URL** - At the end of a transaction is sent an HTTP POST with all the data of the sale to the Notification URL previously registered in the Backoffice Checkout Cielo. The notification POST is sent only when the transaction is completed, regardless of whether there was a change of the transaction status. The URL must contain a page prepared to receive the parameters defined in the Parameters table formats for integration with notification via POST language / module with which your site has been developed, which will receive the HTTP POST.
-
-• **Status Change URL** - When an application has changed their status, will be sending a HTTP post to the Status Change URL previously registered in the [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/). The POST of status change does not contain the data of the shopping cart, only the identification data. The URL should contain a page prepared to receive the parameters defined in the [Parameters table formats for integration](https://developercielo.github.io/Checkout-Cielo/english.html#integration-parameters) with the Status Change POST via language / module with which your site was developed.
-
-###Return URL
+## Return URL
 
 The Return URL is used by Cielo to redirect the customer back to the store as soon as payment is complete. This store page must be prepared to receive customer order flow and warn you that the process has been completed and that it will receive more information soon.
 
-###Notification URL
+### Notification URL
 
 The notification URL is that Cielo will use to send the data of the transaction, the cart and the authorization to finish the integration stream. Upon receiving the notification, the store will have all the information about the shopping cart, order and may use this information to feed your system.
 
-**Parameters for integration with notification POST**
-
-Parameter Description Type field Minimum size Maximum size
+### Parameters for integration with notification POST**
 
 |Parameter|Description|Field|Minimum Size|Maximum Size|
 |---------|---------|-------------|--------------|--------------|
@@ -386,54 +378,56 @@ Parameter Description Type field Minimum size Maximum size
 |payment_status|Transaction Status|Numeric|1|1|
 |tid|Cielo's TID generated at the time of transaction authorization|Alphanumeric|1|32|
 
-###<status>OK</status>POST notification of receipt
+<aside class="notice">The destination page of Notification POST should follow the parameter formats with all the names in SMALL LETTERS</aside>
 
-• When accessed by Cielo server by sending POST from the table above, the URL registered for notification must display a code stating that received the change of status and successfully sued. Code: <status>OK</status>
+### POST notification of receipt
 
-• If the URL is accessed by our server and does not display the confirmation code, the server will retry three times every hour. If the <status>OK</status> is not displayed, it will be understood that the store server does not respond.
+* When accessed by Cielo server by sending POST from the table above, the URL registered for notification must display a code stating that received the change of status and successfully sued. **Code:**`<status>OK</status>`
+* If the URL is accessed by our server and does not display the confirmation code, the server will retry three times every hour. If the `<status>OK</status>` is not displayed, it will be understood that the store server does not respond.
+* Notification URL can use only **port 80** (default for HTTP) or **port 443** (default for https).
 
-• Notification URL can use only **port 80** (default for HTTP) or **port 443** (default for https).
-
-###Status Change URL
+## Status Change URL
 
 The Status Change URL is that Cielo will use to notify the store on the transaction status changes. A change of status to canceled Authorized, for example, may occur at any time. If the store administrator to cancel an order in Backoffice Cielo, Cielo then sends it to the Status Change URL similar notification sent to the URL notification. The only difference is that this notification does not contain the cart data, but only the application and the new authorization status.
 
-The status change of URL is provided by the merchant. This URL will be posted the information of all applications that have their status changed.
+<aside class="warning">The status change of URL is provided by the merchant. This URL will be posted the information of all applications that have their status changed.</aside>
 
-Parameters for integration with Status Change POST
+### Parameters for integration with Status Change POST
 
-Parameter Description Type field Minimum size Maximum size
+|Parameter|Description|Type|Field|Minimum size|Maximum size|
+|---------|---------|-------------|--------------|--------------|
+|checkout_cielo_order_number unique identifier generated by CHECKOUT CIELO.|Alphanumeric|1|32|
+|amount|Unit price of the product, in cents (eg R $ 1.00 = 100)|Number|1|10|
+|order_number|number of a request by store|Alphanumeric|1|32|
+|payment_status|Status|Numeric|transaction|1|1|
 
-checkout_cielo_order_number unique identifier generated by CHECKOUT CIELO. Alphanumeric 1 32
-amount Unit price of the product, in cents (eg R $ 1.00 = 100) Number 1 10
-order_number number of a request by store Alphanumeric 1 32
-payment_status Status Numeric transaction 1 1
-payment_status
+#### payment_status
 
-The payment_status parameter can come up with one of the following values:
+The `payment_status` parameter can come up with one of the following values:
 
-value description
+|Value|Description|
+|------|-------------|
+|1|Pending (For all payment methods)|
+|2|Pay (For all payment methods)|
+|3|Denied (For Credit Card)|
+|4|Expired (Credit Cards and Boleto)|
+|5|Cancelled (for credit cards)|
+|6|Not Finished (All means of payment)|
+|7|Authorized (only for Credit Card)|
+|8|Chargeback (only for Credit Card)|
 
-1 Pending (For all payment methods)
-2 Pay (For all payment methods)
-3 Denied (For Credit Card)
-Expired 4 (Credit Cards and Billet)
-5 Cancelled (for credit cards)
-6 Not Finished (All means of payment)
-7 Authorized (only for Credit Card)
-8 Chargeback (only for Credit Card)
+### Status Change POST receipt
 
-###Status Change POST receipt
+* When accessed by Cielo server, sending the POST, the registered URL for Status Change Return, must display a code stating that received the change of status and successfully sued: `<status>OK</status>`
+* If the store's status change URL is accessed by Cielo server does not display the confirmation code, the server will retry three times.
+* If the `<status>OK</status>` is not yet displayed, it will be understood that the shop server does not respond, and will be sent an email to the person responsible for the store, stating that the order in question was paid.
+* That is, the source code of the page indicating success should contain ONLY `<status>OK</status>` **and nothing else**.
 
-• When accessed by Cielo server, sending the POST, the registered URL for Status Change Return, must display a code stating that received the change of status and successfully sued: <status>OK</status>
+<aside class="notice">In the order screen, in each transaction, there is the option of referring the change of status of POST. Just click the blue button marked in the image below</aside>
 
-• If the store's status change URL is accessed by Cielo server does not display the confirmation code, the server will retry three times.
+![Reenvio de notificação](/images/checkout-reenviar-notificacao.png)
 
-• If the <status>OK</status> is not yet displayed, it will be understood that the shop server does not respond, and will be sent an email to the person responsible for the store, stating that the order in question was paid.
-
-• That is, the source code of the page indicating success should contain ONLY <status>OK</status> and nothing else.
-
-In the order screen, in each transaction, there is the option of referring the change of status of POST. Just click the blue button marked in the image below
+# Integration for sales of products or services 
 
 ## Shopping cart
 
@@ -470,9 +464,12 @@ connection.addRequestProperty("MerchantId", "0000000-0000-0000-0000-000000000000
 request.Headers["MerchantId"] = "00000000-0000-0000-0000-000000000000";
 ```
 
-In this case, all the requests sent for Cielo must be authenticated for the store. The authentication consists at sending the Merchant Id, that is unique identifier of store provided for Cielo after the affiliation of store. The authentication of store must be done through the sending of field of header HTTP MerchandID, as illustrated below and next:
+In this case, all the requests sent for Cielo must be authenticated for the store. The authentication consists at sending the Merchant Id, that is unique identifier of store provided for Cielo after the affiliation of store. The authentication of store must be done through the sending of field of header HTTP `MerchandId`, as illustrated below and next:
 
 `MerchantId: 00000000-0000-0000-0000-000000000000`
+
+<aside class="notice">Remember to replace `00000000-0000-0000-0000-000000000000` by your MerchantId.
+</aside>
 
 ### Request
 
@@ -955,12 +952,12 @@ using (var writer = new StreamWriter(request.GetRequestStream()))
 HttpWebRequest response = (HttpWebResponse) request.GetResponse();
 ```
 
-#### Cabeçalho HTTP
+#### Header HTTP
 
 |Field|Type|Mandatory|Size|Description|
 |-----|----|-----------|-------|---------|
-|MerchantId|Guid|Yes|36|Unique identifier of store. Format: 00000000-0000-0000-0000-000000000000|
-|Content-type|Alphanumeric|Yes|n/a|Type of message content sent. Use: “application/json”|
+|MerchantId|Guid|Yes|36|Unique identifier of store. **Format:** 00000000-0000-0000-0000-000000000000|
+|Content-type|Alphanumeric|Yes|n/a|Type of message content sent. **Use:** “application/json”|
 
 #### Object request root
 
@@ -1004,8 +1001,7 @@ HttpWebRequest response = (HttpWebResponse) request.GetResponse();
 |-----|----|-----------|-------|---------|
 |Message|String|Yes|1..254|Message descriptive of error|
 
-
-### Error of integration
+### Integration errors
 
 There are two types of error that can happen during the integration process with Cielo Checkout. Here they are:
 
@@ -1022,7 +1018,8 @@ To use this feature, it’s necessary register the product that you want to sell
 
 ![Integração com botão](/images/checkout-cielo-integracao-botao.png)
 
-* Button characteristics.
+### Button characteristics
+
 * Each button created leads to a certain product, only.
 * The price of product can not be changed on Checkout screen.
 * It’s not necessary to develop a cart..
@@ -1040,7 +1037,7 @@ Below you see the information necessary to register the product.
 |SKU|Product identification code|1|50|No|
 |Title|Product title|1|50|yes|
 |Description|Product description|1|255|Yes|
-|Price|Total amount of order in “centavos” (ex.: R$1,00 =100).|11|14|Yes|
+|Price|Total amount of order in **in cents** (ex.: R$1,00 =100).|11|14|Yes|
 |Shipping/Delivery|Choose among the Shipping options (Correios, Flat Postage Cost , Free Shipping, pick up on store, no charge).|n/a|n/a|Yes|
 |Origin CEP|This field only appears for a Correios shipping, and must be filled with CEP, from will leave the product for purposes of shipping calculation.|9|9|Yes|
 |Weight(kg)|This field only appears for Correios shipping, and must be filled with the weight of the product in kg (kilograms) for purposes of shipping calculation.|n/a|n/a|Yes|
@@ -1055,79 +1052,576 @@ Below you see the information necessary to register the product.
     <input type='hidden' name='id' value=00000000-0000-0000-000000000000/><input type='image' name='submit' alt='Comprar' src='https://cieloecommerce.cielo.com.br /BackOffice/Content/images/botao_comprar_3.jpg' />
 </form>
 ```
-
 Adding the button on your HTML page you have to copy the button HTML code created and put the HTML code on your website, as the example below:
 
 Each button has a unique code that only allows to buy a certain product in the pricing and shipping conditions registered. Therefore, the fraudster can’t change any of these information on purchase submit, because Cielo Checkout will search all product data on [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/), and will be considered the registration data.
 
-## Cielo Checkout testing mode
+# Recurring Payment Schedule Integration
 
-The Cielo Checkout testing mode is a method to do integration tests on your website, without the credit usage. The Cielo Checkout testing mode allows to execute transactions using different payment methods mock (simulative).
+The recurring is the scheduling automatically process of credit transactions, in other words, a transaction that will be repeat automatically, without the need of the purchaser access the transacion screen, according to the rules defined at the moment of the scheduling.
 
-### Testing mode activation/validation
+<aside class="notice">In the case of one transaction won't be authorized, the Cielo Checkout executes the retry automatically; more details about automatically retry, see the section<a href="#retentativa">Retentativa</a>.</aside>
 
-The testing mode can be activated on Settings tab:
+Recurring transaction are ideal for the business model that involves the subscription concept, plan or monthly payment in the charge method. Some examples are: schools, gym, book publishers, hosting and accomodation services, and others.
 
-![Modo de teste](/images/checkout-cielo-modo-teste.png)
+Difference between recurring payment and installment payment:
 
-In this area there is a selection box, that once been marked, will enable the Cielo Checkout testing mode. The mode only will starts when the selection has been saved.
+* **Installment**: It is a transaction split into several months. The total value of the sale commits the buyer's credit card limit regardless of the initial installment (see example below). The merchant receives the value of the sale in installments and not run the risk of one of the parcels be denied.
+    * **EX**: Sale of R$ 1,000.00 installment in 2 times. Although the buyer pay only R $ 500.00 in the first installment, the value of the consumed credit limit is full, ie, R $ 1,000.00. If the card limit is less than or the amount is not released, the R $ 1,000.00 the transaction will be denied
+* **Recurring**: They are different transactions on the same card at previously scheduled times. The first sale schedule future sales from a pre defined time interval (see example below). Each range will be a charge on your credit card. The recurring payment locks the card limit only debited value on the date of the first applicant and sales of the total sale.
+    * **EX**: Venda de R$ 1.000,00 em 15/01/2015, com recorrência mensal e data final em 01/06/2015. Todo dia 15 haverá uma nova cobrança de R$1.000,00 no cartão do comprador, se repetindo até 15/05/2015, última data válida antes da data final.
 
-![Ativação Modo de teste](/images/checkout-cielo-modo-teste-ativacao.png)
+## Recurring Payment Scheduled
 
-When the option is saved, a red stripe will be exhibited on top area of screen. It will be displayed at all screens of Cielo Checkout Backoffice and the checkout screen of Cielo Checkout.
+```json
+{
+    "OrderNumber": "12344",
+    "SoftDescriptor": "Nome que aparecerá na fatura",
+    "Cart": {
+        "Discount": {
+            "Type": "Percent",
+            "Value": 10
+        },
+        "Items": [
+            {
+                "Name": "Nome do produto",
+                "Description": "Descrição do produto",
+                "UnitPrice": 100,
+                "Quantity": 2,
+                "Type": "Asset",
+                "Sku": "Sku do item no carrinho",
+                "Weight": 200
+            }
+        ]
+    },
+    "Shipping": {
+        "Type": "Correios",
+        "SourceZipCode": "14400000",
+        "TargetZipCode": "11000000",
+        "Address": {
+            "Street": "Endereço de entrega",
+            "Number": "123",
+            "Complement": "",
+            "District": "Bairro da entrega",
+            "City": "Cidade de entrega",
+            "State": "SP"
+        },
+        "Services": [
+            {
+                "Name": "Serviço de frete",
+                "Price": 123,
+                "Deadline": 15
+            }
+        ]
+    },
+    "Payment": {
+        "BoletoDiscount": 0,
+        "DebitDiscount": 0,
+        "RecurrentPayment": {
+            "Interval": "Monthly",
+            "EndDate": "2015-12-31"
+        }
+    },
+    "Customer": {
+        "Identity": 11111111111,
+        "FullName": "Fulano Comprador da Silva",
+        "Email": "fulano@email.com",
+        "Phone": "11999999999"
+    },
+    "Options": {
+        "AntifraudEnabled": false
+    }
+}
+```
 
-This stripe indicates that your Cielo Checkout store is operating now in a testing environment, in other words, all transaction executed in this mode will be considered as a test.
+```shell
+curl -X POST "https://cieloecommerce.cielo.com.br/api/public/v1/orders" \
+     -H "MerchantId: 00000000-0000-0000-0000-000000000000" \
+     -H "Content-Type: application/json" \
+     -d '{
+             "OrderNumber": "12344",
+             "SoftDescriptor": "Nome que aparecerá na fatura",
+             "Cart": {
+                  "Discount": {
+                      "Type": "Percent",
+                      "Value": 10
+                  },
+                  "Items": [
+                      {
+                          "Name": "Nome do produto",
+                          "Description": "Descrição do produto",
+                          "UnitPrice": 100,
+                          "Quantity": 2,
+                          "Type": "Asset",
+                          "Sku": "Sku do item no carrinho",
+                          "Weight": 200
+                      }
+                  ]
+             },
+             "Shipping": {
+                  "Type": "Correios",
+                  "SourceZipCode": "14400000",
+                  "TargetZipCode": "11000000",
+                  "Address": {
+                      "Street": "Endereço de entrega",
+                      "Number": "123",
+                      "Complement": "",
+                      "District": "Bairro da entrega",
+                      "City": "Cidade de entrega",
+                      "State": "SP"
+                  },
+                  "Services": [
+                      {
+                          "Name": "Serviço de frete",
+                          "Price": 123,
+                          "Deadline": 15
+                      }
+                  ]
+             },
+             "Payment": {
+                  "BoletoDiscount": 0,
+                  "DebitDiscount": 0,
+                  "RecurrentPayment": {
+                      "Interval": "Monthly",
+                      "EndDate": "2015-12-31"
+                  }
+             },
+             "Customer": {
+                  "Identity": 11111111111,
+                  "FullName": "Fulano Comprador da Silva",
+                  "Email": "fulano@email.com",
+                  "Phone": "11999999999"
+             },
+             "Options": {
+                  "AntifraudEnabled": false
+             }
+         }'
+```
 
-![Modo de teste ativado](/images/checkout-cielo-modo-teste-ativado.png)
+```php
+<?php
+$order = new stdClass();
+$order->OrderNumber = '1234';
+$order->SoftDescriptor = 'Nome que aparecerá na fatura';
+$order->Cart = new stdClass();
+$order->Cart->Discount = new stdClass();
+$order->Cart->Discount->Type = 'Percent';
+$order->Cart->Discount->Value = 10;
+$order->Cart->Items = array();
+$order->Cart->Items[0] = new stdClass();
+$order->Cart->Items[0]->Name = 'Nome do produto';
+$order->Cart->Items[0]->Description = 'Descrição do produto';
+$order->Cart->Items[0]->UnitPrice = 100;
+$order->Cart->Items[0]->Quantity = 2;
+$order->Cart->Items[0]->Type = 'Asset';
+$order->Cart->Items[0]->Sku = 'Sku do item no carrinho';
+$order->Cart->Items[0]->Weight = 200;
+$order->Shipping = new stdClass();
+$order->Shipping->Type = 'Correios';
+$order->Shipping->SourceZipCode = '14400000';
+$order->Shipping->TargetZipCode = '11000000';
+$order->Shipping->Address = new stdClass();
+$order->Shipping->Address->Street = 'Endereço de entrega';
+$order->Shipping->Address->Number = '123';
+$order->Shipping->Address->Complement = '';
+$order->Shipping->Address->District = 'Bairro da entrega';
+$order->Shipping->Address->City = 'Cidade da entrega';
+$order->Shipping->Address->State = 'SP';
+$order->Shipping->Services = array();
+$order->Shipping->Services[0] = new stdClass();
+$order->Shipping->Services[0]->Name = 'Serviço de frete';
+$order->Shipping->Services[0]->Price = 123;
+$order->Shipping->Services[0]->DeadLine = 15;
+$order->Payment = new stdClass();
+$order->Payment->BoletoDiscount = 0;
+$order->Payment->DebitDiscount = 0;
+$order->Payment->RecurrentPayment = new stdClass();
+$order->Payment->RecurrentPayment->Interval = 'Monthly';
+$order->Payment->RecurrentPayment->EndDate = '2015-12-31';
+$order->Customer = new stdClass();
+$order->Customer->Identity = 11111111111;
+$order->Customer->FullName = 'Fulano Comprador da Silva';
+$order->Customer->Email = 'fulano@email.com';
+$order->Customer->Phone = '11999999999';
+$order->Options = new stdClass();
+$order->Options->AntifraudEnabled = false;
 
-### How transact on Testing Mode
+$curl = curl_init();
 
-The transactions execution on testing mode happens in normal form. The information of transaction will be sent via POST, using the parameters as described on topic Integration with shopping cart, however, the payment methods to be used will be simulated methods.
+curl_setopt($curl, CURLOPT_URL, 'https://cieloecommerce.cielo.com.br/api/public/v1/orders');
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($order));
+curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+    'MerchantId: 00000000-0000-0000-0000-000000000000',
+    'Content-Type: application/json'
+));
 
-To execute test transactions with different payment methods, follow the next rules:
+$response = curl_exec($curl);
 
-**a - Credit Card Transactions:**
+curl_close($curl);
 
-To test credit cards it’s necessary to define two important data; the authorization status of card and the fraud analysis return.
+$json = json_decode($response);
+```
 
-**Status of Credit Card Authorization **
+```python
+from urllib2 import Request, urlopen
+from json import dumps
 
-|Card Final Digit|Returned Status|
-|----------------------|----------------|
-|0, 1, 2, 3 ou 4|Authorized|
-|5, 6, 7, 8 ou 9|Unauthorized|
+json = dumps({
+    "OrderNumber": "12344",
+    "SoftDescriptor": "Nome que aparecerá na fatura",
+    "Cart": {
+        "Discount": {
+            "Type": "Percent",
+            "Value": 10
+        },
+        "Items": [
+            {
+                "Name": "Nome do produto",
+                "Description": "Descrição do produto",
+                "UnitPrice": 100,
+                "Quantity": 2,
+                "Type": "Asset",
+                "Sku": "Sku do item no carrinho",
+                "Weight": 200
+            }
+        ]
+    },
+    "Shipping": {
+        "Type": "Correios",
+        "SourceZipCode": "14400000",
+        "TargetZipCode": "11000000",
+        "Address": {
+            "Street": "Endereço de entrega",
+            "Number": "123",
+            "Complement": "",
+            "District": "Bairro da entrega",
+            "City": "Cidade de entrega",
+            "State": "SP"
+        },
+        "Services": [
+            {
+                "Name": "Serviço de frete",
+                "Price": 123,
+                "Deadline": 15
+            }
+        ]
+    },
+    "Payment": {
+        "BoletoDiscount": 0,
+        "DebitDiscount": 0,
+        "RecurrentPayment": {
+            "Interval": "Monthly",
+            "EndDate": "2015-12-31"
+        }
+    },
+    "Customer": {
+        "Identity": 11111111111,
+        "FullName": "Fulano Comprador da Silva",
+        "Email": "fulano@email.com",
+        "Phone": "11999999999"
+    },
+    "Options": {
+        "AntifraudEnabled": false
+    }
+})
 
-* **Example**: Authorized transaction, High risk;
-* **Credit card Number**: 5404434242930107
-* **Customer name**: Maria Alto
+headers = {"Content-Type": "application/json", "MerchantId": "00000000-0000-0000-0000-000000000000"}
+request = Request("https://cieloecommerce.cielo.com.br/api/public/v1/orders", data=json, headers=headers)
+response = urlopen(request).read()
 
-**b - Boleto Bancario**
+print response
+```
 
-You simply carry out the purchase process without any changes on your proceeding. The boleto created on testing mode will always be a simulated boleto.
+```ruby
+require 'rubygems' if RUBY_VERSION < '1.9'
+require 'rest-client'
+require 'json'
 
-**c - Online Debit**
+request = JSON.generate({
+    "OrderNumber" => "12344",
+    "SoftDescriptor" => "Nome que aparecerá na fatura",
+    "Cart" => {
+        "Discount" => {
+            "Type" => "Percent",
+            "Value" => 10
+        },
+        "Items" => [
+            {
+                "Name" => "Nome do produto",
+                "Description" => "Descrição do produto",
+                "UnitPrice" => 100,
+                "Quantity" => 2,
+                "Type" => "Asset",
+                "Sku" => "Sku do item no carrinho",
+                "Weight" => 200
+            }
+        ]
+    },
+    "Shipping" => {
+        "Type" => "Correios",
+        "SourceZipCode" => "14400000",
+        "TargetZipCode" => "11000000",
+        "Address" => {
+            "Street" => "Endereço de entrega",
+            "Number" => "123",
+            "Complement" => "",
+            "District" => "Bairro da entrega",
+            "City" => "Cidade de entrega",
+            "State" => "SP"
+        },
+        "Services" => [
+            {
+                "Name" => "Serviço de frete",
+                "Price" => 123,
+                "Deadline" => 15
+            }
+        ]
+    },
+    "Payment" => {
+        "BoletoDiscount" => 0,
+        "DebitDiscount" => 0,
+        "RecurrentPayment" => {
+            "Interval" => "Monthly",
+            "EndDate" => "2015-12-31"
+        }
+    },
+    "Customer" => {
+        "Identity" => 11111111111,
+        "FullName" => "Fulano Comprador da Silva",
+        "Email" => "fulano@email.com",
+        "Phone" => "11999999999"
+    },
+    "Options" => {
+        "AntifraudEnabled" => false
+    }
+})
 
-It’s necessary to inform the transaction status of online debit transaction. This process happens like in the anti fraud of credit card described above, with change for buyer name.
+headers  = {:content_type => "application/json",:merchantid => "00000000-0000-0000-0000-000000000000"}
+response = RestClient.post "https://cieloecommerce.cielo.com.br/api/public/v1/orders", request, headers
 
-**Debit Status**
+puts response
+```
 
-|Customer Lastname|Status|
-|---------------------|------|
-|Paid|Paid|
-|Any name|Unauthorized|
+```java
+String json = "{"
+            + "    \"OrderNumber\": \"12344\","
+            + "    \"SoftDescriptor\": \"Nome que aparecerá na fatura\","
+            + "    \"Cart\": {"
+            + "        \"Discount\": {"
+            + "            \"Type\": \"Percent\","
+            + "            \"Value\": 10"
+            + "        },"
+            + "        \"Items\": ["
+            + "            {"
+            + "                \"Name\": \"Nome do produto\","
+            + "                \"Description\": \"Descrição do produto\","
+            + "                \"UnitPrice\": 100,"
+            + "                \"Quantity\": 2,"
+            + "                \"Type\": \"Asset\","
+            + "                \"Sku\": \"Sku do item no carrinho\","
+            + "                \"Weight\": 200"
+            + "            }"
+            + "        ]"
+            + "    },"
+            + "    \"Shipping\": {"
+            + "        \"Type\": \"Correios\","
+            + "        \"SourceZipCode\": \"14400000\","
+            + "        \"TargetZipCode\": \"11000000\","
+            + "        \"Address\": {"
+            + "            \"Street\": \"Endereço de entrega\","
+            + "            \"Number\": \"123\","
+            + "            \"Complement\": \"\","
+            + "            \"District\": \"Bairro da entrega\","
+            + "            \"City\": \"Cidade de entrega\","
+            + "            \"State\": \"SP\""
+            + "        },"
+            + "        \"Services\": ["
+            + "            {"
+            + "                \"Name\": \"Serviço de frete\","
+            + "                \"Price\": 123,"
+            + "                \"Deadline\": 15"
+            + "            }"
+            + "        ]"
+            + "    },"
+            + "    \"Payment\": {"
+            + "        \"BoletoDiscount\": 0,"
+            + "        \"DebitDiscount\": 0",
+            + "        \"RecurrentPayment\": {"
+            + "            \"Interval\": \"Monthly\","
+            + "            \"EndDate\": \"2015-12-31\""
+            + "         }"
+            + "     },"
+            + "     \"Customer\": {"
+            + "         \"Identity\": 11111111111,"
+            + "         \"FullName\": \"Fulano Comprador da Silva\","
+            + "         \"Email\": \"fulano@email.com\","
+            + "         \"Phone\": \"11999999999\""
+            + "     },"
+            + "     \"Options\": {"
+            + "         \"AntifraudEnabled\": false"
+            + "     }"
+            + "}";
 
-* **Example**: Unauthorized Status.
-* **Customer name**: Maria Pereira
+URL url;
+HttpURLConnection connection;
+BufferedReader bufferedReader;
 
-**d - Testing transaction**
+try {
+    url = new URL("https://cieloecommerce.cielo.com.br/api/public/v1/orders");
 
-All the transaction executed on testing mode will be displayed as normal transactions on Order Tab of Cielo Checkout, but, they will be marked as testing transactions and won’t be counted combined with all transactions executed outside of testing environment.
+    connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestMethod("POST");
+    connection.addRequestProperty("MerchantId", "0000000-0000-0000-0000-000000000000");
+    connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+    connection.setDoOutput(true);
 
-![Transações de teste](/images/checkout-cielo-modo-teste-transacoes-de-teste.png)
+    DataOutputStream jsonRequest = new DataOutputStream(
+                connection.getOutputStream());
 
-These transaction will have a symbol of test to distinguish of other transactions. They can be captured or canceled using the same proceedings of real transactions.
+    jsonRequest.writeBytes(json);
+    jsonRequest.flush();
+    jsonRequest.close();
 
-![Transações de teste](/images/checkout-cielo-modo-teste-transacoes-de-teste-cancelamento.png)
+    bufferedReader = new BufferedReader(new InputStreamReader(
+                connection.getInputStream()));
+
+    String responseLine;
+    StringBuffer jsonResponse = new StringBuffer();
+
+    while ((responseLine = bufferedReader.readLine()) != null) {
+        jsonResponse.append(responseLine);
+    }
+
+    bufferedReader.close();
+
+    connection.disconnect();
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+```csharp
+HttpWebRequest request = (HttpWebRequest)
+                         WebRequest.Create("https://cieloecommerce.cielo.com.br/api/public/v1/orders");
+
+request.Method = "POST";
+request.Headers["Content-Type"] = "text/json";
+request.Headers["MerchantId"] = "06eadc0b-2e32-449b-be61-6fd4f1811708";
+
+string json = "{"
+            + "    \"OrderNumber\": \"12344\","
+            + "    \"SoftDescriptor\": \"Nome que aparecerá na fatura\","
+            + "    \"Cart\": {"
+            + "        \"Discount\": {"
+            + "            \"Type\": \"Percent\","
+            + "            \"Value\": 10"
+            + "        },"
+            + "        \"Items\": ["
+            + "            {"
+            + "                \"Name\": \"Nome do produto\","
+            + "                \"Description\": \"Descrição do produto\","
+            + "                \"UnitPrice\": 100,"
+            + "                \"Quantity\": 2,"
+            + "                \"Type\": \"Asset\","
+            + "                \"Sku\": \"Sku do item no carrinho\","
+            + "                \"Weight\": 200"
+            + "            }"
+            + "        ]"
+            + "    },"
+            + "    \"Shipping\": {"
+            + "        \"Type\": \"Correios\","
+            + "        \"SourceZipCode\": \"14400000\","
+            + "        \"TargetZipCode\": \"11000000\","
+            + "        \"Address\": {"
+            + "            \"Street\": \"Endereço de entrega\","
+            + "            \"Number\": \"123\","
+            + "            \"Complement\": \"\","
+            + "            \"District\": \"Bairro da entrega\","
+            + "            \"City\": \"Cidade de entrega\","
+            + "            \"State\": \"SP\""
+            + "        },"
+            + "        \"Services\": ["
+            + "            {"
+            + "                \"Name\": \"Serviço de frete\","
+            + "                \"Price\": 123,"
+            + "                \"Deadline\": 15"
+            + "            }"
+            + "        ]"
+            + "    },"
+            + "    \"Payment\": {"
+            + "        \"BoletoDiscount\": 0,"
+            + "        \"DebitDiscount\": 0,"
+            + "        \"RecurrentPayment\": {"
+            + "            \"Interval\": \"Monthly\","
+            + "            \"EndDate\": \"2015-12-31\""
+            + "         }"
+            + "     },"
+            + "     \"Customer\": {"
+            + "         \"Identity\": 11111111111,"
+            + "         \"FullName\": \"Fulano Comprador da Silva\","
+            + "         \"Email\": \"fulano@email.com\","
+            + "         \"Phone\": \"11999999999\""
+            + "     },"
+            + "     \"Options\": {"
+            + "         \"AntifraudEnabled\": false"
+            + "     }"
+            + "}";
+
+using (var writer = new StreamWriter(request.GetRequestStream()))
+{
+    writer.Write(json);
+	writer.Close();
+}
+
+HttpWebResponse response = (HttpWebResponse) request.GetResponse();
+```
+A recurrence of the transaction Cielo Checkout has two settings: "Interval" and "Closing Date".
+
+* **Interval** - repeating pattern and time interval between each transaction. This time lag between transactions can be: Monthly, Bimonthly, Quarterly, Semi-Annual and Annual.
+* **Closing Date** - Date that the recurrence process fails to occur.
+The buyer's credit card data is stored securely within the Checkout Cielo, allowing its reuse in a recurring transaction. This data is not accessed by the retailer and that intelligence is controlled by Checkout Cielo.
+
+### Request
+
+Except the `Payment` object that contains a specific new element to the recurrence called `RecurrentPayment`, all other objects are equal to integration with Shopping Cart.
+
+#### Payment object of Recurrence
+ 
+|Field|Type|Compulsory|Size|Description|
+|-----|----|-----------|-------|---------|
+|BoletoDiscount|Numeric	Conditional|0. 3|Discount in percentage, for payments to be made with boleto.|
+|Debit Discount|Numeric	Conditional|0. 3|Discount in percentage, for payments to be made with online debt.|
+|**RecurrentPayment**|[RecurrentPayment](#recurrentpayment)|Conditional|Object required for recurring payments|
+
+### Answer
+
+```json
+{
+    "message": "The request is invalid.",
+    "modelState": {
+        "[Shipping.Type]": [
+            "[Shipping.Type] pedidos com recorrência devem possuir o Shipping.Type 'WithoutShipping'."
+        ]
+    }
+}
+```
+
+#### Error in recurrence
+
+**Exemple**: Physical goods
+
+As recurrence exists only in the API, if the developer sends as Physical Good, the API requires the type of shipping. If the technical agreement has the recurrence node, you can only send "Without shipping," which is not a valid type for physical goods (products). So you will receive the following reply:
+
+## Recurrence button
+
+The recurrence button is a method in the Checkout to perform the recurrence. You only need to registry the product, including the charge interval and the date for closing (optional), as the example bellow:
+
+![Botão recorrência](/images/checkout-botao-recorrencia.png)
+
+<aside class="warning">If a button is used after the "End Date" registered, the transaction will present an error displaying "Oppss" in transactional screen. Data can be edited on the button editing screen in "Product Details"</aside>
 
 # Integration Parameters
 
@@ -1165,11 +1659,11 @@ Request Parameter with information about discounts.
 
 #### Discount.Type = Amount
 
-In case of a type of discount chosen being the Amount, it must be insert the value in centavos. Ex.: 100 = 1,00.
+In case of a type of discount chosen being the `Amount`, it must be insert the **value in centavos**. Ex.: 100 = 1,00.
 
 #### Discount.Type Percent
 
-In case the discount type chosen being Percentual, it must be insert the integer number value. Ex.: 10 = 10%.
+In case the discount type chosen being `Percentual`, it must be insert the **integer number value**. Ex.: 10 = 10%.
 
 ### Item
 
@@ -1275,7 +1769,11 @@ Request parameter with information about the shipping service that will be used.
 ```json
 {
     "BoletoDiscount": 0,
-    "DebitDiscount": 10
+    "DebitDiscount": 10,
+    "RecurrentPayment": {
+        "Interval": "Monthly",
+        "EndDate": "2015-12-31"
+    }
 }
 ```
 
@@ -1285,6 +1783,33 @@ Request parameter with information about the discount for payment via boleto or 
 |-----|----|-----------|-------|---------|
 |BoletoDiscount|Numeric|Condicional|0..3|Discount, in percentage, for payment to be executed with boleto.|
 |DebitDiscount|Numeric|Condicional|0..3|Discount, in percentage, for payment to be executed online debit.|
+|RecurrentPayment|[RecurrentPayment](#recurrentpayment)|Conditional|Object required for recurrence payment|
+
+## RecurrentPayment
+
+```json
+{
+    "Interval": "Monthly",
+    "EndDate": "2015-12-31"
+}
+```
+
+Request parameter with information about recurrency
+
+|Field|Type|Mandatory|Size|Description|
+|-----|----|-----------|-------|---------|
+|Interval|Alphanumeric|Sim|n/a|Type recurrence interval; see the table [Intervalo de Recorrência](#intervalo-de-recorrência)|
+|EndDate|Date|No|n/a|Final date of recurrency on format YYYY-MM-DD|
+
+### Recurrency interval
+
+|Value|Description|
+|-----|---------|
+|Monthly|Monthly transaction.|
+|Bimonthly|Bimonthly transaction.|
+|Quarterly|Quarterly transaction.|
+|SemiAnnual|SemiAnnual transaction.|
+|Annual|Annual transaction.|
 
 ## Customer
 
@@ -1319,7 +1844,7 @@ Request parameter to configure the anti fraud system for a transaction.
 
 |Field|Type|Mandatory|Size|Description|
 |-----|----|-----------|-------|---------|
-|AntifraudEnabled|Boolean|Conditional|n/a|Enable or not a fraud analysis for an order |
+|AntifraudEnabled|Boolean|Conditional|n/a|Enable or not a fraud analysis for an order|
 
 ## Settings
 
@@ -1337,7 +1862,7 @@ Response parameter, received in case of success.
 |-----|----|-----------|-------|---------|
 |CheckoutUrl|Alphanumeric|Sim|1..128|Checkout URL of order. **Format**: `https://cieloecommerce.cielo.com.br/transacional/order/index?id={id}`|
 |Profile|Alphanumeric|Sim|1..16|Retailer’s profile: fix “CheckoutCielo”.|
-|Version|Alphanumeric|Sim|1|Service version of order creation (version: 1).|
+|Version|Alphanumeric|Sim|1|Service version of order creation *(version: 1)*.|
 
 # Payment configuration
 
@@ -1353,17 +1878,64 @@ Orders for credit card will be included on Cielo Checkout Backoffice as “AUTHO
 
 ### Fraud analysis
 
-Order “AUTHORIZED” will be sent online, in other words, in act of sale, for analysis of anti fraud solution, when this development being properly standardized in the integration. The result of this analysis will be translated in the field “Indication AF”, at Order Report, for each order.
+Order  **“AUTHORIZED”**.will be sent online, in other words, in act of sale, for analysis of anti fraud solution, when this development being properly standardized in the integration. The result of this analysis will be translated in the field **“Indication AF”**, at Order Report, for each order.
 
-This analysis will indicate a “LOW RISK” or “HIGH RISK” for the sale in question. This suggestion is what that must guide the decision of approve or cancel a sale. The analysis will be presented at “Order Details”, as below:
+This analysis will indicate a **“LOW RISK”** or “HIGH RISK” for the sale in question. This suggestion is what that must guide the decision of approve or cancel a sale. The analysis will be presented at “Order Details”, as below:
 
 ![Análise de risco](/images/checkout-cielo-analise-risco.png)
 
+## Recurring Payment Scheduled
+
+The Recurrence is an automated scheduling process for credit transactions, that is, a transaction that automatically repeats, without requiring the buyer to access transactional screen, according to the rules defined at the time of scheduling.
+
+### Retry
+
+If a transaction is not authorized, the Checkout Cielo runs a retry automatically, considering:
+
+* Time interval between attempts: 1 day
+* Number of trials: 3 (three), one per day for 3 consecutive days from the next day of unauthorized original transaction.
+
+<aside class="notice">This rule of retry can not be modified by the retailer.</aside>
+
+#### Retailer notifications
+
+All notices/replies of each purchase order made in the store can be sent to the retailer. Simply that:
+
+* Is configured URL Notification and Status URL in the merchant backoffice
+* The change in retry status will be notified by Url Status Change.
+
+### Consulting transactions
+
+The Recurrence transactions are available in the Backoffice Checkout Cielo as other sales of his store on the "ORDER" (see image below).
+
+The first transaction recurrence is a normal transaction, following the rules and preferences set by the retailer in the Backoffice.
+
+<aside class="warning"><strong>IMPORTANT</strong>:The amount and date of collection of recurring transactions will always be the same as the initial transaction. The schedule starts to run automatically from the date on which the first transaction is authorized.</aside>
+
+![Consultando transações](/images/checkout-consulta-recorrencia.png)
+
+This table shows that the 1st transaction recurrence was authorized and should be captured manually. Other transactions recurrence will always be captured automatically, regardless of whether the first transaction was captured or canceled. If You have configured automatic capture, the capture of recurrence will also be automatic.
+
+<aside class="warning"><strong>IMPORTANT</strong>: Only 1 transaction is subject to analysis of fraud</aside>
+
+### Cancellation of recurrency at Cielo Checkout.
+
+The cancellation of the recurrence occurs within the Checkout Cielo Backoffice, also in the "ORDER" tab. Simply access a recurrence of transaction (marked with the "Applicant"), enter details (the symbol "+")
+
+![Cancelamento de recorrência](/images/checkout-cancelar-recorrencia.png)
+
+In the screen above, there are two cancellation options by buttons:
+
+* **Cancel** – cancel the transaction in question, without making the cancellation of future recurrence of transactions.
+* **Cancel Recorrency** - cancels scheduling future transactions as a whole, ending recurrence. No cancels the current transaction and those which have already occurred.
+
+<aside class="warning">The Recurrence occurs only for credit cards and products such as "SERVICE" and "DIGITAL GOODS".</aside>
+<aside class="warning">Recurrence is initiated when PERMISSION, AND DON'T IN THE CATCH. If the recurrence do not have a date to be finalized, it will automatically repeat until it is canceled manually.</aside>
+<aside class="warning">Recurrence must be enabled in your Membership, otherwise, scheduled transactions will be denied.</aside>
+
 ## Debit card
 
-Cielo Checkout Cielo accepts the main card issuers of debit in the market:  Visa and MasterCard. The transaction of debit card have as participants the issuer banks, that which in turn use the same resources of online transaction (token, password card, etc) for the authentication process.
-
-Consult the relation between participants issuers on Cielo e-commerce Support
+Cielo Checkout Cielo accepts the main card issuers of debit in the market:  Visa and MasterCard. The transaction of debit card have as participants the issuer banks, that which in turn use the same resources of online transaction (token, password card, etc) for the authentication process. Consult the relation between participants issuers on Cielo e-commerce Support
 
 * **E-mail**: [cieloecommerce@cielo.com.br](mailto:cieloecommerce@cielo.com.br)
 * **Telephones**:
@@ -1382,7 +1954,7 @@ The transaction authentication will guarantee an extra security to the retail ag
 
 ## Boleto
 
-All boleto created (issued) appears with status of “PENDENT” on Order Report. The status change will depend of guide actions of the personal retailer. For that, access the Cielo Checkout Backoffice (include link of the guide) in the section Orders
+All boleto created (issued) appears with status of “PENDENT” on Order Report. The status change will depend of guide actions of the personal retailer. For that, access the [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/)(include link of the guide) in the section Orders.
 
 ### Possible Status of Boleto
 
@@ -1398,14 +1970,14 @@ It’s incumbent upon the retailer the Manual Conciliation with his bank stateme
 
 To realise the Conciliation you will need:
 
-1. Access the order report on Cielo Checkout Backoffice;
+1. Access the order report on [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/);
 2. Filter the order by Payment Method “Boleto” and status “PENDENT” and identify the boleto in question by value/amount;
 3. Click in the symbol + in the end of the line to access the page of “Details”;
 4. Click in the button of “Confirm Payment” and inform the date of payment, for your forward control;
 
-The order pass for PAID status.
+The order pass for **PAID status**.
 
-The Customer also will see the order as PAID on “Customer Backoffice”
+The Customer also will see the order as **PAID** on “Customer Backoffice”
 
 To undo the conciliation (payment) of a Boleto, if the conciliation has been done in a wrong form, you just need:
 
@@ -1417,11 +1989,13 @@ To undo the conciliation (payment) of a Boleto, if the conciliation has been don
 
 If the boleto don’t be conciliated within 10 days after the expiration, its status will be changed to “EXPIRED”, for a better control of overdue boletos. EXPIRED boletos can be conciliated.
 
+<aside class="notice">Boleto validity – If boleto expires in a non-working day, as a saturday, it will valid until the next business day.</aside>
+
 ![Boleto](/images/checkout-cielo-boleto.png)
 
 ## Online Debit
 
-Order done by online debit will be included on Cielo Checkout Backoffice as PENDENT, PAID, UNAUTHORIZED or DO NOT FINISHED, depending of the result of authorization at the Bank.
+Order done by online debit will be included on [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/) as PENDENT, PAID, UNAUTHORIZED or DO NOT FINISHED, depending of the result of authorization at the Bank.
 
 * **Pendent** - Correspond to a moment when the customer finishes the order and doesn’t obtain the response of the Bank, in other words, the customer can’t get load the Bank Page to insert the information to debit.
 * **Paid** - It’s when the customer completed the payment with debit successfully.
@@ -1439,25 +2013,33 @@ Order done by online debit will be included on Cielo Checkout Backoffice as PEND
 
 ### Automatic capture
 
-The “AUTHORIZED”, and “LOW RISK” sales at anti fraud tools can be CAPTURED automatically by the system. For that, it’s necessary configure at Cielo Checkout Backoffice. After this configuration, the status presented will be “PAID”. This sale will be then, confirmed (captured) at Cielo.
+The  **“AUTHORIZED”**, and **“LOW RISK”** sales at anti fraud tools can be **CAPTURED** automatically by the system. For that, it’s necessary configure at [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/). After this configuration, the status presented will be **“PAID”**. This sale will be then, confirmed (captured) at Cielo.
 
 ![Cancelamento e captura automático](/images/checkout-cielo-cancelamento-captura-automatico.png)
 
 ### Automatic Cancellation
 
-The “AUTHORIZED”, and “HIGH RISK” sales with anti fraud solutions can be CANCELED automatically on Cielo Checkout Backoffice by the system. For that, it’s necessary to configure at Cielo Checkout Backoffice. After this configuration, the status presented will be “CANCELED”. Then this sale will be canceled (undo) at Cielo.
+The “AUTHORIZED”, and “HIGH RISK” sales with anti fraud solutions can be CANCELED automatically on [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/) by the system. For that, it’s necessary to configure at Cielo Checkout Backoffice. After this configuration, the status presented will be “CANCELED”. Then this sale will be canceled (undo) at Cielo.
 
 ![Cancelamento e captura automático](/images/checkout-cielo-cancelamento-captura-automatico.png)
+
+<aside class="warning">Attention! Você tem a opção de escolher a melhor integração para o seu negócio, a captura/cancelamento manual ou automático é feito diretamente pelo seu Backoffice.</aside>
 
 ![Cancelamento e captura automáticos](/images/checkout-cielo-anti-fraude-cancelamento-captura.png)
 
 ## Capture/Manual Cancellation
 
-The “AUTHORIZED” sales waits a decision of confirmation or cancellation. This decision has to come according to the fraud analysis, in case of this feature is properly parameterized on integration.
+<aside class="notice">Veja a diferença entre cancelamento e estorno em <a href="#diferença-entre-estorno-e-cancelamento">Diferença entre estorno e cancelamento</a></aside>
 
-The sales confirmation must be done by the button CAPTURE, on the “ORDER” tab, on Cielo Checkout Backoffice. After this confirmation, the status will change for “PAID”. This sale will be confirmed (captured) on Cielo.
+The **“AUTHORIZED”** sales waits a decision of confirmation or cancellation. This decision has to come according to the fraud analysis, in case of this feature is properly parameterized on integration.
 
-The cancellation must be done by the button CANCEL in the same section on Cielo Checkout Backoffice. After the cancellation, the status will change for “CANCEL”. This sale will be canceled (undone) then on Cielo.
+The sales confirmation must be done by the button **CAPTURE**, on the **“ORDER”** tab, on [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/). After this confirmation, the status will change for **“PAID”**. This sale will be confirmed (captured) on Cielo.
+
+The cancellation must be done by the button **CANCEL** in the same section on [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/). After the cancellation, the status will change for **“CANCEL”**. This sale will be canceled (undone) then on Cielo.
+
+<aside class="warning">Attention! You have up to five days to confirm the sale! If this is not done it will no longer be valid in Cielo and the reserved limit to your store/sale will be released. This is a standard procedure for all stores.</aside>
+
+<aside class="warning">When the authorized sale confirmation deadline expires, requests will automatically go to "EXPIRED" status. This will happen on the sixth day after the authorization date (date of sale)</aside>
 
 ## Sales reverse charge
 
@@ -1473,11 +2055,11 @@ The customer (buyer) can, for any reason, cancel the purchase directly with the 
 
 ![Chargeback](/images/checkout-cielo-chargeback.png)
 
-This communication it’s not done via Cielo Checkout Backoffice, but by the Cielo Sales Statement, highlighted as a financial adjust. The statement of sales will be available at Cielo website www.cielo.com.br on tab “Access My Account”: [www.cielo.com.br na aba “Acessar Minha conta”](https://www.cielo.com.br/minha-conta).
+This communication it’s not done via [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/), but by the Cielo Sales Statement, highlighted as a financial adjust. The statement of sales will be available at Cielo website www.cielo.com.br on tab “Access My Account”: [www.cielo.com.br na aba “Acessar Minha conta”](https://www.cielo.com.br/minha-conta).
 
 ![Acessar minha conta](/images/acessar-minha-conta.png)
 
-After this receipt, the own Cielo website is possible to access the Cielo Checkout Backoffice and signalize the order as receipt a Chargeback, to your better control. You just need enter on “Order Details” and click on the button “Chargeback” and your status will become “CHARGEBACK”.
+After this receipt, the own Cielo website is possible to access the [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/) and signalize the order as receipt a Chargeback, to your better control. You just need enter on “Order Details” and click on the button “Chargeback” and your status will become “CHARGEBACK”.
 
 ## Shipping
 
@@ -1499,3 +2081,5 @@ It’s possible to select one or more options of shipping. They are presented to
 * The Cielo Checkout will use this number of contract to do the shipping calculation, using the shipping table that you have agreed with Correios.
 * This way, the checkout will present all shipping options of Correios (Sedex, Sedex 10, Sedex. Today and PAC, etc) to the customer chooses, according to the destiny zip code typed. The value selected by customer will be added to the total purchase amount.
 * Selection of shipping on shopping cart and not in Cielo Checkout. The Cielo Checkout only will present the screen of choice of payment method for the customer. The shipping amount is already embed on final amount.
+
+<aside class="notice">The consumer can not change the shipping address on the Checkout screen Cielo</aside>
