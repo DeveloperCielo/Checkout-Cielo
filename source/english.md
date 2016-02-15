@@ -21,7 +21,21 @@ search: true
 
 The goal of this documentation is to orientate the developer about the integration method of Cielo Checkout API, a simplified solution where the customer is redirected to an online payment page secured by Cielo, providing a high level of security, attending the more strict safety regulations (PCI). In general, Cielo Checkout is a payment solution projected to increase conversion rates, make easier the purchase process, reduce frauds and operational costs. At this documentation, we described all functionalities of the integration, technical parameter and specially the examples of codes to facilitate your development.
 
-Cielo Checkout uses a REST technology that should be used when a “shopping cart” must to be sent, in other words, the customer can browse on website, choose one or more products to add on shopping cart and then finish the purchase. There is also an option of [integration by button](https://developercielo.github.io/Checkout-Cielo/#shipping) that is always used if you have not a “shopping cart” at your store or when you want to associate a quick purchase directly to a product.
+Cielo Checkout uses a REST technology that should be used when a “shopping cart” must to be sent, in other words, the customer can browse on website, choose one or more products to add on shopping cart and then finish the purchase. There is also an option of [integration by button](https://developercielo.github.io/Checkout-Cielo/#shipping) that is always used if you have not a “shopping cart” at your store or when you want to associate a quick purchase directly to a product. 
+
+During the Cielo Checkout's integration, you will find some steps and redirections. Observe the flow bellow
+
+![Fluxo de integração Checkout Cielo](/images/fluxo-checkout.svg)
+
+After the cardholder (consumer) select their purchases and press the "Buy" button on the virtual store already integrated with Checkout Cielo, the flow goes this way:
+
+1. Cielo API returns the CheckoutURL, which should be used by the store to redirect the client to safety payment environment of Cielo (Cielo Checkout page)
+2. The store redirects the client to the URL returned by Cielo
+3. The cardholder enters the payment details and completes the purchase
+4. The Cielo Checkout redirects the client to the Return URL chosen by the store, set in [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/) this solution
+5. The store notifies the customer that the process has been completed and that it will receive more information about the purchase and payment by e-mail.
+6. The Cielo Checkout sends a notification POST to the Notification URL, set in Backoffice
+7. The store process the purchase order using the data from notification POST and, if the transaction is authorized, the order is freed.
 
 # Extended Validation Certificate
 
@@ -30,14 +44,6 @@ Cielo Checkout uses a REST technology that should be used when a “shopping car
 The Extended Validation Certificate for web server offers authenticity and integrity of data from a web site, provides customers of virtual stores the guarantee that they are actually accessing the site they want, and not a fraudster site.
 
 Specialized companies are responsible for making domain validation and depending on the type of certificate, also the owner of the domain entity.
-
-## What is EV SSL Certificate?
-
-The EV Certificate was released in the market recently and ensures a higher level of security for customers of online stores.
-
-It is a certificate of greater confidence and when https is accessed, the address bar turns green, giving more reliability to site visitors.
-
-"During the Cielo Checkout's integration, you will find some steps and redirections. Observe the flow bellow:
 
 ![Fluxo de integração Checkout Cielo](/images/fluxo-checkout.svg)
 
@@ -52,6 +58,14 @@ It is a certificate of greater confidence and when https is accessed, the addres
 ### Google Chrome
 
 ![Certificado EV Google Chrome](./images/certificado-chrome.jpg)
+
+## What is EV SSL Certificate?
+
+The EV Certificate was released in the market recently and ensures a higher level of security for customers of online stores.
+
+It is a certificate of greater confidence and when https is accessed, the address bar turns green, giving more reliability to site visitors.
+
+"During the Cielo Checkout's integration, you will find some steps and redirections. Observe the flow bellow:
 
 ## How to install the Extended Validation Certificate in the shop server?
 
@@ -153,6 +167,8 @@ Click "Ok" to complete the import.
 
 The certificate can be viewed in the default tab "Others" or chosen by the customer.
 
+![Instalar IE e GC](./images/certificado-instalar-ie-gc-10.jpg)
+
 #### 9th STEP:
 
 Repeat the same procedure for the 3 uploaded files.
@@ -171,6 +187,8 @@ Hours: 24 hours a day, 7 days a week.
 
 In this guide will be presented an overview of Cielo Checkout and the technical mechanism of integration with shopping cart or button. For every purchase order, the target is convert it in a sale. A sale with card can be characterized by an authorized and captured transaction.
 
+<aside class="warning">An authorized transaction only generates credit for the retailer if it is captured (or confirmed)</aside>
+
 After the conclusion of the integration stage with Cielo, it’s essential that the retailer or online store manager has knowledge of functional process that will be part of the daily routine of store, like the follow-up of the financial transactions, status of each sale, actions (capture and cancellation) related to sales, charge statement, and so on. See the complement material about [BackOffice Checkout Cielo](http://developercielo.github.io/Checkout-Backoffice/).
 
 ## Considerations about the integration
@@ -182,6 +200,18 @@ After the conclusion of the integration stage with Cielo, it’s essential that 
 
 <aside class="notice">See the section [Certificated Extended Validation](#certificado-extended-validation) for more information</aside>
 
+## Historic of versions
+
+* **Version 1.3** - 01/21/2015
+    - Change of names – Solution integrated for Cielo Checkout
+* **Version 1.2** - 01/09/2015
+    - Inclusion of followers parameters at notification Post: `discount_amount`, `shipping_address_state`, `payment_boleto`, `number`, `tid`;
+    - Alteration of parameter of order at Post of status change
+* **Version 1.1** - 01/08/2015
+    - Alignment of payment flux; inclusion of information of payment methods; inclusion at setting screen at Cielo [Checkout Backoffice](http://developercielo.github.io/Checkout-Backoffice/)
+* **Version 1.0** - 11/24/2014
+    - Initial version
+   
 ## Products and services
 
 The current version of Cielo Checkout has support to following card issuers and products:
@@ -197,18 +227,6 @@ The current version of Cielo Checkout has support to following card issuers and 
 |JCB|Yes|Yes|No|No|
 |Aura|Yes|Yes|No|No|
 
-## Historic of versions
-
-* **Version 1.3** - 01/21/2015
-    - Change of names – Solution integrated for Cielo Checkout
-* **Version 1.2** - 01/09/2015
-    - Inclusion of followers parameters at notification Post: `discount_amount`, `shipping_address_state`, `payment_boleto`, `number`, `tid`;
-    - Alteration of parameter of order at Post of status change
-* **Version 1.1** - 01/08/2015
-    - Alignment of payment flux; inclusion of information of payment methods; inclusion at setting screen at Cielo [Checkout Backoffice](http://developercielo.github.io/Checkout-Backoffice/)
-* **Version 1.0** - 11/24/2014
-    - Initial version
-
 ## Cielo Support
 
 After reading this documentation, if you still have questions (technical or not), you can check Cielo technical support 24 hours per day, 7 days of week, in Portuguese and English, in the following contacts:
@@ -219,8 +237,203 @@ After reading this documentation, if you still have questions (technical or not)
     * Option 1: *Technical support*
     * Option 2: *E-commerce credential*
 * Email: [cieloecommerce@cielo.com.br](mailto:cieloecommerce@cielo.com.br)
+* 
+## Cielo Checkout testing mode
 
-# Integration
+The Cielo Checkout testing mode is a method to do integration tests on your website, without the credit usage. The Cielo Checkout testing mode allows to execute transactions using different payment methods mock (simulative).
+
+### Testing mode activation/validation
+
+The testing mode can be activated on Settings tab:
+
+![Modo de teste](/images/checkout-cielo-modo-teste.png)
+
+In this area there is a selection box, that once been marked, will enable the Cielo Checkout testing mode. The mode only will starts when the selection has been saved.
+
+![Ativação Modo de teste](/images/checkout-cielo-modo-teste-ativacao.png)
+
+When the option is saved, a red stripe will be exhibited on top area of screen. It will be displayed at all screens of Cielo Checkout Backoffice and the checkout screen of Cielo Checkout.
+
+This stripe indicates that your Cielo Checkout store is operating now in a testing environment, in other words, all transaction executed in this mode will be considered as a test.
+
+![Modo de teste ativado](/images/checkout-cielo-modo-teste-ativado.png)
+
+### How transact on Testing Mode
+
+The transactions execution on testing mode happens in normal form. The information of transaction will be sent via POST, using the parameters as described on topic Integration with shopping cart, however, the payment methods to be used will be simulated methods.
+
+To execute test transactions with different payment methods, follow the next rules:
+
+**a - Credit Card Transactions:**
+
+To test credit cards it’s necessary to define two important data; the authorization status of card and the fraud analysis return.
+
+**Status of Credit Card Authorization **
+
+|Card Final Digit|Returned Status|
+|----------------------|----------------|
+|0, 1, 2, 3 ou 4|Authorized|
+|5, 6, 7, 8 ou 9|Unauthorized|
+
+* **Example**: Authorized transaction, High risk;
+* **Credit card Number**: 5404434242930107
+* **Customer name**: Maria Alto
+
+**b - Boleto Bancario**
+
+You simply carry out the purchase process without any changes on your proceeding. The boleto created on testing mode will always be a simulated boleto.
+
+**c - Online Debit**
+
+It’s necessary to inform the transaction status of online debit transaction. This process happens like in the anti fraud of credit card described above, with change for buyer name.
+
+**Debit Status**
+
+|Customer Lastname|Status|
+|---------------------|------|
+|Paid|Paid|
+|Any name|Unauthorized|
+
+* **Example**: Unauthorized Status.
+* **Customer name**: Maria Pereira
+
+**d - Testing transaction**
+
+All the transaction executed on testing mode will be displayed as normal transactions on Order Tab of Cielo Checkout, but, they will be marked as testing transactions and won’t be counted combined with all transactions executed outside of testing environment.
+
+![Transações de teste](/images/checkout-cielo-modo-teste-transacoes-de-teste.png)
+
+These transaction will have a symbol of test to distinguish of other transactions. They can be captured or canceled using the same proceedings of real transactions.
+
+![Transações de teste](/images/checkout-cielo-modo-teste-transacoes-de-teste-cancelamento.png)
+
+# Integration flow
+
+O objetivo desta documentação é orientar o desenvolvedor sobre o método de integração da API Checkout Cielo, solução simplificada na qual o consumidor é direcionado para uma página de pagamento online segura da Cielo, proporcionando um alto nível de confiança, dentro das mais rígidas normas de segurança (PCI). Em linhas gerais, o Checkout Cielo é uma solução de pagamento projetada para aumentar a conversão das vendas, simplificar o processo de compra, reduzir fraudes e custos operacionais.
+Nesta documentação estão descritas todas as funcionalidades desta integração, os parâmetros técnicos e principalmente os códigos de exemplos para facilitar o seu desenvolvimento.
+
+O Checkout Cielo utiliza uma tecnologia REST que deve ser usada quando houver um *“carrinho de compras”* a ser enviado, ou seja, no caso do consumidor navegar pelo site e escolher 1 ou mais produtos para adicionar ao carrinho e depois, então, finalizar a compra. Há também opção de [integração via botão](#botão-de-produto) usada sempre que não houver um *“carrinho de compras”* em sua loja ou quando se deseja associar uma compra rápida direta a um produto.
+
+Durante a integração com o Checkout Cielo, alguns passos e alguns redirecionamentos ocorrerão. A imagem abaixo ilustra esse fluxo:
+
+![Fluxo de integração Checkout Cielo](/images/fluxo-checkout.svg)
+
+1. Cielo API returns the CheckoutURL, which should be used by the store to redirect the client to safety payment environment of Cielo (Cielo Checkout page)
+
+2. The store redirects the client to the URL returned by Cielo
+
+3. The cardholder enters the payment details and completes the purchase
+
+4. The Cielo Checkout redirects the client to the Return URL chosen by the store, set in [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/) this solution
+
+5. The store notifies the customer that the process has been completed and that it will receive more information about the purchase and payment by e-mail.
+
+6. The Cielo Checkout sends a notification POST to the Notification URL, set in Backoffice
+
+7. The store process the purchase order using the data from notification POST and, if the transaction is authorized, the order is freed.
+
+## Cielo's Checkout URLs
+
+The store must configure three URLs (notification, feedback and status) in your [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/), the "Settings" tab. See the screenshot below:
+
+• **Return URL** - website in which the buyer will be redirected to the order of purchase. No data is exchanged or sent to that URL. This URL takes only the buyer, after finalizing the purchase, a page defined by the store. This page should be set at [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/), tab "Settings"
+
+• **Notification URL** - At the end of a transaction is sent an HTTP POST with all the data of the sale to the Notification URL previously registered in the Backoffice Checkout Cielo. The notification POST is sent only when the transaction is completed, regardless of whether there was a change of the transaction status. The URL must contain a page prepared to receive the parameters defined in the Parameters table formats for integration with notification via POST language / module with which your site has been developed, which will receive the HTTP POST.
+
+• **Status Change URL** - When an application has changed their status, will be sending a HTTP post to the Status Change URL previously registered in the [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/). The POST of status change does not contain the data of the shopping cart, only the identification data. The URL should contain a page prepared to receive the parameters defined in the [Parameters table formats for integration](https://developercielo.github.io/Checkout-Cielo/english.html#integration-parameters) with the Status Change POST via language / module with which your site was developed.
+
+###Return URL
+
+The Return URL is used by Cielo to redirect the customer back to the store as soon as payment is complete. This store page must be prepared to receive customer order flow and warn you that the process has been completed and that it will receive more information soon.
+
+###Notification URL
+
+The notification URL is that Cielo will use to send the data of the transaction, the cart and the authorization to finish the integration stream. Upon receiving the notification, the store will have all the information about the shopping cart, order and may use this information to feed your system.
+
+**Parameters for integration with notification POST**
+
+Parameter Description Type field Minimum size Maximum size
+
+|Parameter|Description|Field|Minimum Size|Maximum Size|
+|---------|---------|-------------|--------------|--------------|
+|checkout_cielo_order_number|Unique identificator by CHECKOUT CIELO|Alphanumeric|1|32|
+|amount|Unit price of the product, in cents (eg R $ 1.00 = 100)|Numeric|1|10|
+|order_number|Number of a request by store|Alphanumeric|1|32|
+|created_date|Date the request (dd / mm / yyyy HH: mm: ss)|Alphanumeric|1|20|
+|customer_name|User name. If sent, this value is already filled in CIELO's CHECKOUT screen|Alphanumeric|1|289|
+|customer_identity|Consumer identification (CPF or CNPJ). If sent, this value is already filled in CIELO's CHECKOUT screen|Alphanumeric|1|14|
+|customer_email|Consumer e-mail. If sent, this value is already filled in CIELO CHECKOUT|Alphanumeric|1|64|
+|customer_phone|Consumer phone. If sent, this value is already filled in CIELO CHECKOUT screen|Numeric|1|11|
+|discount_amount| provided discounted value (sent only if there is discount)|Numeric|1|10|
+|shipping_type|Freight mode|Numeric|1|1|
+|shipping_name|shipping name|Alphanumeric|1|128|
+|shipping_price|Value of freight service in cents (eg R $ 10.00 = 1000)|Numeric|1|10|
+|shipping_address_zipcode|ZIP code for delivery address|Numeric|1|8|
+|shipping_address_district|Delivery address|Texto|1|64|
+|shipping_address_city|City of delivery address|Alphanumeric|1|64|
+|shipping_address_state|State of delivery address|Alphanumeric|1|64|
+|shipping_address_line1|Delivery address|Alphanumeric|1|256|
+|shipping_address_line2|Complement of delivery address|Alphanumeric|1|256|
+|shipping_address_number|Number of delivery adress|Numeric|1|8|
+|payment_method_type|Code of payment method|Numeric|1|1|
+|payment_method_brand|Card issuer (only for credit card transaction)|Numeric|1|1|
+|payment_method_bank|Bank issuer (For boleto and automatic transaction)|Numeric|1|1|
+|payment_maskedcredicard|Cartão Mascarado (Somente para transações com meio de pagamento cartão de crédito)|Alphanumeric|1|20|
+|payment_installments|Number of Installments|Numeric|1|1|
+|payment_antifrauderesult|status of credit card transactions in anti-fraud|Numeric|1|1|
+|payment_boletonumber|Number of boleto|String|||
+|payment_boletoexpirationdate|Due date for transactions with boleto|Numeric|1|10|
+|payment_status|Transaction Status|Numeric|1|1|
+|tid|Cielo's TID generated at the time of transaction authorization|Alphanumeric|1|32|
+
+###<status>OK</status>POST notification of receipt
+
+• When accessed by Cielo server by sending POST from the table above, the URL registered for notification must display a code stating that received the change of status and successfully sued. Code: <status>OK</status>
+
+• If the URL is accessed by our server and does not display the confirmation code, the server will retry three times every hour. If the <status>OK</status> is not displayed, it will be understood that the store server does not respond.
+
+• Notification URL can use only **port 80** (default for HTTP) or **port 443** (default for https).
+
+###Status Change URL
+
+The Status Change URL is that Cielo will use to notify the store on the transaction status changes. A change of status to canceled Authorized, for example, may occur at any time. If the store administrator to cancel an order in Backoffice Cielo, Cielo then sends it to the Status Change URL similar notification sent to the URL notification. The only difference is that this notification does not contain the cart data, but only the application and the new authorization status.
+
+The status change of URL is provided by the merchant. This URL will be posted the information of all applications that have their status changed.
+
+Parameters for integration with Status Change POST
+
+Parameter Description Type field Minimum size Maximum size
+
+checkout_cielo_order_number unique identifier generated by CHECKOUT CIELO. Alphanumeric 1 32
+amount Unit price of the product, in cents (eg R $ 1.00 = 100) Number 1 10
+order_number number of a request by store Alphanumeric 1 32
+payment_status Status Numeric transaction 1 1
+payment_status
+
+The payment_status parameter can come up with one of the following values:
+
+value description
+
+1 Pending (For all payment methods)
+2 Pay (For all payment methods)
+3 Denied (For Credit Card)
+Expired 4 (Credit Cards and Billet)
+5 Cancelled (for credit cards)
+6 Not Finished (All means of payment)
+7 Authorized (only for Credit Card)
+8 Chargeback (only for Credit Card)
+
+###Status Change POST receipt
+
+• When accessed by Cielo server, sending the POST, the registered URL for Status Change Return, must display a code stating that received the change of status and successfully sued: <status>OK</status>
+
+• If the store's status change URL is accessed by Cielo server does not display the confirmation code, the server will retry three times.
+
+• If the <status>OK</status> is not yet displayed, it will be understood that the shop server does not respond, and will be sent an email to the person responsible for the store, stating that the order in question was paid.
+
+• That is, the source code of the page indicating success should contain ONLY <status>OK</status> and nothing else.
+
+In the order screen, in each transaction, there is the option of referring the change of status of POST. Just click the blue button marked in the image below
 
 ## Shopping cart
 
