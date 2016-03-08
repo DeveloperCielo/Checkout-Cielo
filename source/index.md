@@ -11,7 +11,7 @@ language_tabs:
   - csharp: C#
 
 toc_footers:
-  - <a href='/Cartoes-e-validacao/'>Boas práticas de E-Commerce</a>
+  - <a href='/Boas-praticas-de-ecommerce/'>Boas práticas de E-Commerce</a>
   - <a href='/Checkout-Boleto-e-Debito/'>Manual de Boleto e débito online</a>
   - <a href='/Checkout-Backoffice/'>Backoffice Cielo (Acesso lojista)</a>
   - <a href='/Checkout-FAQ/'>FAQ</a>
