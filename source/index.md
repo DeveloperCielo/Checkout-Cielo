@@ -238,7 +238,7 @@ Após a leitura deste manual, caso ainda persistam dúvidas (técnicas ou não),
 
 ## Modo de teste do Checkout Cielo
 
-O modo de teste Checkout Cielo é método de fazer testes de integração do Checkout Cielo com o seu site, sem o consumo de créditos. O modo de Teste Checkout Cielo permite realizar transações, testando a integração utilizando diferentes meios de pagamento simulados.
+O modo de teste Checkout Cielo é uma ferramenta que permite testar a integração do seu site com a plataforma. Com o modo teste, você pode realizar transações a medida que evolui com a integração e consegue simular cenários para testar diferentes meios de pagamento.
 
 ### Ativação do Modo de Teste.
 
