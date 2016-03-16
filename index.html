@@ -2418,6 +2418,11 @@ Ex.: 10 = 10%.</p>
     </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"SourceZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14400000"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"TargetZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11000000"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Measures"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Package"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BOX"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Lenght"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Height"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Width"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
     </span><span class="s2">"Address"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
     </span><span class="s2">"Services"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -2469,7 +2474,55 @@ Ex.: 10 = 10%.</p>
 <td>n/a</td>
 <td>Lista de serviços de frete.</td>
 </tr>
+<tr>
+<td>Measures</td>
+<td>&ndash;</td>
+<td>Opcional</td>
+<td>n/a</td>
+<td>Informações para cálculo de frete volumétrico do carrinho.</td>
+</tr>
+<tr>
+<td>Package</td>
+<td>Alphanumeric</td>
+<td>Obrigatório</td>
+<td>n/a</td>
+<td>Tipo de pacote: BOX (Caixa), ROL (Cilindro) ou ENVELOPE</td>
+</tr>
+<tr>
+<td>Lenght</td>
+<td>Numeric</td>
+<td>Obrigatório</td>
+<td>n/a</td>
+<td>Comprimento do pacote</td>
+</tr>
+<tr>
+<td>Height</td>
+<td>Numeric</td>
+<td>Condicional</td>
+<td>n/a</td>
+<td>Altura do pacote enviado</td>
+</tr>
+<tr>
+<td>Width</td>
+<td>Numeric</td>
+<td>Condicional</td>
+<td>n/a</td>
+<td>Largura do pacote.</td>
+</tr>
+<tr>
+<td>Diameter</td>
+<td>Numeric</td>
+<td>Condicional</td>
+<td>n/a</td>
+<td>Diâmetro do pacote. Obrigatório caso Shipping.Package como ROL</td>
+</tr>
 </tbody></table>
+
+<p>O Frete Correios pode ser calculado de 2 maneiras: Frete Volumétrico ou Frete sem Volume.</p>
+
+<p>Para utilizar o Frete Volumétrico, basta enviar o nó Shipping.Measures, seguindo as regras de integração via API REST.</p>
+
+<aside class="notice">Para realizar o cálculo de frete via Correios é necessário respeitar as medidas definidas pelo contrato utilizado pelo lojista. Para maiores informações sobre as dimensões e pesos permitidos, sugerimos que valide o contrato da loja no link: http://www.correios.com.br/para-voce/precisa-de-ajuda/limites-de-dimensoes-e-de-peso</aside>
 
 <h3 id="address">Address</h3>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
