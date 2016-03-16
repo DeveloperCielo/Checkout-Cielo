@@ -1720,6 +1720,11 @@ Parâmetro de requisição com informações sobre o item do carrinho de compras
     "Type": "Correios",
     "SourceZipCode": "14400000",
     "TargetZipCode": "11000000",
+    "Measures": "",
+    "Package": "BOX",
+    "Lenght": 30,
+    "Height": 5,
+    "Width": 10,
     "Address": {},
     "Services": []
 }
@@ -1734,6 +1739,18 @@ Parâmetro de requisição com informações sobre endereço e serviço de entre
 |TargetZipCode|Numeric|Opcional|8|CEP do endereço de entrega do comprador.|
 |Address|[Address](#address)|Opcional|n/a|Informações sobre o endereço de entrega do comprador.|
 |Services|[Service[]](#service)|Condicional|n/a|Lista de serviços de frete.|
+|Measures|--|Opcional|n/a|Informações para cálculo de frete volumétrico do carrinho.|
+|Package|Alphanumeric|Obrigatório|n/a|Tipo de pacote: BOX (Caixa), ROL (Cilindro) ou ENVELOPE|
+|Lenght|Numeric|Obrigatório|n/a|Comprimento do pacote|
+|Height|Numeric|Condicional|n/a|Altura do pacote enviado|Obrigatório caso Shipping.Package como BOX|
+|Width|Numeric|Condicional|n/a|Largura do pacote.|Obrigatório caso Shipping.Package como BOX ou ENVELOPE|
+|Diameter|Numeric|Condicional|n/a|Diâmetro do pacote. Obrigatório caso Shipping.Package como ROL|
+
+O Frete Correios pode ser calculado de 2 maneiras: Frete Volumétrico ou Frete sem Volume.
+
+Para utilizar o Frete Volumétrico, basta enviar o nó Shipping.Measures, seguindo as regras de integração via API REST.
+
+<aside class="notice">Para realizar o cálculo de frete via Correios é necessário respeitar as medidas definidas pelo contrato utilizado pelo lojista. Para maiores informações sobre as dimensões e pesos permitidos, sugerimos que valide o contrato da loja no link: http://www.correios.com.br/para-voce/precisa-de-ajuda/limites-de-dimensoes-e-de-peso</aside>
 
 ### Address
 
