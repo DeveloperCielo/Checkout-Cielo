@@ -1709,20 +1709,35 @@ Parameter of request with information about a shopping cart item. See also the [
     "Type": "Correios",
     "SourceZipCode": "14400000",
     "TargetZipCode": "11000000",
+    "Measures": "",
+    "Package": "BOX",
+    "Lenght": 30,
+    "Height": 5,
+    "Width": 10,
     "Address": {},
     "Services": []
 }
 ```
-
 Request parameter with information about the address and shipping service of product delivery.
 
 |Field|Type|Mandatory|Size|Description|
 |-----|----|-----------|-------|---------|
 |Type|Alphanumeric|Sim|n/a|Shipping type: “Correios”, “FixedAmount”, “Free”, “WithoutShippingPickUp”, “WithoutShipping”.|
 |SourceZipCode|Numeric|Condicional|8|Origin Zip code of shopping cart|
-|TargetZipCode|Numeric|Opcional|8|Zip code of customer shipping address |
+|TargetZipCode|Numeric|Opcional|8|Zip code of customer shipping address|
 |Address|[Address](#address)|Opcional|n/a|Information about the customer shipping address|
-|Services|[Service[]](#service)|Condicional|n/a|List of shipping services |
+|Services|[Service[]](#service)|Condicional|n/a|List of shipping services|
+|Measures|--|Opcional|n/a|Information to calculate the volumetric freight of shopping cart.|
+|Package|Alphanumeric|Obrigatório|n/a|Package type: BOX, ROL or ENVELOPE|
+|Lenght|Numeric|Mandatory|n/a|Packet length|
+|Height|Numeric|Conditional|n/a|Package Height sent|Required if Shipping.Package is a BOX, for example|
+|Width|Numeric|Conticional|n/a|Package Width.|Required if Shipping.Package as BOX or ENVELOPE|
+|Diameter|Numeric|Conditional|n/a|Diameter of the package. Required if Shipping.Package as ROL|
+
+The freight of Correios can be calculte in two ways: volumetric shipping and rete Volumétrico ou No volume shipping.
+To use the Volumetric shipping, just send the Shipping.Measures node, following the rules of integration via REST API.
+
+<aside class="notice"> To carry out the shipping calculation for "Correios" is necessary to respect the measures defined by the contract. For more information on the dimensions and permitted weights, we recommend that you validate the store contract on the link: http://www.correios.com.br/para-voce/precisa-de-ajuda/limites-de-dimensoes-e-de-peso</aside>
 
 ### Address
 
