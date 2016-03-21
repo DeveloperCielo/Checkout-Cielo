@@ -11,6 +11,7 @@ language_tabs:
   - csharp: C#
 
 toc_footers:
+  - <a href='/Cartoes-e-validacao/'>Boas práticas de E-Commerce</a>
   - <a href='/Checkout-Backoffice/'>Backoffice Cielo</a>
   - <a href='/Checkout-FAQ/english.html'>FAQ</a>
 
