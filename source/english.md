@@ -244,7 +244,7 @@ After reading this documentation, if you still have questions (technical or not)
 
 ## Cielo Checkout testing mode
 
-The Cielo Checkout testing mode is a method to do integration tests on your website, without the credit usage. The Cielo Checkout testing mode allows to execute transactions using different payment methods mock (simulative).
+The Cielo Checkout testing mode is a tool that allows to test the integration between your website and your platform. With the testing mode you can execute transactions as integration evolves and you can simulate backgrounds to test different payment's methods.
 
 ### Testing mode activation/validation
 
