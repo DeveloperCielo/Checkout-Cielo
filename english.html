@@ -88,7 +88,9 @@
         </div>
         <h2 class="toc-footer-title">Materiais complementares</h2>
         <ul class="toc-footer">
-            <li><a href='/Checkout-Backoffice/'>Backoffice Cielo</a></li>
+            <li><a href='/Boas-praticas-de-ecommerce/'>Boas práticas de E-Commerce</a></li>
+            <li><a href='/Checkout-Boleto-e-Debito/'>Manual de Boleto e débito online</a></li>
+            <li><a href='/Checkout-Backoffice/'>Backoffice Cielo (Retailer access)</a></li>
             <li><a href='/Checkout-FAQ/english.html'>FAQ</a></li>
         </ul>
         <div class="links-footer">
@@ -410,7 +412,7 @@
 
 <h2 id="cielo-checkout-testing-mode">Cielo Checkout testing mode</h2>
 
-<p>The Cielo Checkout testing mode is a method to do integration tests on your website, without the credit usage. The Cielo Checkout testing mode allows to execute transactions using different payment methods mock (simulative).</p>
+<p>The Cielo Checkout testing mode is a tool that allows to test the integration between your website and your platform. With the testing mode you can execute transactions as integration evolves and you can simulate backgrounds to test different payment&rsquo;s methods.</p>
 
 <h3 id="testing-mode-activation/validation">Testing mode activation/validation</h3>
 
@@ -2385,6 +2387,11 @@ The buyer&rsquo;s credit card data is stored securely within the Checkout Cielo,
     </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"SourceZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14400000"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"TargetZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11000000"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Measures"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Package"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BOX"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Lenght"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Height"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Width"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
     </span><span class="s2">"Address"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
     </span><span class="s2">"Services"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -2436,7 +2443,54 @@ The buyer&rsquo;s credit card data is stored securely within the Checkout Cielo,
 <td>n/a</td>
 <td>List of shipping services</td>
 </tr>
+<tr>
+<td>Measures</td>
+<td>&ndash;</td>
+<td>Opcional</td>
+<td>n/a</td>
+<td>Information to calculate the volumetric freight of shopping cart.</td>
+</tr>
+<tr>
+<td>Package</td>
+<td>Alphanumeric</td>
+<td>Obrigatório</td>
+<td>n/a</td>
+<td>Package type: BOX, ROL or ENVELOPE</td>
+</tr>
+<tr>
+<td>Lenght</td>
+<td>Numeric</td>
+<td>Mandatory</td>
+<td>n/a</td>
+<td>Packet length</td>
+</tr>
+<tr>
+<td>Height</td>
+<td>Numeric</td>
+<td>Conditional</td>
+<td>n/a</td>
+<td>Package Height sent</td>
+</tr>
+<tr>
+<td>Width</td>
+<td>Numeric</td>
+<td>Conticional</td>
+<td>n/a</td>
+<td>Package Width.</td>
+</tr>
+<tr>
+<td>Diameter</td>
+<td>Numeric</td>
+<td>Conditional</td>
+<td>n/a</td>
+<td>Diameter of the package. Required if Shipping.Package as ROL</td>
+</tr>
 </tbody></table>
+
+<p>The freight of Correios can be calculte in two ways: volumetric shipping and rete Volumétrico ou No volume shipping.
+To use the Volumetric shipping, just send the Shipping.Measures node, following the rules of integration via REST API.</p>
+
+<aside class="notice"> To carry out the shipping calculation for &quot;Correios&rdquo; is necessary to respect the measures defined by the contract. For more information on the dimensions and permitted weights, we recommend that you validate the store contract on the link: http://www.correios.com.br/para-voce/precisa-de-ajuda/limites-de-dimensoes-e-de-peso</aside>
 
 <h3 id="address">Address</h3>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
@@ -2826,7 +2880,7 @@ The buyer&rsquo;s credit card data is stored securely within the Checkout Cielo,
 
 <h3 id="consulting-transactions">Consulting transactions</h3>
 
-<p>The Recurrence transactions are available in the Backoffice Checkout Cielo as other sales of his store on the &quot;ORDER&rdquo; (see image below).</p>
+<p>The Recurrence transactions are available in the Backoffice Checkout Cielo as other sales of his store on the &ldquo;ORDER&rdquo; (see image below).</p>
 
 <p>The first transaction recurrence is a normal transaction, following the rules and preferences set by the retailer in the Backoffice.</p>
 
