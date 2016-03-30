@@ -2500,11 +2500,12 @@ Ex.: 10 = 10%.</p>
     </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"SourceZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14400000"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"TargetZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11000000"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Measures"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Package"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BOX"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Lenght"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Height"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Width"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Measures"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"Package"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BOX"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Lenght"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Height"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Width"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="err">}</span><span class="p">,</span><span class="w">
     </span><span class="s2">"Address"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
     </span><span class="s2">"Services"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -2558,11 +2559,24 @@ Ex.: 10 = 10%.</p>
 </tr>
 <tr>
 <td>Measures</td>
-<td>&ndash;</td>
+<td><a href="#measures">Measures</a></td>
 <td>Opcional</td>
 <td>n/a</td>
 <td>Informações para cálculo de frete volumétrico do carrinho.</td>
 </tr>
+</tbody></table>
+
+<h3 id="measures">Measures</h3>
+
+<table><thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Obrigatório</th>
+<th>Tamanho</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
 <tr>
 <td>Package</td>
 <td>Alphanumeric</td>
