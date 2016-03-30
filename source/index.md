@@ -365,9 +365,9 @@ A URL de Retorno é a que a Cielo utilizará para redirecionar o cliente de volt
 |shipping_address_line1|Endereço de entrega|Alfanumérico|1|256|
 |shipping_address_line2|Complemento do endereço de entrega|Alfanumérico|1|256|
 |shipping_address_number|Número do endereço de entrega|Numérico|1|8|
-|payment_method_type|Cód. do tipo de meio de pagamento|Numérico|1|1|
-|payment_method_brand|Bandeira (somente para transações com meio de pagamento cartão de crédito)|Numérico|1|1|
-|payment_method_bank|Banco emissor (Para transações de Boleto e Débito Automático)|Numérico|1|1|
+|[payment_method_type](#payment_method_type|Cód. do tipo de meio de pagamento|Numérico|1|1|
+|[payment_method_brand](#payment_method_brand)|Bandeira (somente para transações com meio de pagamento cartão de crédito)|Numérico|1|1|
+|[payment_method_bank](#payment_method_bank)|Banco emissor (Para transações de Boleto e Débito Automático)|Numérico|1|1|
 |payment_maskedcredicard|Cartão Mascarado (Somente para transações com meio de pagamento cartão de crédito)|Alfanumérico|1|20|
 |payment_installments|Número de parcelas|Numérico|1|1|
 |payment_antifrauderesult|Status das transações de cartão de Crédito no Antifraude|Numérico|1|1|
@@ -375,6 +375,33 @@ A URL de Retorno é a que a Cielo utilizará para redirecionar o cliente de volt
 |payment_boletoexpirationdate|Data de vencimento para transações realizadas com boleto bancário|Numérico|1|10|
 |payment_status|Status da transação|Numérico|1|1|
 |tid|TID Cielo gerado no momento da autorização da transação|Alfanumérico|1|32|
+
+#### payment_method_type
+
+|Valor|Descrição|
+|-----|---------|
+|1|Cartão de Crédito|
+|2|Boleto Bancário|
+|3|Débito Online|
+|4|Cartão de Débito|
+
+#### payment_method_brand
+
+|Valor|Descrição|
+|-----|---------|
+|1|Visa|
+|2|Mastercad|
+|3|AmericanExpress|
+|4|Diners|
+|5|Elo|
+|6|Aura|
+|7|JCB|
+
+#### payment_method_bank
+|Valor|Descrição|
+|-----|---------|
+|1|Banco do Brasil|
+|2|Bradesco|
 
 <aside class="notice">A página destino do POST de Notificação deve seguir a formatação dos parâmetros com todos os nomes em MINUSCULO</aside>
 
