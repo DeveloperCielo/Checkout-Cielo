@@ -676,21 +676,21 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 <td>8</td>
 </tr>
 <tr>
-<td>payment_method_type</td>
+<td>[payment_method_type](#payment_method_type</td>
 <td>Cód. do tipo de meio de pagamento</td>
 <td>Numérico</td>
 <td>1</td>
 <td>1</td>
 </tr>
 <tr>
-<td>payment_method_brand</td>
+<td><a href="#payment_method_brand">payment_method_brand</a></td>
 <td>Bandeira (somente para transações com meio de pagamento cartão de crédito)</td>
 <td>Numérico</td>
 <td>1</td>
 <td>1</td>
 </tr>
 <tr>
-<td>payment_method_bank</td>
+<td><a href="#payment_method_bank">payment_method_bank</a></td>
 <td>Banco emissor (Para transações de Boleto e Débito Automático)</td>
 <td>Numérico</td>
 <td>1</td>
@@ -744,6 +744,88 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 <td>Alfanumérico</td>
 <td>1</td>
 <td>32</td>
+</tr>
+</tbody></table>
+
+<h4 id="payment_method_type">payment_method_type</h4>
+
+<table><thead>
+<tr>
+<th>Valor</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>Cartão de Crédito</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Boleto Bancário</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Débito Online</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Cartão de Débito</td>
+</tr>
+</tbody></table>
+
+<h4 id="payment_method_brand">payment_method_brand</h4>
+
+<table><thead>
+<tr>
+<th>Valor</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>Visa</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Mastercad</td>
+</tr>
+<tr>
+<td>3</td>
+<td>AmericanExpress</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Diners</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Elo</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Aura</td>
+</tr>
+<tr>
+<td>7</td>
+<td>JCB</td>
+</tr>
+</tbody></table>
+
+<h4 id="payment_method_bank">payment_method_bank</h4>
+
+<table><thead>
+<tr>
+<th>Valor</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>Banco do Brasil</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Bradesco</td>
 </tr>
 </tbody></table>
 
