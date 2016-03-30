@@ -1747,11 +1747,12 @@ Parâmetro de requisição com informações sobre o item do carrinho de compras
     "Type": "Correios",
     "SourceZipCode": "14400000",
     "TargetZipCode": "11000000",
-    "Measures": "",
-    "Package": "BOX",
-    "Lenght": 30,
-    "Height": 5,
-    "Width": 10,
+    "Measures": {
+        "Package": "BOX",
+        "Lenght": 30,
+        "Height": 5,
+        "Width": 10,
+    },
     "Address": {},
     "Services": []
 }
@@ -1766,7 +1767,12 @@ Parâmetro de requisição com informações sobre endereço e serviço de entre
 |TargetZipCode|Numeric|Opcional|8|CEP do endereço de entrega do comprador.|
 |Address|[Address](#address)|Opcional|n/a|Informações sobre o endereço de entrega do comprador.|
 |Services|[Service[]](#service)|Condicional|n/a|Lista de serviços de frete.|
-|Measures|--|Opcional|n/a|Informações para cálculo de frete volumétrico do carrinho.|
+|Measures|[Measures](#measures)|Opcional|n/a|Informações para cálculo de frete volumétrico do carrinho.|
+
+### Measures
+
+|Campo|Tipo|Obrigatório|Tamanho|Descrição|
+|-----|----|-----------|-------|---------|
 |Package|Alphanumeric|Obrigatório|n/a|Tipo de pacote: BOX (Caixa), ROL (Cilindro) ou ENVELOPE|
 |Lenght|Numeric|Obrigatório|n/a|Comprimento do pacote|
 |Height|Numeric|Condicional|n/a|Altura do pacote enviado|Obrigatório caso Shipping.Package como BOX|
