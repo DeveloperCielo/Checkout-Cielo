@@ -990,7 +990,7 @@ HttpWebResponse response = (HttpWebResponse) request.GetResponse();
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
 |-----|----|-----------|-------|---------|
-|OrderNumber|Alphanumeric|Opcional|0..64|Número do pedido da loja.|
+|OrderNumber|Alphanumeric|Opcional|0..64|Número do pedido da loja.Não enviar caracter especial|
 |SoftDescriptor|Alphanumeric|Opcional|0..13|Texto para ser exibido na fatura do portador, após o nome do estabelecimento comercial.|
 |Cart|[Cart](#cart)|Sim|n/a|Informações sobre o carrinho de compras.|
 |Shipping|[Shipping](#shipping)|Sim|n/a|Informações sobre a entrega do pedido."|
