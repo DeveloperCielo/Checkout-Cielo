@@ -198,6 +198,33 @@ Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental
 
 <aside class="notice">Veja a seção <a href="#certificado-extended-validation">Certificado Extended Validation</a> para informações sobre os certificados Cielo</aside>
 
+# Navegadores suportados
+
+Suportamos as versões dos seguintes navegadores:
+* Chrome - V40.0 ou posterior
+* FireFox -  V34.0.5 ou posterior
+* Internet Explorer - 10 ou superior
+* Safari (MAC/iOS) - 7 ou posterior  
+* Opera - V26 ou posterior
+
+Para que os compradores obtenham a melhor experiência do Checkout Cielo, recomendamos baixar a última versão dos navegadores mencionados acima. 
+
+Confira este site [link para http://browsehappy.com/] para visualizar as últimas versões dos navegadores.
+
+Observação: navegadores antigos podem negar acesso ao Checkout Cielo e alguns recursos não funcionarão como desejado. Navegadores mais recentes também oferecem melhores recursos de encriptação e privacidade.
+
+Se um recurso ainda não funcionar como esperado:
+* Tente utilizar outro navegador como solução temporária para o problema.
+* Se você utiliza o Internet Explorer, tente desativar o modo de compatibilidade.
+
+Se você já tentou essas soluções, mas continua a ter problemas, entre em contato conosco pelo [Suporte Cielo](#suporte-cielo) e forneça as seguintes informações:
+
+* Uma explicação geral do problema.
+* O navegador e a versão que estão sendo utilizados.
+* O sistema operacional e a versão utilizada no computador.
+* Uma captura de tela do problema.
+
+
 ## Histórico de versões
 
 * **Versão 1.3** - 21/01/2015
