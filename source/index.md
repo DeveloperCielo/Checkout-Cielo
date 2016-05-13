@@ -198,7 +198,7 @@ Após a conclusão da etapa de integração com o Checkout Cielo, é fundamental
 
 <aside class="notice">Veja a seção <a href="#certificado-extended-validation">Certificado Extended Validation</a> para informações sobre os certificados Cielo</aside>
 
-# Navegadores suportados
+## Navegadores suportados
 
 Suportamos as versões dos seguintes navegadores:
 * Chrome - V40.0 ou posterior
@@ -285,7 +285,7 @@ Essa tarja indica que a sua loja Checkout Cielo está agora operando em ambiente
 
 ### Como transacionar no Modo de teste.
 
-A realização de transações no modo de teste ocorre de forma normal. As informações da transação são enviadas via POST, utilizando os parâmetros como descrito no tópico [Integração com carrinho](#integração-carrinho-de-compras), entretanto, os meios de pagamentos a serem usados serão meios simulados.
+A realização de transações no modo de teste ocorre de forma normal. As informações da transação são enviadas via POST ou API, utilizando os parâmetros como descrito no tópico [Integração com carrinho](#integração-carrinho-de-compras), entretanto, os meios de pagamentos a serem usados serão meios simulados.
 
 Para realizar transações de teste com diferentes meios de pagamento, siga as seguintes regras:
 
