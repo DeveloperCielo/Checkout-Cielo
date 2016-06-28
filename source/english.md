@@ -1736,11 +1736,12 @@ Parameter of request with information about a shopping cart item. See also the [
     "Type": "Correios",
     "SourceZipCode": "14400000",
     "TargetZipCode": "11000000",
-    "Measures": "",
-    "Package": "BOX",
-    "Lenght": 30,
-    "Height": 5,
-    "Width": 10,
+    "Measures": {
+    	"Package": "BOX",
+    	"Lenght": 30,
+    	"Height": 5,
+	"Width": 10,
+    },
     "Address": {},
     "Services": []
 }
@@ -1748,13 +1749,18 @@ Parameter of request with information about a shopping cart item. See also the [
 Request parameter with information about the address and shipping service of product delivery.
 
 |Field|Type|Mandatory|Size|Description|
-|-----|----|-----------|-------|---------|
+|-----|----|---------|----|-----------|
 |Type|Alphanumeric|Sim|n/a|Shipping type: “Correios”, “FixedAmount”, “Free”, “WithoutShippingPickUp”, “WithoutShipping”.|
-|SourceZipCode|Numeric|Condicional|8|Origin Zip code of shopping cart|
-|TargetZipCode|Numeric|Opcional|8|Zip code of customer shipping address|
-|Address|[Address](#address)|Opcional|n/a|Information about the customer shipping address|
-|Services|[Service[]](#service)|Condicional|n/a|List of shipping services|
-|Measures|--|Opcional|n/a|Information to calculate the volumetric freight of shopping cart.|
+|SourceZipCode|Numeric|Conditional|8|Origin Zip code of shopping cart|
+|TargetZipCode|Numeric|Optional|8|Zip code of customer shipping address|
+|Address|[Address](#address)|Optional|n/a|Information about the customer shipping address|
+|Services|[Service[]](#service)|Conditional|n/a|List of shipping services|
+|Measures|[Measures](#measures)|Optional|n/a|Information for calculate volumetric freight of shopping cart.|
+
+### Métricas
+
+|Field|Type|Mandatory|Size|Description|
+|-----|----|---------|----|-----------|
 |Package|Alphanumeric|Obrigatório|n/a|Package type: BOX, ROL or ENVELOPE|
 |Lenght|Numeric|Mandatory|n/a|Packet length|
 |Height|Numeric|Conditional|n/a|Package Height sent|Required if Shipping.Package is a BOX, for example|
