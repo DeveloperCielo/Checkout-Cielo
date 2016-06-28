@@ -185,8 +185,6 @@ If you have questions at any stage or other technical information, contact the S
 
 Hours: 24 hours a day, 7 days a week.
 
-
-
 # Overview
 
 In this guide will be presented an overview of Cielo Checkout and the technical mechanism of integration with shopping cart or button. For every purchase order, the target is convert it in a sale. A sale with card can be characterized by an authorized and captured transaction.
@@ -203,6 +201,31 @@ After the conclusion of the integration stage with Cielo, it’s essential that 
 * The monetary value is always handled as intire values, without representation of decimals place, in such case the last two digits are considered as “centavos”. Example: R$ 1.286,87 is represented as 128687; R$ 1,00 is represented as 100.
 
 <aside class="notice">See the section [Certificated Extended Validation](#certificado-extended-validation) for more information</aside>
+
+## Browsers supported
+
+We support the following browser versions:
+* Chrome - V40.0 or subsequent
+* FireFox -  V34.0.5 or subsequent
+* Internet Explorer - 10 or subsequent
+* Safari (MAC/iOS) - 7 or subsequent
+* Opera - V26 or subsequent
+ 
+To best experience of Cielo Checkout, we recommend downloading the latest version of the browsers mentioned above.
+ 
+Check out this site [link para http://browsehappy.com/] to view the latest versions of browsers.
+
+Note: older browsers may be access denied to Checkout Cielo and some features will not work as desired. Newer browsers also offer better encryption features and privacy.
+
+If a feature does not work as expected:
+* Try another browser as a temporary solution to the problem.
+* If you use Internet Explorer, try disabling compatibility mode.
+If you have tried these solutions, but you still have problems, please contact us at [Cielo Support](# stand-cielo) and provide the following information:
+
+* A general explanation of the problem.
+* The browser and the version being used.
+* The operating system and version used on your computer.
+* A screenshot of the problem.
 
 ## Changelog
 
@@ -264,7 +287,7 @@ This stripe indicates that your Cielo Checkout store is operating now in a testi
 
 ### How transact on Testing Mode
 
-The transactions execution on testing mode happens in normal form. The information of transaction will be sent via POST, using the parameters as described on topic Integration with shopping cart, however, the payment methods to be used will be simulated methods.
+The transactions execution on testing mode happens in normal form. The information of transaction will be sent via POST or API, using the parameters as described on topic [Integração com carrinho](#integração-carrinho-de-compras), however, the payment methods to be used will be simulated methods.
 
 To execute test transactions with different payment methods, follow the next rules:
 
@@ -275,7 +298,7 @@ To test credit cards it’s necessary to define two important data; the authoriz
 **Status of Credit Card Authorization **
 
 |Card Final Digit|Returned Status|
-|----------------------|----------------|
+|----------------|---------------|
 |0, 1, 2, 3 ou 4|Authorized|
 |5, 6, 7, 8 ou 9|Unauthorized|
 
