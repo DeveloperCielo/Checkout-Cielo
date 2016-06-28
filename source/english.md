@@ -369,10 +369,10 @@ The notification URL is that Cielo will use to send the data of the transaction,
 |shipping_address_line1|Delivery address|Alphanumeric|1|256|
 |shipping_address_line2|Complement of delivery address|Alphanumeric|1|256|
 |shipping_address_number|Number of delivery adress|Numeric|1|8|
-|payment_method_type|Code of payment method|Numeric|1|1|
-|payment_method_brand|Card issuer (only for credit card transaction)|Numeric|1|1|
-|payment_method_bank|Bank issuer (For boleto and automatic transaction)|Numeric|1|1|
-|payment_maskedcredicard|Cartão Mascarado (Somente para transações com meio de pagamento cartão de crédito)|Alphanumeric|1|20|
+|[payment_method_type](#payment_method_type|Cod. of payment method|Numeric|1|1|
+|[payment_method_brand](#payment_method_brand)|Card issuer (only for transactions through credit card payment)|Numeric|1|1|
+|[payment_method_bank](#payment_method_bank)|Bank of issue (For automatic debt transactions or payments via boleto)|Numeric|1|1|
+|payment_maskedcredicard|Maked Card (Only for transactions with payment method via credit card)|Alphanumeric|1|20|
 |payment_installments|Number of Installments|Numeric|1|1|
 |payment_antifrauderesult|status of credit card transactions in anti-fraud|Numeric|1|1|
 |payment_boletonumber|Number of boleto|String|||
@@ -380,6 +380,33 @@ The notification URL is that Cielo will use to send the data of the transaction,
 |payment_status|Transaction Status|Numeric|1|1|
 |tid|Cielo's TID generated at the time of transaction authorization|Alphanumeric|1|32|
 
+#### payment_method_type
+ 
+|Valor|Descrição|
+|-----|---------|
+|1|Cartão de Crédito|
+|2|Boleto Bancário|
+|3|Débito Online|
+|4|Cartão de Débito|
+
+#### payment_method_brand
+
+|Valor|Descrição|
+|-----|---------|
+|1|Visa|
+|2|Mastercad|
+|3|AmericanExpress|
+|4|Diners|
+|5|Elo|
+|6|Aura|
+|7|JCB|
+
+#### payment_method_bank
+|Valor|Descrição|
+|-----|---------|
+|1|Banco do Brasil|
+|2|Bradesco|
+ 
 <aside class="notice">The destination page of Notification POST should follow the parameter formats with all the names in SMALL LETTERS</aside>
 
 ### POST notification of receipt
