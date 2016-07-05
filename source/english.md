@@ -185,8 +185,6 @@ If you have questions at any stage or other technical information, contact the S
 
 Hours: 24 hours a day, 7 days a week.
 
-
-
 # Overview
 
 In this guide will be presented an overview of Cielo Checkout and the technical mechanism of integration with shopping cart or button. For every purchase order, the target is convert it in a sale. A sale with card can be characterized by an authorized and captured transaction.
@@ -203,6 +201,31 @@ After the conclusion of the integration stage with Cielo, it’s essential that 
 * The monetary value is always handled as intire values, without representation of decimals place, in such case the last two digits are considered as “centavos”. Example: R$ 1.286,87 is represented as 128687; R$ 1,00 is represented as 100.
 
 <aside class="notice">See the section [Certificated Extended Validation](#certificado-extended-validation) for more information</aside>
+
+## Browsers supported
+
+We support the following browser versions:
+* Chrome - V40.0 or subsequent
+* FireFox -  V34.0.5 or subsequent
+* Internet Explorer - 10 or subsequent
+* Safari (MAC/iOS) - 7 or subsequent
+* Opera - V26 or subsequent
+ 
+To best experience of Cielo Checkout, we recommend downloading the latest version of the browsers mentioned above.
+ 
+Check out this site [link para http://browsehappy.com/] to view the latest versions of browsers.
+
+Note: older browsers may be access denied to Checkout Cielo and some features will not work as desired. Newer browsers also offer better encryption features and privacy.
+
+If a feature does not work as expected:
+* Try another browser as a temporary solution to the problem.
+* If you use Internet Explorer, try disabling compatibility mode.
+If you have tried these solutions, but you still have problems, please contact us at [Cielo Support](# stand-cielo) and provide the following information:
+
+* A general explanation of the problem.
+* The browser and the version being used.
+* The operating system and version used on your computer.
+* A screenshot of the problem.
 
 ## Changelog
 
@@ -264,7 +287,7 @@ This stripe indicates that your Cielo Checkout store is operating now in a testi
 
 ### How transact on Testing Mode
 
-The transactions execution on testing mode happens in normal form. The information of transaction will be sent via POST, using the parameters as described on topic Integration with shopping cart, however, the payment methods to be used will be simulated methods.
+The transactions execution on testing mode happens in normal form. The information of transaction will be sent via POST or API, using the parameters as described on topic [Integração com carrinho](#integração-carrinho-de-compras), however, the payment methods to be used will be simulated methods.
 
 To execute test transactions with different payment methods, follow the next rules:
 
@@ -275,7 +298,7 @@ To test credit cards it’s necessary to define two important data; the authoriz
 **Status of Credit Card Authorization **
 
 |Card Final Digit|Returned Status|
-|----------------------|----------------|
+|----------------|---------------|
 |0, 1, 2, 3 ou 4|Authorized|
 |5, 6, 7, 8 ou 9|Unauthorized|
 
@@ -369,10 +392,10 @@ The notification URL is that Cielo will use to send the data of the transaction,
 |shipping_address_line1|Delivery address|Alphanumeric|1|256|
 |shipping_address_line2|Complement of delivery address|Alphanumeric|1|256|
 |shipping_address_number|Number of delivery adress|Numeric|1|8|
-|payment_method_type|Code of payment method|Numeric|1|1|
-|payment_method_brand|Card issuer (only for credit card transaction)|Numeric|1|1|
-|payment_method_bank|Bank issuer (For boleto and automatic transaction)|Numeric|1|1|
-|payment_maskedcredicard|Cartão Mascarado (Somente para transações com meio de pagamento cartão de crédito)|Alphanumeric|1|20|
+|[payment_method_type](#payment_method_type|Cod. of payment method|Numeric|1|1|
+|[payment_method_brand](#payment_method_brand)|Card issuer (only for transactions through credit card payment)|Numeric|1|1|
+|[payment_method_bank](#payment_method_bank)|Bank of issue (For automatic debt transactions or payments via boleto)|Numeric|1|1|
+|payment_maskedcredicard|Maked Card (Only for transactions with payment method via credit card)|Alphanumeric|1|20|
 |payment_installments|Number of Installments|Numeric|1|1|
 |payment_antifrauderesult|status of credit card transactions in anti-fraud|Numeric|1|1|
 |payment_boletonumber|Number of boleto|String|||
@@ -380,6 +403,33 @@ The notification URL is that Cielo will use to send the data of the transaction,
 |payment_status|Transaction Status|Numeric|1|1|
 |tid|Cielo's TID generated at the time of transaction authorization|Alphanumeric|1|32|
 
+#### payment_method_type
+ 
+|Valor|Descrição|
+|-----|---------|
+|1|Cartão de Crédito|
+|2|Boleto Bancário|
+|3|Débito Online|
+|4|Cartão de Débito|
+
+#### payment_method_brand
+
+|Valor|Descrição|
+|-----|---------|
+|1|Visa|
+|2|Mastercad|
+|3|AmericanExpress|
+|4|Diners|
+|5|Elo|
+|6|Aura|
+|7|JCB|
+
+#### payment_method_bank
+|Valor|Descrição|
+|-----|---------|
+|1|Banco do Brasil|
+|2|Bradesco|
+ 
 <aside class="notice">The destination page of Notification POST should follow the parameter formats with all the names in SMALL LETTERS</aside>
 
 ### POST notification of receipt
@@ -1709,11 +1759,12 @@ Parameter of request with information about a shopping cart item. See also the [
     "Type": "Correios",
     "SourceZipCode": "14400000",
     "TargetZipCode": "11000000",
-    "Measures": "",
-    "Package": "BOX",
-    "Lenght": 30,
-    "Height": 5,
-    "Width": 10,
+    "Measures": {
+    	"Package": "BOX",
+    	"Lenght": 30,
+    	"Height": 5,
+	"Width": 10,
+    },
     "Address": {},
     "Services": []
 }
@@ -1721,13 +1772,18 @@ Parameter of request with information about a shopping cart item. See also the [
 Request parameter with information about the address and shipping service of product delivery.
 
 |Field|Type|Mandatory|Size|Description|
-|-----|----|-----------|-------|---------|
+|-----|----|---------|----|-----------|
 |Type|Alphanumeric|Sim|n/a|Shipping type: “Correios”, “FixedAmount”, “Free”, “WithoutShippingPickUp”, “WithoutShipping”.|
-|SourceZipCode|Numeric|Condicional|8|Origin Zip code of shopping cart|
-|TargetZipCode|Numeric|Opcional|8|Zip code of customer shipping address|
-|Address|[Address](#address)|Opcional|n/a|Information about the customer shipping address|
-|Services|[Service[]](#service)|Condicional|n/a|List of shipping services|
-|Measures|--|Opcional|n/a|Information to calculate the volumetric freight of shopping cart.|
+|SourceZipCode|Numeric|Conditional|8|Origin Zip code of shopping cart|
+|TargetZipCode|Numeric|Optional|8|Zip code of customer shipping address|
+|Address|[Address](#address)|Optional|n/a|Information about the customer shipping address|
+|Services|[Service[]](#service)|Conditional|n/a|List of shipping services|
+|Measures|[Measures](#measures)|Optional|n/a|Information for calculate volumetric freight of shopping cart.|
+
+### Métricas
+
+|Field|Type|Mandatory|Size|Description|
+|-----|----|---------|----|-----------|
 |Package|Alphanumeric|Obrigatório|n/a|Package type: BOX, ROL or ENVELOPE|
 |Lenght|Numeric|Mandatory|n/a|Packet length|
 |Height|Numeric|Conditional|n/a|Package Height sent|Required if Shipping.Package is a BOX, for example|
