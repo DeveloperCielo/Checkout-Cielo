@@ -302,7 +302,7 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 * Safari (MAC/iOS) - 7 ou posterior<br>
 * Opera - V26 ou posterior</p>
 
-<p>Para que os compradores obtenham a melhor experiência do Checkout Cielo, recomendamos baixar a última versão dos navegadores mencionados acima. </p>
+<p>Para que os compradores obtenham a melhor experiência do Checkout Cielo, recomendamos baixar a última versão dos navegadores mencionados acima.</p>
 
 <p>Confira este site [link para http://browsehappy.com/] para visualizar as últimas versões dos navegadores.</p>
 
@@ -324,6 +324,40 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 <h2 id="histórico-de-versões">Histórico de versões</h2>
 
 <ul>
+<li><strong>Versão 1.9</strong> - 22/02/2016
+
+<ul>
+<li>Notificação via JSON</li>
+</ul></li>
+<li><strong>Versão 1.8</strong> - 19/01/2016
+
+<ul>
+<li>Inclusão do Cálculo próprio de parcelamento com juros</li>
+<li>Inclusão do Frete Cubado.</li>
+<li>Atualização da Recorrência.</li>
+</ul></li>
+<li><strong>Versão 1.7</strong> - 03/11/2015
+
+<ul>
+<li>Alteração dos Status de pagamento,</li>
+</ul></li>
+<li><strong>Versão 1.6</strong> - 04/11/2015
+
+<ul>
+<li>Inclusão do ChargeBack nos status da transação</li>
+<li>Inclusão dos navegadores suportados.</li>
+</ul></li>
+<li><strong>Versão 1.5</strong> - 27/08/2015
+
+<ul>
+<li>Inclusão do Botão Recorrente.</li>
+</ul></li>
+<li><strong>Versão 1.4</strong> - 14/07/2015
+
+<ul>
+<li>Nó de Recorrência na API</li>
+<li>Inclusão de dados sobre Recorrência no item 11 do manual.</li>
+</ul></li>
 <li><strong>Versão 1.3</strong> - 21/01/2015
 
 <ul>
@@ -866,6 +900,50 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 <li>Se a URL for acessada pelo nosso servidor e não exibir o código de confirmação, o servidor irá tentar novamente por três vezes, a cada hora. Caso o <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code> ainda não seja exibido, será entendido que o servidor da loja não responde.</li>
 <li>A URL de Notificação somente pode utilizar <strong>porta 80</strong> (padrão para http) ou <strong>porta 443</strong> (padrão para https).</li>
 </ul>
+
+<h2 id="notificação-de-transação">Notificação de transação</h2>
+
+<p>O processo de notificação de transação e mudança de status descritos nos itens 6 e 7 deste manual também podem ser realizados via notificação e consulta em nossa base. Esse método pode ser utilizado apenas para integração via API.</p>
+
+<p>Nesse método, o post de notificação passa a conter os seguintes campos:</p>
+
+<table><thead>
+<tr>
+<th>Parâmetro</th>
+<th>Descrição</th>
+<th>Tipo do Campo</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>URL</td>
+<td>URL com os dados necessários para realizar a busca dos dados da transação.</td>
+<td>URL</td>
+</tr>
+<tr>
+<td>MerchantId</td>
+<td>Identificador da loja no Checkout Cielo; consta no Backoffice no menu Configuração/Dados Cadastrais.</td>
+<td>Alfanumérico (GUID)</td>
+</tr>
+<tr>
+<td>MerchantOrderNumber</td>
+<td>Número do pedido da loja; se não for enviado, o Checkout Cielo gerará um número, que será visualizado pelo Consumidor.</td>
+<td>Alfanumérico</td>
+</tr>
+</tbody></table>
+
+<p>Esse post será enviado tanto para a URL de notificação quanto de mudança de Status. Ao receber essa notificação, o lojista poderá consumir (Realizar um GET) a URL enviada, onde constam os dados necessários para que o Checkout libere a consulta.</p>
+
+<p>O resultado da consulta será todo o conteúdo descrito na tabela do item 7, que já inclui o status da transação.</p>
+
+<h2 id="mudança-de-status-via-consulta">Mudança de status via consulta</h2>
+
+<p>Para utilizar essa opção de notificação, você precisa configurá-la no Backoffice do Checkout Cielo. Para isso, basta acessar o site da Cielo &gt; Checkout Cielo &gt; Configurações, e definir a opção de notificação como “JSON”, conforme tela abaixo.</p>
+
+<p><img alt="Notificação" src="images/notificacao.jpg" /></p>
+
+<aside class="notice">Nesse modo de notificação, não há diferença entre os posts de notificação e mudança de Status.</aside>
+
+<p><img alt="Fluxo JSON" src="images/fluxo-json.jpg" /></p>
 
 <h2 id="url-de-mudança-de-status">URL de Mudança de Status</h2>
 
@@ -2415,13 +2493,15 @@ Lembre-se de substituir `00000000-0000-0000-0000-000000000000` pelo seu Merchant
 
 <h4 id="discount.type-=-amount">Discount.Type = Amount</h4>
 
-<p>Caso o tipo de desconto escolhido seja o <code class="prettyprint">Amount</code>, deverá ser inserido o <strong>valor em centavos</strong>.
-Ex.: 100 = 1,00.</p>
+<p>Caso o tipo de desconto escolhido seja o “Valor”, deverá ser inserido o valor em centavos. Ex.: 100 = 1,00 e no recibo da transação será exibido da seguinte forma:</p>
+
+<p><img alt="Amount" src="images/checkout-discount-amount.png" /></p>
 
 <h4 id="discount.type-percent">Discount.Type Percent</h4>
 
-<p>Caso o tipo de desconto escolhido seja o <code class="prettyprint">Percentual</code>, deverá ser inserido o <strong>valor em número inteiro</strong>.
-Ex.: 10 = 10%.</p>
+<p>Caso o tipo de desconto escolhido seja o “Percentual”, deverá ser inserido o valor em número inteiro. Ex.: 10 = 10% e no recibo da transação será exibido da seguinte forma:</p>
+
+<p><img alt="Percent" src="images/checkout-discount-percent.png" /></p>
 
 <h3 id="item">Item</h3>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
@@ -2593,6 +2673,44 @@ Ex.: 10 = 10%.</p>
 <td>Informações para cálculo de frete volumétrico do carrinho.</td>
 </tr>
 </tbody></table>
+
+<h3 id="tipos-de-fretes">Tipos de fretes</h3>
+
+<table><thead>
+<tr>
+<th>Tipo de frete</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Correios</td>
+<td>Serviços de Correios como Sedex, PAC e e-Sedex. É necessário uma configuração prévia no Backoffice.</td>
+</tr>
+<tr>
+<td>FixedAmount</td>
+<td>Frete com valor fixo</td>
+</tr>
+<tr>
+<td>Free</td>
+<td>Frete Grátis</td>
+</tr>
+<tr>
+<td>WithoutShippingPickUp</td>
+<td>Retirada na loja</td>
+</tr>
+<tr>
+<td>WithoutShipping</td>
+<td>Sem cobrança de frete (aplicável para serviços e produtos digitais).</td>
+</tr>
+</tbody></table>
+
+<p>O Frete Correios pode ser calculado de 2 maneiras: Frete com ou sem Volume. Para utilizar o frete volumétrico, basta enviar o nó Shipping.Measures, seguindo as regras de integração via API REST.</p>
+
+<p>Para realizar o cálculo de frete via Correios é necessário respeitar as medidas definidas pelo contrato utilizado pelo lojista. Para maiores informações sobre as dimensões e pesos permitidos, sugerimos que valide o contrato da loja no link abaixo:</p>
+
+<ol>
+<li>http://www.correios.com.br/para-voce/precisa-de-ajuda/limites-de-dimensoes-e-de-peso</li>
+</ol>
 
 <h3 id="measures">Measures</h3>
 
@@ -2995,6 +3113,44 @@ Ex.: 10 = 10%.</p>
 
 <p>Pedidos por meio de cartão de crédito serão incluídos no <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a> como <strong>“AUTORIZADO”</strong> ou <strong>“NÃO AUTORIZADO”</strong>, dependendo do resultado da autorização na Cielo. Caso haja algum problema no processamento deste pedido (consumidor fechou a tela, por exemplo), ele constará como <strong>“NÃO FINALIZADO”</strong>.</p>
 
+<h3 id="status-de-transação">Status de transação</h3>
+
+<table><thead>
+<tr>
+<th>Status de transação</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Pendente (Para todos os meios de pagamento)</td>
+<td>Indica que o pagamento ainda está sendo processado; OBS: Boleto - Indica que o boleto não teve o status alterado pelo lojista</td>
+</tr>
+<tr>
+<td>Pago (Para todos os meios de pagamento)</td>
+<td>Transação capturada e o dinheiro será depositado em conta.</td>
+</tr>
+<tr>
+<td>Negado (Somente para Cartão Crédito)</td>
+<td>Transação não autorizada pelo responsável do meio de pagamento</td>
+</tr>
+<tr>
+<td>Expirado (Cartões de Crédito e Boleto)</td>
+<td>Transação deixa de ser válida.</td>
+</tr>
+<tr>
+<td>Cancelado (Para cartões de crédito)</td>
+<td>Transação foi cancelada pelo lojista</td>
+</tr>
+<tr>
+<td>Autorizado (somente para Cartão de Crédito)</td>
+<td>Transação autorizada pelo emissor do cartão. Deve ser capturada para que o dinheiro seja depositado em conta</td>
+</tr>
+<tr>
+<td>Chargeback (somente para Cartão de Crédito)</td>
+<td>Transação cancelada pelo consumidor junto ao emissor do cartão. O Dinheiro não será depositado em conta.</td>
+</tr>
+</tbody></table>
+
 <h3 id="análise-de-fraude">Análise de Fraude</h3>
 
 <p>Pedidos <strong>“AUTORIZADOS”</strong> serão enviados online, ou seja, no ato da venda, para análise da ferramenta de antifraude, quando  este desenvolvimento estiver devidamente padronizado na integração. O resultado desta análise será traduzido no campo <strong>“Indicação AF”</strong> no Relatório de Pedido, para cada pedido.</p>
@@ -3002,6 +3158,66 @@ Ex.: 10 = 10%.</p>
 <p>Esta análise indicará um <strong>“BAIXO RISCO”</strong> ou “ALTO RISCO” para a venda em questão. Esta sugestão é o que deve guiar a decisão de se confirmar  ou cancelar a venda. A analise será apresentada no “Detalhes do Pedido”, como abaixo:</p>
 
 <p><img alt="Análise de risco" src="images/checkout-cielo-analise-risco.png" /></p>
+
+<h3 id="status-do-antifraude">Status do antifraude</h3>
+
+<table><thead>
+<tr>
+<th>Status Antifraude</th>
+<th>Substatus</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Baixo Risco</td>
+<td>Baixo Risco</td>
+<td>Baixo risco de ser uma transação fraudulenta</td>
+</tr>
+<tr>
+<td>Médio Risco</td>
+<td>Médio Risco</td>
+<td>Médio risco de ser uma transação fraudulenta</td>
+</tr>
+<tr>
+<td>Não finalizado</td>
+<td>Não finalizado</td>
+<td>Não foi possível finalizar a consulta</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>Autenticado</td>
+<td>Transações autenticadas pelo banco</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>AF Não contratado</td>
+<td>Antifraude não habilitado no plano do lojista</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>AF Dispensado</td>
+<td>Antifraude dispensado via contrato ou inferior ao valor mínimo de antifrade parametrizado backoffice no lojista</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>Não aplicável</td>
+<td>Meio de pagamento não analisável como cartões de débito, boleto e débito online</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>Transação de recorrência</td>
+<td>Transação de crédito seja posterior a transação de agendamento</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>Transação negada</td>
+<td>Venda a crédito foi negada</td>
+</tr>
+</tbody></table>
+
+<p>Você pode visualizar o status do antifraude acessando o detalhe da compra, na aba Pedidos e clicando no (+)</p>
+
+<p><img alt="Status Antifraude" src="images/checkout-status-antifraude.png" /></p>
 
 <h2 id="pagamento-recorrente-programado">Pagamento Recorrente Programado</h2>
 

@@ -297,6 +297,33 @@
 
 <aside class="notice">See the section [Certificated Extended Validation](#certificado-extended-validation) for more information</aside>
 
+<h2 id="browsers-supported">Browsers supported</h2>
+
+<p>We support the following browser versions:
+* Chrome - V40.0 or subsequent
+* FireFox -  V34.0.5 or subsequent
+* Internet Explorer - 10 or subsequent
+* Safari (MAC/iOS) - 7 or subsequent
+* Opera - V26 or subsequent</p>
+
+<p>To best experience of Cielo Checkout, we recommend downloading the latest version of the browsers mentioned above.</p>
+
+<p>Check out this site [link para http://browsehappy.com/] to view the latest versions of browsers.</p>
+
+<p>Note: older browsers may be access denied to Checkout Cielo and some features will not work as desired. Newer browsers also offer better encryption features and privacy.</p>
+
+<p>If a feature does not work as expected:
+* Try another browser as a temporary solution to the problem.
+* If you use Internet Explorer, try disabling compatibility mode.
+If you have tried these solutions, but you still have problems, please contact us at <a href="# stand-cielo">Cielo Support</a> and provide the following information:</p>
+
+<ul>
+<li>A general explanation of the problem.</li>
+<li>The browser and the version being used.</li>
+<li>The operating system and version used on your computer.</li>
+<li>A screenshot of the problem.</li>
+</ul>
+
 <h2 id="changelog">Changelog</h2>
 
 <ul>
@@ -432,7 +459,7 @@
 
 <h3 id="how-transact-on-testing-mode">How transact on Testing Mode</h3>
 
-<p>The transactions execution on testing mode happens in normal form. The information of transaction will be sent via POST, using the parameters as described on topic Integration with shopping cart, however, the payment methods to be used will be simulated methods.</p>
+<p>The transactions execution on testing mode happens in normal form. The information of transaction will be sent via POST or API, using the parameters as described on topic <a href="#integração-carrinho-de-compras">Integração com carrinho</a>, however, the payment methods to be used will be simulated methods.</p>
 
 <p>To execute test transactions with different payment methods, follow the next rules:</p>
 
@@ -689,29 +716,29 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 <td>8</td>
 </tr>
 <tr>
-<td>payment_method_type</td>
-<td>Code of payment method</td>
+<td>[payment_method_type](#payment_method_type</td>
+<td>Cod. of payment method</td>
 <td>Numeric</td>
 <td>1</td>
 <td>1</td>
 </tr>
 <tr>
-<td>payment_method_brand</td>
-<td>Card issuer (only for credit card transaction)</td>
+<td><a href="#payment_method_brand">payment_method_brand</a></td>
+<td>Card issuer (only for transactions through credit card payment)</td>
 <td>Numeric</td>
 <td>1</td>
 <td>1</td>
 </tr>
 <tr>
-<td>payment_method_bank</td>
-<td>Bank issuer (For boleto and automatic transaction)</td>
+<td><a href="#payment_method_bank">payment_method_bank</a></td>
+<td>Bank of issue (For automatic debt transactions or payments via boleto)</td>
 <td>Numeric</td>
 <td>1</td>
 <td>1</td>
 </tr>
 <tr>
 <td>payment_maskedcredicard</td>
-<td>Cartão Mascarado (Somente para transações com meio de pagamento cartão de crédito)</td>
+<td>Maked Card (Only for transactions with payment method via credit card)</td>
 <td>Alphanumeric</td>
 <td>1</td>
 <td>20</td>
@@ -757,6 +784,88 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 <td>Alphanumeric</td>
 <td>1</td>
 <td>32</td>
+</tr>
+</tbody></table>
+
+<h4 id="payment_method_type">payment_method_type</h4>
+
+<table><thead>
+<tr>
+<th>Valor</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>Cartão de Crédito</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Boleto Bancário</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Débito Online</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Cartão de Débito</td>
+</tr>
+</tbody></table>
+
+<h4 id="payment_method_brand">payment_method_brand</h4>
+
+<table><thead>
+<tr>
+<th>Valor</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>Visa</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Mastercad</td>
+</tr>
+<tr>
+<td>3</td>
+<td>AmericanExpress</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Diners</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Elo</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Aura</td>
+</tr>
+<tr>
+<td>7</td>
+<td>JCB</td>
+</tr>
+</tbody></table>
+
+<h4 id="payment_method_bank">payment_method_bank</h4>
+
+<table><thead>
+<tr>
+<th>Valor</th>
+<th>Descrição</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1</td>
+<td>Banco do Brasil</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Bradesco</td>
 </tr>
 </tbody></table>
 
@@ -2387,11 +2496,12 @@ The buyer&rsquo;s credit card data is stored securely within the Checkout Cielo,
     </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"SourceZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14400000"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"TargetZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11000000"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Measures"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Package"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BOX"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Lenght"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Height"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Measures"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"Package"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BOX"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Lenght"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Height"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
     </span><span class="s2">"Width"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="err">}</span><span class="p">,</span><span class="w">
     </span><span class="s2">"Address"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
     </span><span class="s2">"Services"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -2418,38 +2528,51 @@ The buyer&rsquo;s credit card data is stored securely within the Checkout Cielo,
 <tr>
 <td>SourceZipCode</td>
 <td>Numeric</td>
-<td>Condicional</td>
+<td>Conditional</td>
 <td>8</td>
 <td>Origin Zip code of shopping cart</td>
 </tr>
 <tr>
 <td>TargetZipCode</td>
 <td>Numeric</td>
-<td>Opcional</td>
+<td>Optional</td>
 <td>8</td>
 <td>Zip code of customer shipping address</td>
 </tr>
 <tr>
 <td>Address</td>
 <td><a href="#address">Address</a></td>
-<td>Opcional</td>
+<td>Optional</td>
 <td>n/a</td>
 <td>Information about the customer shipping address</td>
 </tr>
 <tr>
 <td>Services</td>
 <td><a href="#service">Service[]</a></td>
-<td>Condicional</td>
+<td>Conditional</td>
 <td>n/a</td>
 <td>List of shipping services</td>
 </tr>
 <tr>
 <td>Measures</td>
-<td>&ndash;</td>
-<td>Opcional</td>
+<td><a href="#measures">Measures</a></td>
+<td>Optional</td>
 <td>n/a</td>
-<td>Information to calculate the volumetric freight of shopping cart.</td>
+<td>Information for calculate volumetric freight of shopping cart.</td>
 </tr>
+</tbody></table>
+
+<h3 id="métricas">Métricas</h3>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Mandatory</th>
+<th>Size</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
 <tr>
 <td>Package</td>
 <td>Alphanumeric</td>
