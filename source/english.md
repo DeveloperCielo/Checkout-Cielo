@@ -229,6 +229,22 @@ If you have tried these solutions, but you still have problems, please contact u
 
 ## Changelog
 
+* **Version 1.9** - 02/22/2016
+   - Notification via JSON
+* **Version 1.8** - 01/19/2016
+   - Inclusion of Own Installment Calculation with interest costs
+   - Inclusion of Cubed Freight ("frete cubado")
+   - Updating Recurrence
+* **Version 1.7** - 11/03/2015
+   - Changing payment status,
+* **Version 1.6** - 11/04/2015
+   - Inclusion of ChargeBack in the transaction status
+   - Inclusion of supported browsers.
+* **Version 1.5** - 08/27/2015
+   - Inclusion of Recurring button.
+* **Version 1.4** - 07/14/2015
+   - Recurrence node API
+   - Inclusion of data on Recurrence in item 11 of the manual.
 * **Version 1.3** - 01/21/2015
     - Change of names – Solution integrated for Cielo Checkout
 * **Version 1.2** - 01/09/2015
