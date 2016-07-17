@@ -211,8 +211,8 @@ We support the following browser versions:
 * Safari (MAC/iOS) - 7 or subsequent
 * Opera - V26 or subsequent
  
-To best experience of Cielo Checkout, we recommend downloading the latest version of the browsers mentioned above.
- 
+To obtain the best experience of Cielo Checkout, we recommend for customers downloading the latest version of the browsers mentioned above.
+
 Check out this site [link para http://browsehappy.com/] to view the latest versions of browsers.
 
 Note: older browsers may be access denied to Checkout Cielo and some features will not work as desired. Newer browsers also offer better encryption features and privacy.
