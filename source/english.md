@@ -1963,7 +1963,19 @@ Cielo Checkout accepts the main card issuers of Brazil and world. They are: Visa
 
 From the creation of a transaction, it can assume different status. The transaction status can be performed through the exchange of messages between the store and Cielo, or, in automatic form, for example, when the deadline to a capture of an authorized transaction expires.
 
-Orders for credit card will be included on Cielo Checkout Backoffice as “AUTHORIZED” or “UNAUTHORIZED”, depending of the result of authorization at Cielo. If you have any problems during the proceeding of this order (the customer closed the screen, for example), it will be recorded as “DO NOT FINISHED”.
+Orders for credit card will be included on Cielo Checkout Backoffice at [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/) as **“AUTHORIZED”** ou **“UNAUTHORIZED”**, depending of the result of authorization at Cielo. If you have any problems during the proceeding of this order (the customer closed the screen, for example), it will be recorded as “DO NOT FINISHED”.
+
+### Status de transação
+
+|Transaction Status |Description|
+|-------------------|-----------|
+|Pending (For all payment methods)|Indicates a payment that is being processed; Comments: Boleto - Indicates that a boleto didn't changed its status by the merchant|
+|Paid (For all payment methods)|Captured transacation and the money will be deposited in account.|
+|Denied (Only for Credit Card)|Transaction not authorized by the payment method issuer|
+|Expired (Only for Credit and Boleto)|Transaction is not valid anymore.|
+|Cancelled (For credit card)|Transaction was cancelled by the merchant|
+|Authorized (Only for Credit Card)|Transaction authorized by Card issuer. It should be captured for the money to be deposited into account|
+|Chargeback (Only for Credit Card)|Transaction authorized by the customer into card issuer. The value wouldn't be deposited into account.|
 
 ### Fraud analysis
 
