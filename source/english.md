@@ -1985,6 +1985,24 @@ This analysis will indicate a **“LOW RISK”** or “HIGH RISK” for the sale
 
 ![Análise de risco](/images/checkout-cielo-analise-risco.png)
 
+### Antifraud Status 
+
+|Antifraud Status|Substatus|Description|
+|----------------|---------|-----------|
+|Low Risk|Low Risk|Low Risk of a fraudlent transaction|
+|Medium Risk|Medium Risk|Medium Risk of a fraudlent transaction|
+|Not finished|Not finished|It's impossible to finish this consult|
+|N/A|Authenticated|Authenticated Transaction by bank|
+|N/A|AF not hired|Antifraud is not enabled at merchant plan|
+|N/A|AF Dispensed|Antifraud dispensed via contract or it is below of the minimum value of fraud in merchant parameterized backoffice|
+|N/A|Not applicable|Unanalysable payment method as debit cards, boleto and online debit|
+|N/A|Recurrence Transaction|Credit transaction is later than the scheduled transaction|
+|N/A|Transaction denied|Sale to credit was denied|
+
+You can view the status of the anti-fraud accessing the detail of the purchase, the Orders tab and clicking the (+)
+
+![Status Antifraude](/images/checkout-status-antifraude.png)
+
 ## Recurring Payment Scheduled
 
 The Recurrence is an automated scheduling process for credit transactions, that is, a transaction that automatically repeats, without requiring the buyer to access transactional screen, according to the rules defined at the time of scheduling.
