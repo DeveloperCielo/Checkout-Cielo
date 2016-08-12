@@ -163,7 +163,7 @@
 <ul>
 <li><a href="attachment/Raiz.crt">Root Certificate</a></li>
 <li><a href="attachment/Intermediaria.crt">Intermediate Certificate</a></li>
-<li><a href="attachment/ecommerce.cielo.com.br.crt">E-Commerce Cielo Certificate</a></li>
+<li><a href="./attachment/ecommerce.cielo.com.br.crt">E-Commerce Cielo Certificate</a></li>
 </ul>
 
 <aside class="notice">If your server is a Linux distribution and you have familiarity and ssh access, then <a href="./attachment/cielo.sh">the Linux Installer - cielo.sh</a> can help you with the installation. Only use the installer if you know what you&rsquo;re doing. When in doubt, contact your server vendor support.</aside>
@@ -187,7 +187,7 @@
 <ul>
 <li><a href="attachment/Raiz.crt">Root Certificate</a></li>
 <li><a href="attachment/Intermediaria.crt">Intermediate Certificate</a></li>
-<li><a href="attachment/ecommerce.cielo.com.br.crt">E-Commerce Cielo Certificate</a></li>
+<li><a href="./attachment/ecommerce.cielo.com.br.crt">E-Commerce Cielo Certificate</a></li>
 </ul>
 
 <h4 id="2nd-step:">2nd STEP:</h4>
@@ -306,7 +306,7 @@
 * Safari (MAC/iOS) - 7 or subsequent
 * Opera - V26 or subsequent</p>
 
-<p>To best experience of Cielo Checkout, we recommend downloading the latest version of the browsers mentioned above.</p>
+<p>To obtain the best experience of Cielo Checkout, we recommend for customers downloading the latest version of the browsers mentioned above.</p>
 
 <p>Check out this site [link para http://browsehappy.com/] to view the latest versions of browsers.</p>
 
@@ -327,6 +327,40 @@ If you have tried these solutions, but you still have problems, please contact u
 <h2 id="changelog">Changelog</h2>
 
 <ul>
+<li><strong>Version 1.9</strong> - 02/22/2016
+
+<ul>
+<li>Notification via JSON</li>
+</ul></li>
+<li><strong>Version 1.8</strong> - 01/19/2016
+
+<ul>
+<li>Inclusion of Own Installment Calculation with interest costs</li>
+<li>Inclusion of Cubed Freight (&ldquo;frete cubado&rdquo;)</li>
+<li>Updating Recurrence</li>
+</ul></li>
+<li><strong>Version 1.7</strong> - 11/03/2015
+
+<ul>
+<li>Changing payment status,</li>
+</ul></li>
+<li><strong>Version 1.6</strong> - 11/04/2015
+
+<ul>
+<li>Inclusion of ChargeBack in the transaction status</li>
+<li>Inclusion of supported browsers.</li>
+</ul></li>
+<li><strong>Version 1.5</strong> - 08/27/2015
+
+<ul>
+<li>Inclusion of Recurring button.</li>
+</ul></li>
+<li><strong>Version 1.4</strong> - 07/14/2015
+
+<ul>
+<li>Recurrence node API</li>
+<li>Inclusion of data on Recurrence in item 11 of the manual.</li>
+</ul></li>
 <li><strong>Version 1.3</strong> - 01/21/2015
 
 <ul>
@@ -2967,7 +3001,45 @@ To use the Volumetric shipping, just send the Shipping.Measures node, following 
 
 <p>From the creation of a transaction, it can assume different status. The transaction status can be performed through the exchange of messages between the store and Cielo, or, in automatic form, for example, when the deadline to a capture of an authorized transaction expires.</p>
 
-<p>Orders for credit card will be included on Cielo Checkout Backoffice as “AUTHORIZED” or “UNAUTHORIZED”, depending of the result of authorization at Cielo. If you have any problems during the proceeding of this order (the customer closed the screen, for example), it will be recorded as “DO NOT FINISHED”.</p>
+<p>Orders for credit card will be included on Cielo Checkout Backoffice at <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a> as <strong>“AUTHORIZED”</strong> ou <strong>“UNAUTHORIZED”</strong>, depending of the result of authorization at Cielo. If you have any problems during the proceeding of this order (the customer closed the screen, for example), it will be recorded as “DO NOT FINISHED”.</p>
+
+<h3 id="status-de-transação">Status de transação</h3>
+
+<table><thead>
+<tr>
+<th>Transaction Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Pending (For all payment methods)</td>
+<td>Indicates a payment that is being processed; Comments: Boleto - Indicates that a boleto didn&rsquo;t changed its status by the merchant</td>
+</tr>
+<tr>
+<td>Paid (For all payment methods)</td>
+<td>Captured transacation and the money will be deposited in account.</td>
+</tr>
+<tr>
+<td>Denied (Only for Credit Card)</td>
+<td>Transaction not authorized by the payment method issuer</td>
+</tr>
+<tr>
+<td>Expired (Only for Credit and Boleto)</td>
+<td>Transaction is not valid anymore.</td>
+</tr>
+<tr>
+<td>Cancelled (For credit card)</td>
+<td>Transaction was cancelled by the merchant</td>
+</tr>
+<tr>
+<td>Authorized (Only for Credit Card)</td>
+<td>Transaction authorized by Card issuer. It should be captured for the money to be deposited into account</td>
+</tr>
+<tr>
+<td>Chargeback (Only for Credit Card)</td>
+<td>Transaction authorized by the customer into card issuer. The value wouldn&rsquo;t be deposited into account.</td>
+</tr>
+</tbody></table>
 
 <h3 id="fraud-analysis">Fraud analysis</h3>
 
@@ -2976,6 +3048,66 @@ To use the Volumetric shipping, just send the Shipping.Measures node, following 
 <p>This analysis will indicate a <strong>“LOW RISK”</strong> or “HIGH RISK” for the sale in question. This suggestion is what that must guide the decision of approve or cancel a sale. The analysis will be presented at “Order Details”, as below:</p>
 
 <p><img alt="Análise de risco" src="images/checkout-cielo-analise-risco.png" /></p>
+
+<h3 id="antifraud-status">Antifraud Status</h3>
+
+<table><thead>
+<tr>
+<th>Antifraud Status</th>
+<th>Substatus</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Low Risk</td>
+<td>Low Risk</td>
+<td>Low Risk of a fraudlent transaction</td>
+</tr>
+<tr>
+<td>Medium Risk</td>
+<td>Medium Risk</td>
+<td>Medium Risk of a fraudlent transaction</td>
+</tr>
+<tr>
+<td>Not finished</td>
+<td>Not finished</td>
+<td>It&rsquo;s impossible to finish this consult</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>Authenticated</td>
+<td>Authenticated Transaction by bank</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>AF not hired</td>
+<td>Antifraud is not enabled at merchant plan</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>AF Dispensed</td>
+<td>Antifraud dispensed via contract or it is below of the minimum value of fraud in merchant parameterized backoffice</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>Not applicable</td>
+<td>Unanalysable payment method as debit cards, boleto and online debit</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>Recurrence Transaction</td>
+<td>Credit transaction is later than the scheduled transaction</td>
+</tr>
+<tr>
+<td>N/A</td>
+<td>Transaction denied</td>
+<td>Sale to credit was denied</td>
+</tr>
+</tbody></table>
+
+<p>You can view the status of the anti-fraud accessing the detail of the purchase, the Orders tab and clicking the (+)</p>
+
+<p><img alt="Status Antifraude" src="images/checkout-status-antifraude.png" /></p>
 
 <h2 id="recurring-payment-scheduled">Recurring Payment Scheduled</h2>
 
