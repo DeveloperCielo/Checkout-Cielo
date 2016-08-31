@@ -34,7 +34,7 @@ Após o portador do cartão (consumidor) selecionar suas compras e apertar o bot
 1. A API da Cielo retorna o **CheckoutURL**, que deverá ser utilizado pela loja para redirecionar o cliente ao ambiente seguro de pagamento da Cielo (página do Checkout Cielo)
 2. A loja redireciona o cliente para a URL retornada pela Cielo
 3. O portador do cartão digita os dados de pagamento e conclui a compra
-4. O Checkout Cielo redireciona o cliente para a URL de Retorno escolhida pela loja, configurada no [Backoffice Checkout Cielo](/Checkout-Backoffice/) desta solução
+4. O Checkout Cielo redireciona o cliente para a URL de Retorno escolhida pela loja, configurada no [Backoffice Checkout Cielo](/Checkout-Backoffice/) desta solução, ou para a URL de Retorno, configurada através da integração via API.
 5. A loja avisa ao cliente que o processo foi concluído e que ele receberá mais informações sobre a compra e o pagamento por e-mail.
 6. O Checkout Cielo envia o POST de notificação para a URL de Notificação, configurada no Backoffice
 7. A loja processa o pedido de compra utilizando os dados do POST de notificação e, se a transação estiver autorizada, libera o pedido.
@@ -362,7 +362,7 @@ Após o portador do cartão (consumidor) selecionar suas compras e apertar o bot
 1. A API da Cielo retorna o **CheckoutURL**, que deverá ser utilizado pela loja para redirecionar o cliente ao ambiente seguro de pagamento da Cielo (página do Checkout Cielo)
 2. A loja redireciona o cliente para a URL retornada pela Cielo
 3. O portador do cartão digita os dados de pagamento e conclui a compra
-4. O Checkout Cielo redireciona o cliente para a URL de Retorno escolhida pela loja, configurada no [Backoffice Checkout Cielo](/Checkout-Backoffice/) desta solução
+4. O Checkout Cielo redireciona o cliente para a URL de Retorno escolhida pela loja, configurada no [Backoffice Checkout Cielo](/Checkout-Backoffice/) desta solução, ou para a URL de Retorno, configurada através da integração via API.
 5. A loja avisa ao cliente que o processo foi concluído e que ele receberá mais informações sobre a compra e o pagamento por e-mail.
 6. O Checkout Cielo envia o POST de notificação para a URL de Notificação, configurada no Backoffice
 7. A loja processa o pedido de compra utilizando os dados do POST de notificação e, se a transação estiver autorizada, libera o pedido.
@@ -379,7 +379,30 @@ A loja deve configurar as três URLs (notificação, retorno e status) em seu [B
 
 ## URL de Retorno
 
-A URL de Retorno é a que a Cielo utilizará para redirecionar o cliente de volta para a loja assim que o pagamento for concluído. Essa página da loja deverá estar preparada para receber o cliente ao fim do fluxo e avisá-lo que o processo foi concluído e que ele receberá mais informações em breve.
+Ao finalizar uma transação, o comprador final poderá ser redirecionado para a URL de retorno. Ao clicar no botão “VOLTAR” na tela de comprovante de vendas, o comprador será direcionando para a URL de retorno previamente cadastrada no Backoffice ou enviada via contrato na API, ou seja, o Checkout Cielo disponibiliza duas opções para configurar a URL de retorno:
+
+* via Backoffice: a URL de retorno é fixa para todas as compras.
+* via Contrato técnico: a URL de retorno pode ser parametrizada a cada compra, ou seja, é flexível.
+
+### Via Backoffice
+
+Via Backoffice, a url é cadastrada pelo próprio lojista, no site da Cielo, área restrita no item Vendas Online > Checkout Cielo > Configurações da loja.
+
+### Via contrato técnico na API
+
+Para utilizar a url de retorno via contrato técnico (na API), segue o parâmetro que deve ser enviado ao Checkout via contrato técnico:
+
+```json
+"Options": {
+  "ReturnUrl": "http://url-de-retorno"
+}
+```
+
+#### Características
+
+* A URL de Retorno via contrato está disponível apenas na integração via API.
+* Caso uma URL de retorno seja enviada vai API, ela terá prioridade sobre a URL cadastrada no Backoffice.
+* Na integração Checkout Cielo via Botão, só é possível usar a opção de URL de retorno via backoffice.
 
 ## URL de Notificação
 
@@ -1727,6 +1750,68 @@ Basta cadastrar o produto, incluindo um intervalo de cobrança e uma data para e
 ![Botão recorrência](/images/checkout-botao-recorrencia.png)
 
 <aside class="warning">Caso um botão seja utilizado após a “Data final” cadastrada, a transação apresentará um erro exibindo “Oppss” na tela transacional. Data pode ser editada na tela de edição do botão dentro de “Detalhes do Produto”</aside>
+
+# Opções de parcelamento do Checkout Cielo
+
+O Checkout Cielo disponibiliza dois métodos de parcelamento:
+
+## Parcelamento via backoffice
+
+* O parcelamento disponível como opção de pagamento da loja deve ser configurado pelo lojista no backoffice do Checkout, localizado no site da Cielo.
+* A parametrização das parcelas será aplicada em todas as vendas.
+
+### Características
+
+* Disponível nas integrações do Checkout Cielo via POST, REST ou Botão;
+* O valor total dos itens do carrinho é somado e dividido pela quantidade de parcelas do lojista;
+* O valor da compra é sempre o mesmo, independentemente da quantidade de parcelas escolhida pelo comprador;
+* O valor do frete é somado ao valor do parcelamento;
+* A opção “à vista” está disponível ao comprador.
+
+## Parcelamento via contrato (por venda)
+
+* Nesta opção, o lojista pode configurar a quantidade de parcelas por venda, especificado via contrato técnico (integração json) no momento de envio do pedido de venda.
+* Nesta opção, o parcelamento é simplificado, sem aplicação de juros, pois o Checkout realiza o cálculo das parcelas considerando valor total e quantidade de parcelas enviadas.
+
+<aside class="notice"><strong>ATENÇÃO:</strong> na opção de parcelamento via contrato só pode ser enviada uma quantidade de parcelas inferior ao que está cadastrado no backoffice. </aside>
+
+### Características
+
+* Disponível apenas na integração do Checkout Cielo via REST;
+* O lojista envia a quantidade máxima de parcelas que deseja exibir ao comprador;
+* O valor do frete é somado ao valor do parcelamento.
+
+<aside class="warning"><strong>Importante:</strong> o campo MaxNumberOfInstallments indica a quantidade máxima de parcelas. Caso o campo não seja enviado, o Checkout Cielo seguirá o parcelamento configurado via Backoffice.</aside>
+
+## Exemplos de Integração/Pagamentos
+
+Abaixo, segue os parâmetros que devem ser enviados ao Checkout via contrato técnico, limitando a quantidade máxima de parcelas disponíveis ao comprador por venda:
+
+### Parcelamento via contrato (por venda)
+
+```json
+"Payment": {
+  "MaxNumberOfInstallments": 3
+}
+```
+
+<aside class="warning"><strong>Importante:</strong> O valor informado no campo `MaxNumberOfInstallments` não pode ser maior que o valor configurado no backoffice. </aside>
+
+### Desconto para pagamento à vista com cartão de crédito
+
+* Disponível na integração do Checkout Cielo via REST;
+* O valor do desconto vai ser aplicado somente para a primeira parcela;
+* O desconto é aplicado no valor do carrinho para depois ser somado o frete.
+
+<aside class="warning"><strong>Importante:</strong> O valor informado para o campo `FirstInstallmentDiscount` vai ser sempre o valor de uma porcentagem de desconto. Exemplo: 5 equivale a 5% de desconto.</aside>
+
+### Desconto para 1ª parcela no cartão de credito
+
+```json
+"Payment": {
+  "FirstInstallmentDiscount": 5
+}
+```
 
 # Parâmetros de integração
 
