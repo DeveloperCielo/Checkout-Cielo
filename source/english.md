@@ -34,7 +34,7 @@ After the cardholder (consumer) select their purchases and press the "Buy" butto
 1. Cielo API returns the CheckoutURL, which should be used by the store to redirect the client to safety payment environment of Cielo (Cielo Checkout page)
 2. The store redirects the client to the URL returned by Cielo
 3. The cardholder enters the payment details and completes the purchase
-4. The Cielo Checkout redirects the client to the Return URL chosen by the store, set in [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/) this solution
+4. The Cielo Checkout redirects the client to the Return URL chosen by the store, set in [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/) this solution, or the Return URL, set through integration via API.
 5. The store notifies the customer that the process has been completed and that it will receive more information about the purchase and payment by e-mail.
 6. The Cielo Checkout sends a notification POST to the Notification URL, set in Backoffice
 7. The store process the purchase order using the data from notification POST and, if the transaction is authorized, the order is freed.
@@ -364,7 +364,7 @@ Durante a integração com o Checkout Cielo, alguns passos e alguns redirecionam
 1. Cielo API returns the CheckoutURL, which should be used by the store to redirect the client to safety payment environment of Cielo (Cielo Checkout page)
 2. The store redirects the client to the URL returned by Cielo
 3. The cardholder enters the payment details and completes the purchase
-4. The Cielo Checkout redirects the client to the Return URL chosen by the store, set in [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/) this solution
+4. The Cielo Checkout redirects the client to the Return URL chosen by the store, set in [Backoffice Checkout Cielo](https://developercielo.github.io/Checkout-Backoffice/) this solution, or the Return URL, set through integration via API.
 5. The store notifies the customer that the process has been completed and that it will receive more information about the purchase and payment by e-mail.
 6. The Cielo Checkout sends a notification POST to the Notification URL, set in Backoffice
 7. The store process the purchase order using the data from notification POST and, if the transaction is authorized, the order is freed.
@@ -380,6 +380,31 @@ The store must configure three URLs (notification, feedback and status) in your 
 ## Return URL
 
 The Return URL is used by Cielo to redirect the customer back to the store as soon as payment is complete. This store page must be prepared to receive customer order flow and warn you that the process has been completed and that it will receive more information soon.
+
+At the end of a transaction, the customer can be redirected to the return URL. By clicking "BACK" button on the sales receipt of sales screen, the buyer will be directed to the previously UR registered return URL in the Back Office or sent via contract in the API, ie Checkout Cielo offers two options to configure the return URL:
+
+ * via Backoffice: the return URL is fixed for all purchases.
+ * via Technical Agreement: the Return URL can be parameterized with every purchase, or is flexible.
+ 
+ ### Via Backoffice
+ 
+Via Backoffice, the URL is registered by the merchant in Cielo website, at restricted area on the item Online Sales> Checkout Cielo> Store Settings.
+
+### Via Technical Agreement in API
+
+To use the return url via technical contract (API), follows the parameter that must be sent to Checkout via technical contract:
+
+```json
+"Options": {
+  "ReturnUrl": "http://url-de-retorno"
+}
+```
+
+#### Features
+
+* The Return URL via contract is only available via API integration.
+* If a return URL is sent via API, it will have priority over the registered URL in the Backoffice.
+* Checkout integration Cielo via button, you can only use the return URL option via backoffice.
 
 ### Notification URL
 
@@ -1690,6 +1715,68 @@ The recurrence button is a method in the Checkout to perform the recurrence. You
 ![Botão recorrência](/images/checkout-botao-recorrencia.png)
 
 <aside class="warning">If a button is used after the "End Date" registered, the transaction will present an error displaying "Oppss" in transactional screen. Data can be edited on the button editing screen in "Product Details"</aside>
+
+# Checkout Cielo installment options
+
+The Checkout Cielo provides two installments methods:
+
+##Installment via backoffice
+
+* The installments available as Store payment option should be set by the shopkeeper in backoffice Checkout, located in the Cielo site.
+* The configuration of the plots will be applied to all sales.
+
+### Characteristics
+
+* Available in integrations Checkout Cielo via POST, REST or button;
+* The total amount of cart items are added and divided by the number of merchant installments;
+* The purchase is always the same regardless of the number of installments chosen by the buyer;
+* The amount of freight is added to the amount of the installments;
+* The "sight" is available to the buyer.
+
+## Installment via contract (for sale)
+
+* In this option, the merchant can set the amount of installments for sale, specified via technical contract (json integration) at the time of submission of the application for sale.
+* In this option, the installment is simplified without the application of interest, as the Checkout performs the calculation of the shares considering the total value and number of parcels sent.
+
+<Aside class = "notice"> <strong> WARNING: </ strong> in the installment option via contract may be sent a number of shares lower than what is registered in the backoffice. </ Aside>
+ 
+### Characteristics
+
+* Available only in the integration of Checkout Cielo via REST;
+* The merchant sends the maximum number of installments you want to display to the buyer;
+* The amount of freight is added to the value of the installment.
+
+<Aside class = "warning"> <strong> Important: </ strong> MaxNumberOfInstallments field indicates the maximum number of installments. If the field is not sent, the Checkout Cielo follow the installment configured via Backoffice. </ Aside>
+
+## Examples of Integration / Payments
+
+Below is the parameters that should be sent to Checkout via technical contract, limiting the maximum number of shares available for sale to the buyer:
+
+### Installment via contract (for sale)
+
+`` `Json
+"Payment": {
+  "MaxNumberOfInstallments": 3
+}
+`` `
+
+<Aside class = "warning"> <strong> Important: </ strong> The value set in the `MaxNumberOfInstallments` field can not be greater than the value set in the backoffice. </ Aside>
+
+### Discount for cash payment with credit card
+
+* Available in the integration of Checkout Cielo via REST;
+* The discount amount will be applied only to the first installment;
+* The discount is applied to the cart value to be added after the freight.
+
+<Aside class = "warning"> <strong> Important: </ strong> The value reported for `FirstInstallmentDiscount` field will always be the value of a percentage discount. Example: 5 is equal to 5% off </ aside>.
+
+### Discount 1st installment credit card
+
+`` `Json
+"Payment": {
+"FirstInstallmentDiscount": 5
+}
+`` `
 
 # Integration Parameters
 
