@@ -120,7 +120,7 @@
 <li>Cielo API returns the CheckoutURL, which should be used by the store to redirect the client to safety payment environment of Cielo (Cielo Checkout page)</li>
 <li>The store redirects the client to the URL returned by Cielo</li>
 <li>The cardholder enters the payment details and completes the purchase</li>
-<li>The Cielo Checkout redirects the client to the Return URL chosen by the store, set in <a href="https://developercielo.github.io/Checkout-Backoffice/">Backoffice Checkout Cielo</a> this solution</li>
+<li>The Cielo Checkout redirects the client to the Return URL chosen by the store, set in <a href="https://developercielo.github.io/Checkout-Backoffice/">Backoffice Checkout Cielo</a> this solution, or the Return URL, set through integration via API.</li>
 <li>The store notifies the customer that the process has been completed and that it will receive more information about the purchase and payment by e-mail.</li>
 <li>The Cielo Checkout sends a notification POST to the Notification URL, set in Backoffice</li>
 <li>The store process the purchase order using the data from notification POST and, if the transaction is authorized, the order is freed.</li>
@@ -581,7 +581,7 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 <li>Cielo API returns the CheckoutURL, which should be used by the store to redirect the client to safety payment environment of Cielo (Cielo Checkout page)</li>
 <li>The store redirects the client to the URL returned by Cielo</li>
 <li>The cardholder enters the payment details and completes the purchase</li>
-<li>The Cielo Checkout redirects the client to the Return URL chosen by the store, set in <a href="https://developercielo.github.io/Checkout-Backoffice/">Backoffice Checkout Cielo</a> this solution</li>
+<li>The Cielo Checkout redirects the client to the Return URL chosen by the store, set in <a href="https://developercielo.github.io/Checkout-Backoffice/">Backoffice Checkout Cielo</a> this solution, or the Return URL, set through integration via API.</li>
 <li>The store notifies the customer that the process has been completed and that it will receive more information about the purchase and payment by e-mail.</li>
 <li>The Cielo Checkout sends a notification POST to the Notification URL, set in Backoffice</li>
 <li>The store process the purchase order using the data from notification POST and, if the transaction is authorized, the order is freed.</li>
@@ -600,6 +600,33 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 <h2 id="return-url">Return URL</h2>
 
 <p>The Return URL is used by Cielo to redirect the customer back to the store as soon as payment is complete. This store page must be prepared to receive customer order flow and warn you that the process has been completed and that it will receive more information soon.</p>
+
+<p>At the end of a transaction, the customer can be redirected to the return URL. By clicking &ldquo;BACK&rdquo; button on the sales receipt of sales screen, the buyer will be directed to the previously UR registered return URL in the Back Office or sent via contract in the API, ie Checkout Cielo offers two options to configure the return URL:</p>
+
+<ul>
+<li>via Backoffice: the return URL is fixed for all purchases.</li>
+<li>via Technical Agreement: the Return URL can be parameterized with every purchase, or is flexible.</li>
+</ul>
+
+<p>### Via Backoffice</p>
+
+<p>Via Backoffice, the URL is registered by the merchant in Cielo website, at restricted area on the item Online Sales&gt; Checkout Cielo&gt; Store Settings.</p>
+
+<h3 id="via-technical-agreement-in-api">Via Technical Agreement in API</h3>
+
+<p>To use the return url via technical contract (API), follows the parameter that must be sent to Checkout via technical contract:</p>
+<pre><code class="highlight json"><span class="s2">"Options"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"ReturnUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://url-de-retorno"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h4 id="features">Features</h4>
+
+<ul>
+<li>The Return URL via contract is only available via API integration.</li>
+<li>If a return URL is sent via API, it will have priority over the registered URL in the Backoffice.</li>
+<li>Checkout integration Cielo via button, you can only use the return URL option via backoffice.</li>
+</ul>
 
 <h3 id="notification-url">Notification URL</h3>
 
@@ -2347,305 +2374,191 @@ The buyer&rsquo;s credit card data is stored securely within the Checkout Cielo,
 
 <aside class="warning">If a button is used after the &ldquo;End Date&rdquo; registered, the transaction will present an error displaying &ldquo;Oppss&rdquo; in transactional screen. Data can be edited on the button editing screen in &ldquo;Product Details&rdquo;</aside>
 
-<h1 id="integration-parameters">Integration Parameters</h1>
+<h1 id="checkout-cielo-installment-options">Checkout Cielo installment options</h1>
 
-<h2 id="cart">Cart</h2>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"Discount"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
-    </span><span class="s2">"Items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
+<p>The Checkout Cielo provides two installments methods:</p>
 
-<p>Request parameter with information about shopping cart. See also the parameter Item <a href="#item">Item</a></p>
+<h2 id="installment-via-backoffice">Installment via backoffice</h2>
 
-<table><thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Mandatory</th>
-<th>Size</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Discount</td>
-<td><a href="#discount">Discount</a></td>
-<td>Optional</td>
-<td>n/a</td>
-<td>Discount information about the shopping cart.</td>
-</tr>
-<tr>
-<td>Items</td>
-<td><a href="#item">Item[]</a></td>
-<td>Sim</td>
-<td>n/a</td>
-<td>List of shopping cart items (must contain at minimum of 1 item).</td>
-</tr>
-</tbody></table>
+<ul>
+<li>The installments available as Store payment option should be set by the shopkeeper in backoffice Checkout, located in the Cielo site.</li>
+<li>The configuration of the plots will be applied to all sales.</li>
+</ul>
 
-<h3 id="discount">Discount</h3>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Percent"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Value"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
+<h3 id="characteristics">Characteristics</h3>
 
-<p>Request Parameter with information about discounts.</p>
+<ul>
+<li>Available in integrations Checkout Cielo via POST, REST or button;</li>
+<li>The total amount of cart items are added and divided by the number of merchant installments;</li>
+<li>The purchase is always the same regardless of the number of installments chosen by the buyer;</li>
+<li>The amount of freight is added to the amount of the installments;</li>
+<li>The &ldquo;sight&rdquo; is available to the buyer.</li>
+</ul>
 
-<table><thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Mandatory</th>
-<th>Size</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Type</td>
-<td>Alphanumeric</td>
-<td>Conditional</td>
-<td>n/a</td>
-<td>Type of discount to be applied:  &ldquo;Amount”, “Percent”. It’s mandatory in case of the Value being higher or equals zero.</td>
-</tr>
-<tr>
-<td>Value</td>
-<td>Numeric</td>
-<td>Conditional</td>
-<td>0..18</td>
-<td>Discount value to be applied (it can be an absolute value or percentage). It’s mandatory in case of Type being “Amount” or “Percent”.</td>
-</tr>
-</tbody></table>
+<h2 id="installment-via-contract-(for-sale)">Installment via contract (for sale)</h2>
 
-<h4 id="discount.type-=-amount">Discount.Type = Amount</h4>
+<ul>
+<li>In this option, the merchant can set the amount of installments for sale, specified via technical contract (json integration) at the time of submission of the application for sale.</li>
+<li>In this option, the installment is simplified without the application of interest, as the Checkout performs the calculation of the shares considering the total value and number of parcels sent.</li>
+</ul>
 
-<p>In case of a type of discount chosen being the <code class="prettyprint">Amount</code>, it must be insert the <strong>value in centavos</strong>. Ex.: 100 = 1,00.</p>
+<Aside class = "notice"> <strong> WARNING: </ strong> in the installment option via contract may be sent a number of shares lower than what is registered in the backoffice. </ Aside>
+ 
+### Characteristics
 
-<h4 id="discount.type-percent">Discount.Type Percent</h4>
+* Available only in the integration of Checkout Cielo via REST;
+* The merchant sends the maximum number of installments you want to display to the buyer;
+* The amount of freight is added to the value of the installment.
 
-<p>In case the discount type chosen being <code class="prettyprint">Percentual</code>, it must be insert the <strong>integer number value</strong>. Ex.: 10 = 10%.</p>
+<Aside class = "warning"> <strong> Important: </ strong> MaxNumberOfInstallments field indicates the maximum number of installments. If the field is not sent, the Checkout Cielo follow the installment configured via Backoffice. </ Aside>
 
-<h3 id="item">Item</h3>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"Name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nome do produto"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Descrição do produto"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"UnitPrice"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Quantity"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Asset"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Sku"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sku do item no carrinho"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
+## Examples of Integration / Payments
 
-<p>Parameter of request with information about a shopping cart item. See also the <a href="#cart">Cart</a> parameter.</p>
+Below is the parameters that should be sent to Checkout via technical contract, limiting the maximum number of shares available for sale to the buyer:
 
-<table><thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Mandatory</th>
-<th>Size</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Name</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
-<td>1..128</td>
-<td>Item’s name of cart.</td>
-</tr>
-<tr>
-<td>Description</td>
-<td>Alphanumeric</td>
-<td>Opcional</td>
-<td>0.256</td>
-<td>Item description in the cart</td>
-</tr>
-<tr>
-<td>UnitPrice</td>
-<td>Numeric</td>
-<td>Sim</td>
-<td>1..18</td>
-<td>Unit price of item in cart (in centavos.* Ex: R$ 1,00 = 100)*.</td>
-</tr>
-<tr>
-<td>Quantity</td>
-<td>Numeric</td>
-<td>Sim</td>
-<td>1..9</td>
-<td>Quantity of item in cart</td>
-</tr>
-<tr>
-<td>Type</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
-<td>n/a</td>
-<td>Item type in cart</td>
-</tr>
-<tr>
-<td>Sku</td>
-<td>Alphanumeric</td>
-<td>Opcional</td>
-<td>0..32</td>
-<td>Item Sku in cart.</td>
-</tr>
-<tr>
-<td>Weight</td>
-<td>Numeric</td>
-<td>Condicional</td>
-<td>0..9</td>
-<td>Weight in grams of item in cart</td>
-</tr>
-</tbody></table>
+### Installment via contract (for sale)
 
-<h4 id="items-type">Items type</h4>
+&ldquo; `Json
+&quot;Payment&rdquo;: {
+  &quot;MaxNumberOfInstallments&quot;: 3
+}
+&ldquo; `
 
-<table><thead>
-<tr>
-<th>Tipo</th>
-<th>Descrição</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Asset</td>
-<td>Physical material</td>
-</tr>
-<tr>
-<td>Digital</td>
-<td>Digital Goods</td>
-</tr>
-<tr>
-<td>Service</td>
-<td>Services</td>
-</tr>
-<tr>
-<td>Payment</td>
-<td>Other payments</td>
-</tr>
-</tbody></table>
+<Aside class = "warning"> <strong> Important: </ strong> The value set in the `MaxNumberOfInstallments` field can not be greater than the value set in the backoffice. </ Aside>
 
-<h2 id="shipping">Shipping</h2>
-<pre><code class="highlight json"><span class="p">{</span><span class="w">
-    </span><span class="s2">"Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Correios"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"SourceZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14400000"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"TargetZipCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"11000000"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Measures"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"Package"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BOX"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"Lenght"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"Height"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Width"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
-    </span><span class="err">}</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Address"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
-    </span><span class="s2">"Services"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
+### Discount for cash payment with credit card
 
-<p>Request parameter with information about the address and shipping service of product delivery.</p>
+* Available in the integration of Checkout Cielo via REST;
+* The discount amount will be applied only to the first installment;
+* The discount is applied to the cart value to be added after the freight.
 
-<table><thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Mandatory</th>
-<th>Size</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Type</td>
-<td>Alphanumeric</td>
-<td>Sim</td>
-<td>n/a</td>
-<td>Shipping type: “Correios”, “FixedAmount”, “Free”, “WithoutShippingPickUp”, “WithoutShipping”.</td>
-</tr>
-<tr>
-<td>SourceZipCode</td>
-<td>Numeric</td>
-<td>Conditional</td>
-<td>8</td>
-<td>Origin Zip code of shopping cart</td>
-</tr>
-<tr>
-<td>TargetZipCode</td>
-<td>Numeric</td>
-<td>Optional</td>
-<td>8</td>
-<td>Zip code of customer shipping address</td>
-</tr>
-<tr>
-<td>Address</td>
-<td><a href="#address">Address</a></td>
-<td>Optional</td>
-<td>n/a</td>
-<td>Information about the customer shipping address</td>
-</tr>
-<tr>
-<td>Services</td>
-<td><a href="#service">Service[]</a></td>
-<td>Conditional</td>
-<td>n/a</td>
-<td>List of shipping services</td>
-</tr>
-<tr>
-<td>Measures</td>
-<td><a href="#measures">Measures</a></td>
-<td>Optional</td>
-<td>n/a</td>
-<td>Information for calculate volumetric freight of shopping cart.</td>
-</tr>
-</tbody></table>
+<Aside class = "warning"> <strong> Important: </ strong> The value reported for `FirstInstallmentDiscount` field will always be the value of a percentage discount. Example: 5 is equal to 5% off </ aside>.
 
-<h3 id="métricas">Métricas</h3>
+### Discount 1st installment credit card
 
-<table><thead>
-<tr>
-<th>Field</th>
-<th>Type</th>
-<th>Mandatory</th>
-<th>Size</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Package</td>
-<td>Alphanumeric</td>
-<td>Obrigatório</td>
-<td>n/a</td>
-<td>Package type: BOX, ROL or ENVELOPE</td>
-</tr>
-<tr>
-<td>Lenght</td>
-<td>Numeric</td>
-<td>Mandatory</td>
-<td>n/a</td>
-<td>Packet length</td>
-</tr>
-<tr>
-<td>Height</td>
-<td>Numeric</td>
-<td>Conditional</td>
-<td>n/a</td>
-<td>Package Height sent</td>
-</tr>
-<tr>
-<td>Width</td>
-<td>Numeric</td>
-<td>Conticional</td>
-<td>n/a</td>
-<td>Package Width.</td>
-</tr>
-<tr>
-<td>Diameter</td>
-<td>Numeric</td>
-<td>Conditional</td>
-<td>n/a</td>
-<td>Diameter of the package. Required if Shipping.Package as ROL</td>
-</tr>
-</tbody></table>
+&rdquo; `Json
+&ldquo;Payment&rdquo;: {
+&ldquo;FirstInstallmentDiscount&rdquo;: 5
+}
+&ldquo; `
 
-<p>The freight of Correios can be calculte in two ways: volumetric shipping and rete Volumétrico ou No volume shipping.
-To use the Volumetric shipping, just send the Shipping.Measures node, following the rules of integration via REST API.</p>
+# Integration Parameters
+
+## Cart
+
+&rdquo;`json
+{
+    &ldquo;Discount&rdquo;: {},
+    &ldquo;Items&rdquo;: []
+}
+&ldquo;`
+
+Request parameter with information about shopping cart. See also the parameter Item [Item](#item)
+
+|Field|Type|Mandatory|Size|Description|
+|&mdash;&ndash;|&mdash;-|&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;-|&mdash;&mdash;&mdash;|
+|Discount|[Discount](#discount)|Optional|n/a|Discount information about the shopping cart.|
+|Items|[Item[]](#item)|Sim|n/a|List of shopping cart items (must contain at minimum of 1 item).|
+
+### Discount
+
+&rdquo;`json
+{
+    &ldquo;Type&rdquo;: &ldquo;Percent&rdquo;,
+    &ldquo;Value&rdquo;: 10
+}
+&ldquo;`
+
+Request Parameter with information about discounts.
+
+|Field|Type|Mandatory|Size|Description|
+|&mdash;&ndash;|&mdash;-|&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;-|&mdash;&mdash;&mdash;|
+|Type|Alphanumeric|Conditional|n/a|Type of discount to be applied:  &quot;Amount”, “Percent”. It’s mandatory in case of the Value being higher or equals zero. |
+|Value|Numeric|Conditional|0..18|Discount value to be applied (it can be an absolute value or percentage). It’s mandatory in case of Type being “Amount” or “Percent”.|
+
+#### Discount.Type = Amount
+
+In case of a type of discount chosen being the `Amount`, it must be insert the **value in centavos**. Ex.: 100 = 1,00.
+
+#### Discount.Type Percent
+
+In case the discount type chosen being `Percentual`, it must be insert the **integer number value**. Ex.: 10 = 10%.
+
+### Item
+
+&rdquo;`json
+{
+    &ldquo;Name&rdquo;: &ldquo;Nome do produto&rdquo;,
+    &ldquo;Description&rdquo;: &ldquo;Descrição do produto&rdquo;,
+    &ldquo;UnitPrice&rdquo;: 100,
+    &ldquo;Quantity&rdquo;: 2,
+    &ldquo;Type&rdquo;: &ldquo;Asset&rdquo;,
+    &ldquo;Sku&rdquo;: &ldquo;Sku do item no carrinho&rdquo;,
+    &ldquo;Weight&rdquo;: 200
+}
+&ldquo;`
+
+Parameter of request with information about a shopping cart item. See also the [Cart](#cart) parameter.
+
+|Field|Type|Mandatory|Size|Description|
+|&mdash;&ndash;|&mdash;-|&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;-|&mdash;&mdash;&mdash;|
+|Name|Alphanumeric|Sim|1..128|Item’s name of cart.|
+|Description|Alphanumeric|Opcional|0.256|Item description in the cart |
+|UnitPrice|Numeric|Sim|1..18|Unit price of item in cart (in centavos.* Ex: R$ 1,00 = 100)*.|
+|Quantity|Numeric|Sim|1..9|Quantity of item in cart|
+|Type|Alphanumeric|Sim|n/a|Item type in cart|
+|Sku|Alphanumeric|Opcional|0..32|Item Sku in cart.|
+|Weight|Numeric|Condicional|0..9|Weight in grams of item in cart|
+
+#### Items type
+
+|Tipo|Descrição|
+|&mdash;-|&mdash;&mdash;&mdash;|
+|Asset|Physical material|
+|Digital|Digital Goods|
+|Service|Services|
+|Payment|Other payments|
+
+## Shipping
+
+&rdquo;`json
+{
+    &ldquo;Type&rdquo;: &ldquo;Correios&rdquo;,
+    &ldquo;SourceZipCode&rdquo;: &ldquo;14400000&rdquo;,
+    &ldquo;TargetZipCode&rdquo;: &ldquo;11000000&rdquo;,
+    &ldquo;Measures&rdquo;: {
+        &ldquo;Package&rdquo;: &ldquo;BOX&rdquo;,
+        &ldquo;Lenght&rdquo;: 30,
+        &ldquo;Height&rdquo;: 5,
+    &ldquo;Width&rdquo;: 10,
+    },
+    &ldquo;Address&rdquo;: {},
+    &ldquo;Services&rdquo;: []
+}
+&ldquo;`
+Request parameter with information about the address and shipping service of product delivery.
+
+|Field|Type|Mandatory|Size|Description|
+|&mdash;&ndash;|&mdash;-|&mdash;&mdash;&mdash;|&mdash;-|&mdash;&mdash;&mdash;&ndash;|
+|Type|Alphanumeric|Sim|n/a|Shipping type: “Correios”, “FixedAmount”, “Free”, “WithoutShippingPickUp”, “WithoutShipping”.|
+|SourceZipCode|Numeric|Conditional|8|Origin Zip code of shopping cart|
+|TargetZipCode|Numeric|Optional|8|Zip code of customer shipping address|
+|Address|[Address](#address)|Optional|n/a|Information about the customer shipping address|
+|Services|[Service[]](#service)|Conditional|n/a|List of shipping services|
+|Measures|[Measures](#measures)|Optional|n/a|Information for calculate volumetric freight of shopping cart.|
+
+### Métricas
+
+|Field|Type|Mandatory|Size|Description|
+|&mdash;&ndash;|&mdash;-|&mdash;&mdash;&mdash;|&mdash;-|&mdash;&mdash;&mdash;&ndash;|
+|Package|Alphanumeric|Obrigatório|n/a|Package type: BOX, ROL or ENVELOPE|
+|Lenght|Numeric|Mandatory|n/a|Packet length|
+|Height|Numeric|Conditional|n/a|Package Height sent|Required if Shipping.Package is a BOX, for example|
+|Width|Numeric|Conticional|n/a|Package Width.|Required if Shipping.Package as BOX or ENVELOPE|
+|Diameter|Numeric|Conditional|n/a|Diameter of the package. Required if Shipping.Package as ROL|
+
+The freight of Correios can be calculte in two ways: volumetric shipping and rete Volumétrico ou No volume shipping.
+To use the Volumetric shipping, just send the Shipping.Measures node, following the rules of integration via REST API.
 
 <aside class="notice"> To carry out the shipping calculation for &quot;Correios&rdquo; is necessary to respect the measures defined by the contract. For more information on the dimensions and permitted weights, we recommend that you validate the store contract on the link: http://www.correios.com.br/para-voce/precisa-de-ajuda/limites-de-dimensoes-e-de-peso</aside>
 
@@ -3351,5 +3264,16 @@ To use the Volumetric shipping, just send the Shipping.Measures node, following 
                 </div>
             </div>
         </div>
+        <!-- Hotjar Tracking Code for https://developercielo.github.io/checkout-cielo/ -->
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:458075,hjsv:5};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
     </body>
     </html>
