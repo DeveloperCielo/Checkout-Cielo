@@ -311,10 +311,16 @@ Para testar cartões de crédito é necessário que dois dados importantes sejam
 
 **Status da Autorização do Cartão de Crédito**
 
-|Digito final do Cartão|Status retornado|
-|----------------------|----------------|
-|0, 1, 2, 3 ou 4|Autorizado|
-|5, 6, 7, 8 ou 9|Não autorizado|
+|Status da Transação|Cartões para realização dos testes|Código de Retorno|Mensagem de Retorno|
+|-------------------|----------------------------------|-----------------|-------------------|
+|Autorizado|0000.0000.0000.0001 / 0000.0000.0000.0004|4|Operação realizada com sucesso|
+|Não Autorizado|0000.0000.0000.0002|2|Não Autorizada|
+|Autorização Aleatória|0000.0000.0000.0009|4 / 99|Operation Successful / Time Out|
+|Não Autorizado|0000.0000.0000.0007|77|Cartão Cancelado|
+|Não Autorizado|0000.0000.0000.0008|70|Problemas com o Cartão de Crédito|
+|Não Autorizado|0000.0000.0000.0005|78|Cartão Bloqueado|
+|Não Autorizado|0000.0000.0000.0003|57|Cartão Expirado|
+|Não Autorizado|0000.0000.0000.0006|99|Time Out|
 
 * **Exemplo:** Transação autorizada, Alto Risco;
 * **Numero do Cartão de credito:** 5404434242930107
