@@ -477,11 +477,6 @@ Para utilizar a url de retorno via contrato técnico (na API), segue o parâmetr
 
 <aside class="notice">A página destino do POST de Notificação deve seguir a formatação dos parâmetros com todos os nomes em MINUSCULO</aside>
 
-### Recebimento do POST de notificação
-
-* Quando acessada pelo servidor da Cielo, enviando o POST da tabela acima, a URL cadastrada para Notificação deverá exibir um código informando que recebeu a mudança de status e a processou com sucesso. **Código:**`<status>OK</status>`
-* Se a URL for acessada pelo nosso servidor e não exibir o código de confirmação, o servidor irá tentar novamente por três vezes, a cada hora. Caso o `<status>OK</status>` ainda não seja exibido, será entendido que o servidor da loja não responde.
-* A URL de Notificação somente pode utilizar **porta 80** (padrão para http) ou **porta 443** (padrão para https).
 
 ## Notificação de transação
 
@@ -539,13 +534,6 @@ O parâmetro `payment_status` poderá vir com um dos seguintes valores:
 |7|Autorizado (somente para Cartão de Crédito)|
 |8|Chargeback (somente para Cartão de Crédito)|
 
-
-### Recebimento do POST de Mudança de Status
-
-* Quando acessada pelo servidor da Cielo, enviando o POST, a URL cadastrada para Retorno de Mudança de Status, deverá exibir um código informando que recebeu a mudança de status e a processou com sucesso: `<status>OK</status>`
-* Se a URL de mudança de status da loja for acessada pelo servidor da Cielo não exibir o código de confirmação, o servidor irá tentar novamente por três vezes.
-* Caso o `<status>OK</status>` ainda não seja exibido, será entendido que o servidor da loja não responde, e será enviado um e-mail ao responsável pela loja, informando que o pedido em questão foi pago.
-* Ou seja, o código fonte da página indicando Sucesso deverá conter APENAS `<status>OK</status>` **e nada mais**.
 
 <aside class="notice">Na tela de pedidos, dentro de cada transação, há a opção de reenvio do POST de mudança de status. Basta clicar nos botões azuis, marcados na imagem abaixo</aside>
 
