@@ -494,6 +494,14 @@ Esse post será enviado tanto para a URL de notificação quanto de mudança de 
 
 O resultado da consulta será todo o conteúdo descrito na tabela do item 7, que já inclui o status da transação.
 
+Se a URL de notificação cadastrada retornar algum erro serão realizadas 3 novas tentativas, **com intervalo de 1 hora** entre cada `POST`. Caso a confirmação não ocorra, novos POSTs não serão realizadas para a mesma transação.
+
+Retorno aguardado para o envio da notificação:
+HttpStatus = 200 (OK) (Post recebido e processado com sucesso) (edited)
+
+Obs.: Caso a loja envie o retorno diferente de sucesso o Checkout Cielo realiza 3 novas tentativas de envio da notificação com intervalo de 1 hora. Caso a confirmação não ocorra, novos POSTs não serão realizadas para a mesma transação.
+
+
 ## Mudança de status via consulta
 
 Para utilizar essa opção de notificação, você precisa configurá-la no Backoffice do Checkout Cielo. Para isso, basta acessar o site da Cielo > Checkout Cielo > Configurações, e definir a opção de notificação como “JSON”, conforme tela abaixo.
