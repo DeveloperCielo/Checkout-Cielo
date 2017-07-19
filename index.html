@@ -502,17 +502,59 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 
 <table><thead>
 <tr>
-<th>Digito final do Cartão</th>
-<th>Status retornado</th>
+<th>Status da Transação</th>
+<th>Cartões para realização dos testes</th>
+<th>Código de Retorno</th>
+<th>Mensagem de Retorno</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>0, 1, 2, 3 ou 4</td>
 <td>Autorizado</td>
+<td>0000.0000.0000.0001 / 0000.0000.0000.0004</td>
+<td>4</td>
+<td>Operação realizada com sucesso</td>
 </tr>
 <tr>
-<td>5, 6, 7, 8 ou 9</td>
-<td>Não autorizado</td>
+<td>Não Autorizado</td>
+<td>0000.0000.0000.0002</td>
+<td>2</td>
+<td>Não Autorizada</td>
+</tr>
+<tr>
+<td>Autorização Aleatória</td>
+<td>0000.0000.0000.0009</td>
+<td>4 / 99</td>
+<td>Operation Successful / Time Out</td>
+</tr>
+<tr>
+<td>Não Autorizado</td>
+<td>0000.0000.0000.0007</td>
+<td>77</td>
+<td>Cartão Cancelado</td>
+</tr>
+<tr>
+<td>Não Autorizado</td>
+<td>0000.0000.0000.0008</td>
+<td>70</td>
+<td>Problemas com o Cartão de Crédito</td>
+</tr>
+<tr>
+<td>Não Autorizado</td>
+<td>0000.0000.0000.0005</td>
+<td>78</td>
+<td>Cartão Bloqueado</td>
+</tr>
+<tr>
+<td>Não Autorizado</td>
+<td>0000.0000.0000.0003</td>
+<td>57</td>
+<td>Cartão Expirado</td>
+</tr>
+<tr>
+<td>Não Autorizado</td>
+<td>0000.0000.0000.0006</td>
+<td>99</td>
+<td>Time Out</td>
 </tr>
 </tbody></table>
 
@@ -918,14 +960,6 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 
 <aside class="notice">A página destino do POST de Notificação deve seguir a formatação dos parâmetros com todos os nomes em MINUSCULO</aside>
 
-<h3 id="recebimento-do-post-de-notificação">Recebimento do POST de notificação</h3>
-
-<ul>
-<li>Quando acessada pelo servidor da Cielo, enviando o POST da tabela acima, a URL cadastrada para Notificação deverá exibir um código informando que recebeu a mudança de status e a processou com sucesso. <strong>Código:</strong><code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code></li>
-<li>Se a URL for acessada pelo nosso servidor e não exibir o código de confirmação, o servidor irá tentar novamente por três vezes, a cada hora. Caso o <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code> ainda não seja exibido, será entendido que o servidor da loja não responde.</li>
-<li>A URL de Notificação somente pode utilizar <strong>porta 80</strong> (padrão para http) ou <strong>porta 443</strong> (padrão para https).</li>
-</ul>
-
 <h2 id="notificação-de-transação">Notificação de transação</h2>
 
 <p>O processo de notificação de transação e mudança de status descritos nos itens 6 e 7 deste manual também podem ser realizados via notificação e consulta em nossa base. Esse método pode ser utilizado apenas para integração via API.</p>
@@ -959,6 +993,13 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 <p>Esse post será enviado tanto para a URL de notificação quanto de mudança de Status. Ao receber essa notificação, o lojista poderá consumir (Realizar um GET) a URL enviada, onde constam os dados necessários para que o Checkout libere a consulta.</p>
 
 <p>O resultado da consulta será todo o conteúdo descrito na tabela do item 7, que já inclui o status da transação.</p>
+
+<p>Se a URL de notificação cadastrada retornar algum erro serão realizadas 3 novas tentativas, <strong>com intervalo de 1 hora</strong> entre cada <code class="prettyprint">POST</code>. Caso a confirmação não ocorra, novos POSTs não serão realizadas para a mesma transação.</p>
+
+<p>Retorno aguardado para o envio da notificação:
+HttpStatus = 200 (OK) (Post recebido e processado com sucesso) (edited)</p>
+
+<p>Obs.: Caso a loja envie o retorno diferente de sucesso o Checkout Cielo realiza 3 novas tentativas de envio da notificação com intervalo de 1 hora. Caso a confirmação não ocorra, novos POSTs não serão realizadas para a mesma transação.</p>
 
 <h2 id="mudança-de-status-via-consulta">Mudança de status via consulta</h2>
 
@@ -1060,15 +1101,6 @@ Nesta documentação estão descritas todas as funcionalidades desta integraçã
 <td>Chargeback (somente para Cartão de Crédito)</td>
 </tr>
 </tbody></table>
-
-<h3 id="recebimento-do-post-de-mudança-de-status">Recebimento do POST de Mudança de Status</h3>
-
-<ul>
-<li>Quando acessada pelo servidor da Cielo, enviando o POST, a URL cadastrada para Retorno de Mudança de Status, deverá exibir um código informando que recebeu a mudança de status e a processou com sucesso: <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code></li>
-<li>Se a URL de mudança de status da loja for acessada pelo servidor da Cielo não exibir o código de confirmação, o servidor irá tentar novamente por três vezes.</li>
-<li>Caso o <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code> ainda não seja exibido, será entendido que o servidor da loja não responde, e será enviado um e-mail ao responsável pela loja, informando que o pedido em questão foi pago.</li>
-<li>Ou seja, o código fonte da página indicando Sucesso deverá conter APENAS <code class="prettyprint">&lt;status&gt;OK&lt;/status&gt;</code> <strong>e nada mais</strong>.</li>
-</ul>
 
 <aside class="notice">Na tela de pedidos, dentro de cada transação, há a opção de reenvio do POST de mudança de status. Basta clicar nos botões azuis, marcados na imagem abaixo</aside>
 
