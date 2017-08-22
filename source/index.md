@@ -222,7 +222,6 @@ Se você já tentou essas soluções, mas continua a ter problemas, entre em con
 * O sistema operacional e a versão utilizada no computador.
 * Uma captura de tela do problema.
 
-
 ## Histórico de versões
 
 * **Versão 1.9** - 22/02/2016
@@ -256,7 +255,7 @@ Se você já tentou essas soluções, mas continua a ter problemas, entre em con
 A versão atual do Checkout Cielo possui suporte às seguintes bandeiras e produtos:
 
 |Bandeira|Crédito à vista|Crédito parcelado Loja|Débito|Voucher|
-|--------|---------------|----------------------|------|-------|
+|---|---|---|---|---|
 |Visa|Sim|Sim|Sim|Não|
 |Master Card|Sim|Sim|Sim|Não|
 |American Express|Sim|Sim|Não|Não|
@@ -310,7 +309,7 @@ Para testar cartões de crédito é necessário que dois dados importantes sejam
 **Status da Autorização do Cartão de Crédito**
 
 |Status da Transação|Cartões para realização dos testes|Código de Retorno|Mensagem de Retorno|
-|-------------------|----------------------------------|-----------------|-------------------|
+|---|---|---|---|
 |Autorizado|0000.0000.0000.0001 / 0000.0000.0000.0004|4|Operação realizada com sucesso|
 |Não Autorizado|0000.0000.0000.0002|2|Não Autorizada|
 |Autorização Aleatória|0000.0000.0000.0009|4 / 99|Operation Successful / Time Out|
@@ -334,7 +333,7 @@ Basta realizar o processo de compra normalmente sem nenhuma alteração no proce
 
 **Status do Débito**
 |Sobre nome do cliente|Status|
-|---------------------|------|
+|---|---|
 |Pago|Pago|
 |Qualquer nome.|Não autorizado|
 
@@ -415,7 +414,7 @@ Para utilizar a url de retorno via contrato técnico (na API), segue o parâmetr
 ### Parâmetros para integração com POST de notificação
 
 |Parâmetro|Descrição|Tipo do campo|Tamanho mínimo|Tamanho máximo|
-|---------|---------|-------------|--------------|--------------|
+|---|---|---|---|---|
 |checkout_cielo_order_number|Identificador único gerado pelo CHECKOUT CIELO|Alfanumérico|1|32|
 |amount|Preço unitário do produto, em centavos (ex: R$ 1,00 = 100)|Numérico|1|10|
 |order_number|Número do pedido enviado pela loja|Alfanumérico|1|32|
@@ -449,7 +448,7 @@ Para utilizar a url de retorno via contrato técnico (na API), segue o parâmetr
 #### payment_method_type
 
 |Valor|Descrição|
-|-----|---------|
+|---|---|
 |1|Cartão de Crédito|
 |2|Boleto Bancário|
 |3|Débito Online|
@@ -458,7 +457,7 @@ Para utilizar a url de retorno via contrato técnico (na API), segue o parâmetr
 #### payment_method_brand
 
 |Valor|Descrição|
-|-----|---------|
+|---|---|
 |1|Visa|
 |2|Mastercad|
 |3|AmericanExpress|
@@ -469,12 +468,11 @@ Para utilizar a url de retorno via contrato técnico (na API), segue o parâmetr
 
 #### payment_method_bank
 |Valor|Descrição|
-|-----|---------|
+|---|---|
 |1|Banco do Brasil|
 |2|Bradesco|
 
 <aside class="notice">A página destino do POST de Notificação deve seguir a formatação dos parâmetros com todos os nomes em MINUSCULO</aside>
-
 
 ## Notificação de transação
 
@@ -483,7 +481,7 @@ O processo de notificação de transação e mudança de status descritos nos it
 Nesse método, o post de notificação passa a conter os seguintes campos:
 
 |Parâmetro|Descrição|Tipo do Campo|
-|---------|---------|-------------|
+|---|---|---|
 |URL|URL com os dados necessários para realizar a busca dos dados da transação.|URL|
 |MerchantId|Identificador da loja no Checkout Cielo; consta no Backoffice no menu Configuração/Dados Cadastrais.|Alfanumérico (GUID)|
 |MerchantOrderNumber|Número do pedido da loja; se não for enviado, o Checkout Cielo gerará um número, que será visualizado pelo Consumidor.|Alfanumérico|
@@ -498,7 +496,6 @@ Retorno aguardado para o envio da notificação:
 HttpStatus = 200 (OK) (Post recebido e processado com sucesso) (edited)
 
 Obs.: Caso a loja envie o retorno diferente de sucesso o Checkout Cielo realiza 3 novas tentativas de envio da notificação com intervalo de 1 hora. Caso a confirmação não ocorra, novos POSTs não serão realizadas para a mesma transação.
-
 
 ## Mudança de status via consulta
 
@@ -519,7 +516,7 @@ A URL de Mudança de Status é a que a Cielo utilizará para notificar a loja so
 ### Parâmetros para integração com POST de Mudança de Status
 
 |Parâmetro|Descrição|Tipo do campo|Tamanho mínimo|Tamanho máximo|
-|---------|---------|-------------|--------------|--------------|
+|---|---|---|---|---|
 |checkout_cielo_order_number|Identificador único gerado pelo CHECKOUT CIELO.|Alfanumérico|1|32|
 |amount|Preço unitário do produto, em centavos (ex: R$ 1,00 = 100)|Numérico|1|10|
 |order_number|Número do pedido enviado pela loja|Alfanumérico|1|32|
@@ -530,7 +527,7 @@ A URL de Mudança de Status é a que a Cielo utilizará para notificar a loja so
 O parâmetro `payment_status` poderá vir com um dos seguintes valores:
 
 |Valor|Descrição|
-|------|-------------|
+|---|---|
 |1|Pendente (Para todos os meios de pagamento)|
 |2|Pago (Para todos os meios de pagamento)|
 |3|Negado (Somente para Cartão Crédito)|
@@ -539,7 +536,6 @@ O parâmetro `payment_status` poderá vir com um dos seguintes valores:
 |6|Não Finalizado (Todos os meios de pagamento)|
 |7|Autorizado (somente para Cartão de Crédito)|
 |8|Chargeback (somente para Cartão de Crédito)|
-
 
 <aside class="notice">Na tela de pedidos, dentro de cada transação, há a opção de reenvio do POST de mudança de status. Basta clicar nos botões azuis, marcados na imagem abaixo</aside>
 
@@ -1074,14 +1070,14 @@ HttpWebResponse response = (HttpWebResponse) request.GetResponse();
 #### Cabeçalho HTTP
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |MerchantId|Guid|Sim|36|Identificador único da loja. **Formato:** 00000000-0000-0000-0000-000000000000|
 |Content-type|Alphanumeric|Sim|n/a|Tipo do conteúdo da mensagem a ser enviada. **Utilizar:** "application/json"|
 
 #### Objeto raiz da requisição
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |OrderNumber|Alphanumeric|Opcional|0..64|Número do pedido da loja.Não enviar caracter especial|
 |SoftDescriptor|Alphanumeric|Opcional|0..13|Texto para ser exibido na fatura do portador, após o nome do estabelecimento comercial.|
 |Cart|[Cart](#cart)|Sim|n/a|Informações sobre o carrinho de compras.|
@@ -1105,7 +1101,7 @@ HttpWebResponse response = (HttpWebResponse) request.GetResponse();
 ```
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |Settings|[Settings](#settings)|Sim|n/a|Informações da resposta sobre a criação do pedido.|
 
 ### Em caso de erro
@@ -1117,7 +1113,7 @@ HttpWebResponse response = (HttpWebResponse) request.GetResponse();
 ```
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |Message|String|Sim|1..254|Mensagem descritiva do erro|
 
 ### Erros de integração
@@ -1153,7 +1149,7 @@ Cada botão possui um código único que só permite comprar aquele determinado 
 Abaixo seguem as informações necessárias para cadastrar um produto.
 
 |Parâmetro|Descrição|Tamanho Min.|Tamanho Máx.|Obrigatório|
-|---------|---------|------------|------------|-----------|
+|---|---|---|---|---|
 |Tipo do Produto|Indique se está vendendo um bem Material, um Serviço ou um bem Digital. Para bens Digitais, não será apresentada a opção de tipo de Frete.|n/a|n/a|Sim|
 |SKU|Código de identificação do produto|1|50|Não|
 |Título|Titulo do Produto|1|50|Sim|
@@ -1717,7 +1713,7 @@ Exceto o objeto `Payment` que contém um novo elemento específico para a recorr
 #### Objeto Payment da Recorrência
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |BoletoDiscount|Numeric|Condicional|0..3|Desconto, em porcentagem, para pagamentos a serem realizados com boleto.|
 |DebitDiscount|Numeric|Condicional|0..3|Desconto, em porcentagem, para pagamentos a serem realizados com débito online.|
 |**RecurrentPayment**|[RecurrentPayment](#recurrentpayment)|Condicional|Objeto necessário para pagamentos recorrentes|
@@ -1827,7 +1823,7 @@ Abaixo, segue os parâmetros que devem ser enviados ao Checkout via contrato té
 Parâmetro de requisição com informações sobre o carrinho de compras. Veja também o parâmetro [Item](#item)
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |Discount|[Discount](#discount)|Opcional|n/a|Informações do desconto sobre o carrinho de compras.|
 |Items|[Item[]](#item)|Sim|n/a|Lista de itens do carrinho de compras *(deve conter no mínimo 1 item)*.|
 
@@ -1845,7 +1841,7 @@ Parâmetro de requisição com informações sobre descontos.
 <aside class="notice">Independentemente do tipo do desconto, ele deverá ser calculado antes da soma do valor do frete.</aside>
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |Type|Alphanumeric|Condicional|n/a|Tipo do desconto a ser aplicado: "Amount", "Percent". Obrigatório caso `Value` for maior ou igual a zero.|
 |Value|Numeric|Condicional|0..18|Valor do desconto a ser aplicado *(pode ser valor absoluto ou percentual)*. Obrigatório caso `Type` for "Amount" ou "Percent".|
 
@@ -1878,7 +1874,7 @@ Caso o tipo de desconto escolhido seja o “Percentual”, deverá ser inserido 
 Parâmetro de requisição com informações sobre o item do carrinho de compras. Veja também o parâmetro [Cart](#cart)
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |Name|Alphanumeric|Sim|1..128|Nome do item no carrinho.|
 |Description|Alphanumeric|Opcional|0.256|Descrição do item no carrinho.|
 |UnitPrice|Numeric|Sim|1..18|Preço unitário do item no carrinho *(**em centavos.** Ex: R$ 1,00 = 100)*.|
@@ -1890,7 +1886,7 @@ Parâmetro de requisição com informações sobre o item do carrinho de compras
 #### Tipos de item
 
 |Tipo|Descrição|
-|----|---------|
+|---|---|
 |Asset|Material Físico|
 |Digital|Produtos Digitais|
 |Service|Serviços|
@@ -1917,7 +1913,7 @@ Parâmetro de requisição com informações sobre o item do carrinho de compras
 Parâmetro de requisição com informações sobre endereço e serviço de entrega dos produtos.
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |Type|Alphanumeric|Sim|n/a|Tipo do frete: "Correios", "FixedAmount", "Free", "WithoutShippingPickUp", "WithoutShipping".|
 |SourceZipCode|Numeric|Condicional|8|CEP de origem do carrinho de compras.|
 |TargetZipCode|Numeric|Opcional|8|CEP do endereço de entrega do comprador.|
@@ -1928,7 +1924,7 @@ Parâmetro de requisição com informações sobre endereço e serviço de entre
 ### Tipos de fretes
 
 |Tipo de frete|Descrição|
-|-------------|---------|
+|---|---|
 |Correios|Serviços de Correios como Sedex, PAC e e-Sedex. É necessário uma configuração prévia no Backoffice.|
 |FixedAmount|Frete com valor fixo|
 |Free|Frete Grátis|
@@ -1944,7 +1940,7 @@ Para realizar o cálculo de frete via Correios é necessário respeitar as medid
 ### Measures
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |Package|Alphanumeric|Obrigatório|n/a|Tipo de pacote: BOX (Caixa), ROL (Cilindro) ou ENVELOPE|
 |Lenght|Numeric|Obrigatório|n/a|Comprimento do pacote|
 |Height|Numeric|Condicional|n/a|Altura do pacote enviado|Obrigatório caso Shipping.Package como BOX|
@@ -1973,7 +1969,7 @@ Para utilizar o Frete Volumétrico, basta enviar o nó Shipping.Measures, seguin
 Parâmetro de requisição com informações sobre o endereço do comprador. Veja também o parâmetro [Customer](#customer)
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |Street|Alphanumeric|Sim|1..256|Rua, avenida, travessa, etc, do endereço de entrega do comprador.|
 |Number|Alphanumeric|Sim|1..8|Número do endereço de entrega do comprador.|
 |Complement|Alphanumeric|Opcional|0..256|Complemento do endereço de entrega do comprador.|
@@ -1994,7 +1990,7 @@ Parâmetro de requisição com informações sobre o endereço do comprador. Vej
 Parâmetro de requisição com informações sobre o serviço de frete que será utilizado.
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |Name|Alphanumeric|Sim|1..128|Nome do serviço de frete.|
 |Price|Numeric|Sim|1..18|Preço do serviço de frete (em centavos. Ex: R$ 1,00 = 100).|
 |Deadline|Numeric|Condicional|0..9|Prazo de entrega (em dias).|
@@ -2015,7 +2011,7 @@ Parâmetro de requisição com informações sobre o serviço de frete que será
 Parâmetro de requisição com informações sobre o desconto para pagamento via boleto ou débito online.
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |BoletoDiscount|Numeric|Condicional|0..3|Desconto, em porcentagem, para pagamentos a serem realizados com boleto.|
 |DebitDiscount|Numeric|Condicional|0..3|Desconto, em porcentagem, para pagamentos a serem realizados com débito online.|
 |RecurrentPayment|[RecurrentPayment](#recurrentpayment)|Condicional|Objeto necessário para pagamentos recorrentes|
@@ -2032,14 +2028,14 @@ Parâmetro de requisição com informações sobre o desconto para pagamento via
 Parâmetro de requisição com informações sobre a recorrência.
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |Interval|Alphanumeric|Sim|n/a|Tipo de intervalo de recorrência; Veja a tabela [Intervalo de Recorrência](#intervalo-de-recorrência)|
 |EndDate|Date|Não|n/a|Data final da recorrência no formado YYYY-MM-DD|
 
 ### Intervalo de Recorrência
 
 |Valor|Descrição|
-|-----|---------|
+|---|---|
 |Monthly|Transações mensais.|
 |Bimonthly|Transações bimestrais.|
 |Quarterly|Transações trimestrais.|
@@ -2060,7 +2056,7 @@ Parâmetro de requisição com informações sobre a recorrência.
 Parâmetro de requisição com informações sobre o comprador. Veja também o parâmetro [Address](#address)
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |Identity|Numeric|Condicional|0..14|CPF ou CNPJ do comprador.|
 |FullName|Alphanumeric|Condicional|0..288|Nome completo do comprador.|
 |Email|Alphanumeric|Condicional|0..64|Email do comprador.|
@@ -2077,7 +2073,7 @@ Parâmetro de requisição com informações sobre o comprador. Veja também o p
 Parâmetro de requisição para configurar o sistema de anti-fraude para a transação.
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |AntifraudEnabled|Boolean|Conditional|n/a|Habilitar ou não a análise de fraude para o pedido.|
 
 ## Settings
@@ -2093,7 +2089,7 @@ Parâmetro de resposta, recebido em caso de sucesso.
 ```
 
 |Campo|Tipo|Obrigatório|Tamanho|Descrição|
-|-----|----|-----------|-------|---------|
+|---|---|---|---|---|
 |CheckoutUrl|Alphanumeric|Sim|1..128|URL de checkout do pedido. **Formato:** `https://cieloecommerce.cielo.com.br/transacional/order/index?id={id}`|
 |Profile|Alphanumeric|Sim|1..16|Perfil do lojista: fixo "CheckoutCielo".|
 |Version|Alphanumeric|Sim|1|Versão do serviço de criação de pedido *(versão: 1)*.|
@@ -2113,7 +2109,7 @@ Pedidos por meio de cartão de crédito serão incluídos no [Backoffice Cielo C
 ### Status de transação
 
 |Status de transação|Descrição|
-|-------------------|---------|
+|---|---|
 |Pendente (Para todos os meios de pagamento)|Indica que o pagamento ainda está sendo processado; OBS: Boleto - Indica que o boleto não teve o status alterado pelo lojista|
 |Pago (Para todos os meios de pagamento)|Transação capturada e o dinheiro será depositado em conta.|
 |Negado (Somente para Cartão Crédito)|Transação não autorizada pelo responsável do meio de pagamento|
@@ -2133,7 +2129,7 @@ Esta análise indicará um **“BAIXO RISCO”** ou “ALTO RISCO” para a 
 ### Status do antifraude
 
 |Status Antifraude|Substatus|Descrição|
-|-----------------|---------|---------|
+|---|---|---|
 |Baixo Risco|Baixo Risco|Baixo risco de ser uma transação fraudulenta|
 |Médio Risco|Médio Risco|Médio risco de ser uma transação fraudulenta|
 |Não finalizado|Não finalizado|Não foi possível finalizar a consulta|
