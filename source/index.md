@@ -1307,8 +1307,8 @@ Uma transação de recorrência no Checkout Cielo possui duas configurações: `
 Os dados do cartão de crédito do comprador ficam armazenados de forma segura dentro do Checkout Cielo, permitindo sua reutilização em uma transação recorrente. Esses dados não são acessados pelo lojista e essa inteligência é controlada pelo Checkout Cielo.
  
 Exceto o objeto `Payment` que contém um novo elemento específico para a recorrência chamado `RecurrentPayment`, todos os outros objetos são iguais à integração com o Carrinho.
-  
-**Requisição**
+
+> REQUISIÇÃO
 
 ```json
 {
@@ -1375,6 +1375,8 @@ Exceto o objeto `Payment` que contém um novo elemento específico para a recorr
  
 Se o tipo de produto for `Bem Físico`, a **API obriga o envio do tipo de frete**. 
 Se no contrato técnico existir o nó da recorrência, fica obrigatório o tipo `WithoutShipping`, caso contrário, a seguinte resposta será apresentada:
+
+> RESPONSE
 
 ```json
 {
