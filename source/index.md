@@ -129,15 +129,15 @@ Empresas especializadas são responsáveis por fazer a validação do domínio e
 
 ### Internet Explorer:
 
-![Certificado EV Internet Explorer](./images/certificado-ie.jpg)
+![Certificado EV Internet Explorer](source/images/certificado-ie.jpg)
 
 ### Firefox
 
-![Certificado EV Firefox](./images/certificado-firefox.jpg)
+![Certificado EV Firefox](source/images/certificado-firefox.jpg)
 
 ### Google Chrome
 
-![Certificado EV Google Chrome](./images/certificado-chrome.jpg)
+![Certificado EV Google Chrome](source/images/certificado-chrome.jpg)
 
 ## O que é Certificado EV SSL?
 
@@ -177,73 +177,73 @@ Salvar os três arquivos abaixo em uma pasta nova, ou que relembre facilmente, p
 
 No “Internet Explorer”, clique no menu “Ferramentas” e acesse as “Opções da Internet”:
 
-![Instalar IE](./images/certificado-instalar-ie-1.jpg)
+![Instalar IE](source/images/certificado-instalar-ie-1.jpg)
 
 No “Firefox”, clique no menu “Abrir Menu” e acesse “Avançado” e “Opções”:
 
-![Instalar FF](./images/certificado-instalar-ff-1.jpg)
+![Instalar FF](source/images/certificado-instalar-ff-1.jpg)
 
 No “Chrome”, clique no “Personalizar e Controlar o Google Chrome” e acesse “Configurações” e “Mostrar configurações avançadas... “Alterar Configurações de Proxy e “Conteúdo” e Certificados:
 
-![Instalar GC](./images/certificado-instalar-gc-1.jpg)
+![Instalar GC](source/images/certificado-instalar-gc-1.jpg)
 
 #### 3o Passo:
 
 No Internet Explorer, em “Certificados”, clique em “Importar”.
  
-![Instalar IE](./images/certificado-instalar-ie-2.jpg)
+![Instalar IE](source/images/certificado-instalar-ie-2.jpg)
  
 No Firefox clique em “Ver Certificados”, clique em “Importar”
  
-![Instalar FF](./images/certificado-instalar-ff-2.jpg)
+![Instalar FF](source/images/certificado-instalar-ff-2.jpg)
  
 No Chrome clique em “Gerenciar Certificados”, clique em “Importar”
  
-![Instalar GC](./images/certificado-instalar-gc-2.jpg)
+![Instalar GC](source/images/certificado-instalar-gc-2.jpg)
 
 #### 4o Passo:
 
 No Internet Explorer e Chrome “Assistente para Importação de Certificados”, clique em “Avançar”.
  
-![Instalar IE e GC](./images/certificado-instalar-ie-gc-3.jpg)
+![Instalar IE e GC](source/images/certificado-instalar-ie-gc-3.jpg)
  
-![Instalar IE e GC](./images/certificado-instalar-ie-gc-4.jpg)
+![Instalar IE e GC](source/images/certificado-instalar-ie-gc-4.jpg)
  
 No Firefox “Aba Servidores ”, clique em “Importar”
  
-![Instalar FF](./images/certificado-instalar-ff-3.jpg)
+![Instalar FF](source/images/certificado-instalar-ff-3.jpg)
 
 #### 5o Passo:
 
 No Chrome e Internet Explorer “Assistente para Importação de Certificados”, clique em “Procurar”, procure a pasta onde estão os arquivos e selecione o arquivo “cieloecommerce.cielo.com.br.crt, clique em “Abrir” e em seguida “Avançar”.
  
-![Instalar IE e GC](./images/certificado-instalar-ie-gc-5.jpg)
+![Instalar IE e GC](source/images/certificado-instalar-ie-gc-5.jpg)
  
-![Instalar IE e GC](./images/certificado-instalar-ie-gc-6.jpg)
+![Instalar IE e GC](source/images/certificado-instalar-ie-gc-6.jpg)
 
 #### 6o Passo:
 
 Selecionar a opção desejada: adicionar o Certificado em uma pasta padrão ou procurar a pasta de sua escolha.
  
-![Instalar IE e GC](./images/certificado-instalar-ie-gc-7.jpg)
+![Instalar IE e GC](source/images/certificado-instalar-ie-gc-7.jpg)
 
 #### 7o Passo:
 
 Clique em “Concluir”.
  
-![Instalar IE e GC](./images/certificado-instalar-ie-gc-8.jpg)
+![Instalar IE e GC](source/images/certificado-instalar-ie-gc-8.jpg)
 
 #### 8o Passo:
 
 Clique em “Ok” para concluir a importação.
  
-![Instalar IE e GC](./images/certificado-instalar-ie-gc-9.jpg)
+![Instalar IE e GC](source/images/certificado-instalar-ie-gc-9.jpg)
  
 <aside class="notice">No Firefox não consta a mensagem de Importação com Êxito, apenas conclui a importação.</aside>
  
 O Certificado poderá ser visualizado na aba padrão “Outras Pessoas” ou na escolhida pelo cliente.
  
-![Instalar IE e GC](./images/certificado-instalar-ie-gc-10.jpg)
+![Instalar IE e GC](source/images/certificado-instalar-ie-gc-10.jpg)
 
 #### 9o Passo:
 
@@ -266,10 +266,10 @@ Durante a integração com o Checkout Cielo, ma seguencia de troca de informaç�
 Veja o fluxo abaixo:
  
 **Fluxo de integração Checkout Cielo** - Diagrama sequêncial
-![Fluxo de integração Checkout Cielo](public/images/FluxoBasico.svg)
+![Fluxo de integração Checkout Cielo](source/images/Checkout/fluxobasico.svg)
  
 **Fluxo de integração Checkout Cielo** - Fluxograma
-![Fluxo de integração Checkout Cielo](images/Checkout/fluxocheckoutbasico.png)
+![Fluxo de integração Checkout Cielo](source/images/Checkout/fluxocheckoutbasico.png)
  
 Após o portador do cartão (consumidor) selecionar suas compras e apertar o botão “Comprar” de uma loja já integrada ao Checkout Cielo, o fluxo nesta ordem:
  
@@ -291,7 +291,7 @@ O modo de teste Checkout Cielo é uma ferramenta que permite testar a integraç�
 
 O modo de teste pode ser ativado na aba **Configurações**, onde existe um caixa de seleção, que quando marcada, habilitará o modo de teste do Checkout Cielo. O modo somente se iniciará quando a seleção for salva.
  
-![Ativando Modo de teste](images/Checkout/tm01.png)
+![Ativando Modo de teste](source/images/Checkout/tm01.png)
  
 Quando a opção for salva, uma tarja vermelha será exibida na parte superior da tela. Ela será exibida em todas as telas do [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/) e na tela transacional do Checkout Cielo.
  
@@ -299,7 +299,7 @@ Essa tarja indica que a sua loja Checkout Cielo está agora operando em ambiente
  
 | Backoffice                                                       | Transacional                                                         |
 |------------------------------------------------------------------|----------------------------------------------------------------------|
-| ![Tarja vermelha - Backoffice](images/Checkout/tmbackoffice.png) | ![Tarja vermelha - Transacional](images/Checkout/tmtransacional.png) |
+| ![Tarja vermelha - Backoffice](source/images/Checkout/tmbackoffice.png) | ![Tarja vermelha - Transacional](source/images/Checkout/tmtransacional.png) |
 
 ### Como transacionar no Modo de teste.
 
@@ -348,11 +348,11 @@ O boleto gerado no modo de teste sempre será um boleto simulado.
  
 Todas as transações realizadas no modo de teste serão exibidas como transações normais na aba Pedidos do Checkout Cielo, entretanto, elas serão marcadas como transações de teste e não serão contabilizadas em conjunto com as transações realizadas fora do ambiente de teste.
  
-![Transações de teste](/images/checkout-cielo-modo-teste-transacoes-de-teste.png)
+![Transações de teste](source/images/checkout-cielo-modo-teste-transacoes-de-teste.png)
  
 Essas transações terão o símbolo de teste as diferenciando de suas outras transações. Elas podem ser capturadas ou canceladas utilizando os mesmos procedimentos das transações reais.
  
-![Transações de teste](/images/checkout-cielo-modo-teste-transacoes-de-teste-cancelamento.png)
+![Transações de teste](source/images/checkout-cielo-modo-teste-transacoes-de-teste-cancelamento.png)
  
 <aside class="notice">É muito importante que ao liberar sua loja para a realização de vendas para seus clientes que **ela não esteja em modo de teste**. Transações realizadas nesse ambiente poderão ser finalizadas normalmente, mas **não serão descontadas do cartão do cliente** e não poderão ser “transferidas” para o ambiente de venda padrão.</aside>
 
@@ -378,7 +378,7 @@ Se você não possui um carrinho de compras implementado, veja a seção de **In
  
 Abaixo, é demonstrado como o fluxo de compra ocorre na integração via API:
  
-![Integração Via API](images/Checkout/intapi.png)
+![Integração Via API]({{site.baseurl_root}}source/images/Checkout/intapi.png)
 
 ### Criando o Carrinho
 
@@ -596,7 +596,7 @@ Abaixo, como o efeito do desconto são apresentados no Carrinho:
   
 |Percentual|Valor|
 |----------|-----|
-|![Percentual](images/Checkout/checkout-discount-percent.png)|![Valor](images/Checkout/checkout-discount-amount.png)|
+|![Percentual](source/images/Checkout/checkout-discount-percent.png)|![Valor](source/images/Checkout/checkout-discount-amount.png)|
   
 **Boleto & Débito Online**
  
@@ -622,7 +622,7 @@ Abaixo, como o efeito do desconto são apresentados no Carrinho:
   
 |Tela transacional|
 |-----------------|
-|![Meios de pagamento](images/Checkout/checkout-discount-mp.png)|
+|![Meios de pagamento](source/images/Checkout/checkout-discount-mp.png)|
 
 #### Tipos de "Frete"
 
@@ -640,11 +640,11 @@ O Checkout cielo possui diferentes tipos de frete.
  
 | Tipo de frete           | Transacional                                                        |
 |:-----------------------:|:-------------------------------------------------------------------:|
-| `FixedAmount`           | ![FixedAmount](images/Checkout/fixedamount.png)                     |
-| `Free`                  | ![Free](images/Checkout/free.png)                                   |
-| `WithoutShippingPickUp` | ![WithoutShippingPickUp](images/Checkout/withoutshippingpickup.png) |
-| `WithoutShipping`       | ![WithoutShipping](images/Checkout/withoutshippingpickup.png)       |
-| `Correios`              | ![Correios](images/Checkout/correios.png)                           |
+| `FixedAmount`           | ![FixedAmount](source/images/Checkout/fixedamount.png)                     |
+| `Free`                  | ![Free](source/images/Checkout/free.png)                                   |
+| `WithoutShippingPickUp` | ![WithoutShippingPickUp](source/images/Checkout/withoutshippingpickup.png) |
+| `WithoutShipping`       | ![WithoutShipping](source/images/Checkout/withoutshippingpickup.png)       |
+| `Correios`              | ![Correios](source/images/Checkout/correios.png)                           |
 
  **OBS:** As opções para múltiplos fretes na categoria `Correios` devem ser selecionadas dentro do Backoffice Cielo.        
  
@@ -660,14 +660,15 @@ Os nós que formam as informações de frete abaixo:
 
 **Shipping.Address** - Informações de endereço de entrega. **Não obrigatório no contrato da API, mas obrigatório na tela transacional**. Sugerimos que esses dados sejam enviados, se ja foram recolhidos dentro do ambiente da loja.
  
-| Campo                         | Tipo         | Obrigatório | Tamanho | Descrição                                                                                                    | 
-|-------------------------------|--------------|-------------|---------|--------------------------------------------------------------------------------------------------------------|
-| `Shipping.Address.Street`     | Alphanumeric | Sim         | 256     | Rua, avenida, travessa, etc, do endereço de entrega do comprador.                                            |
-| `Shipping.Address.Number`     | Alphanumeric | Sim         | 8       | Número do endereço de entrega do comprador.                                                                  |                       
-| `Shipping.Address.Complement` | Alphanumeric | Opcional    | 256     | Complemento do endereço de entrega do comprador.                                                             |                      
-| `Shipping.Address.District`   | Alphanumeric | Sim         | 64      | Bairro do endereço de entrega do comprador.                                                                  |
-| `Shipping.Address.City`       | Alphanumeric | Sim         | 64      | Cidade do endereço de entrega do comprador.                                                                  |                       
-| `Shipping.Address.State`      | Alphanumeric | Sim         | 2       | Estado (UF) do endereзo de entrega do comprador.                                                             |                                                                 
+| Campo                        | Tipo         | Obrigatório | Tamanho | Descrição                                                        |
+|------------------------------|--------------|-------------|---------|------------------------------------------------------------------|
+| `Shipping.Address.Street`    | Alphanumeric | Sim         | 256     | Rua, avenida, travessa, etc, do endereço de entrega do comprador.|
+| `Shipping.Address.Number`    | Alphanumeric | Sim         | 8       | Número do endereço de entrega do comprador.                      |                       
+| `Shipping.Address.Complement`| Alphanumeric | Opcional    | 256     | Complemento do endereço de entrega do comprador.                 |                      
+| `Shipping.Address.District`  | Alphanumeric | Sim         | 64      | Bairro do endereço de entrega do comprador.                      |
+| `Shipping.Address.City`      | Alphanumeric | Sim         | 64      | Cidade do endereço de entrega do comprador.                      |                       
+| `Shipping.Address.State`     | Alphanumeric | Sim         | 2       | Estado (UF) do endereзo de entrega do comprador.                 |  
+
 **Shipping.Services**
 
 | Campo                       | Tipo         | Obrigatório | Tamanho | Descrição                                                                                                    | 
@@ -719,8 +720,8 @@ O gera um do 3 tipos diferentes de métodos de acesso a **mesma tela transaciona
  
 | Método    |Nome| Descrição|
 |-----------|:--:|----------|
-|![Botão](images/Checkout/botao.png)|**Botão**|É um código HTML que ao ser colado em um site, vai direcionar o comprador a tela transacional - Ideal para uso em **hotSites** ou **E-mail Marketing** |
-|![QRCODE](images/Checkout/qrcode.png)   |**QRCODE**|Código interpretável por Smartphones e Tablets - Ideal para uso em **Marketing impressos** ou **Digital**|
+|![Botão](source/images/Checkout/botao.png)|**Botão**|É um código HTML que ao ser colado em um site, vai direcionar o comprador a tela transacional - Ideal para uso em **hotSites** ou **E-mail Marketing** |
+|![QRCODE](source/images/Checkout/qrcode.png)   |**QRCODE**|Código interpretável por Smartphones e Tablets - Ideal para uso em **Marketing impressos** ou **Digital**|
 |`http://bit.ly/2tRkSxZ`|**LINK**|é um link compartilhável, ideal para uso em **Redes Sociais** ou **Messengers Mobile**|
  
 Este modelo de integração é utilizado para:
@@ -745,7 +746,7 @@ Cada botão possui um código único que só permite comprar aquele determinado 
  
  **Abaixo, o fluxo de pagamento via Botão:**
  
-![Fluxo de integração Checkout Cielo Botão](images/Checkout/intbt.png)
+![Fluxo de integração Checkout Cielo Botão](source/images/Checkout/intbt.png)
 
 ### Criando o Botão
 
@@ -753,11 +754,11 @@ Para utilizar este recurso, é necessário cadastrar o produto que se deseja ven
   
 **Tela de Cadastro:**
  
-![Cadastro de Botão](images/Checkout/btcadastro.png)
+![Cadastro de Botão](source/images/Checkout/btcadastro.png)
   
 **Botão Cadastrado:**
  
-![Cadastro de Botão](images/Checkout/btcadastro2.png)
+![Cadastro de Botão](source/images/Checkout/btcadastro2.png)
   
 Abaixo a listagem de itens que devem ser cadastrados para a criação do botão:
   
@@ -783,7 +784,7 @@ Abaixo é possível ver como o cadastro de um botão gera os 3 métodos de para 
 
 ```
 <form method='post' action='https://cieloecommerce.cielo.com.br/transactional/Checkout/BuyNow' target='blank'>
-    <input type='hidden' name='id' value=00000000-0000-0000-000000000000/><input type='image' name='submit' alt='Comprar' src='https://cieloecommerce.cielo.com.br /BackOffice/Content/images/botao_comprar_3.jpg' />
+    <input type='hidden' name='id' value=00000000-0000-0000-000000000000/><input type='image' name='submit' alt='Comprar' src='https://cieloecommerce.cielo.com.br /BackOffice/Contentsource/images/botao_comprar_3.jpg' />
 </form>
 ```
 
@@ -847,11 +848,11 @@ Esse grau de risco é o que deve guiar a decisão do lojista de capturar ou canc
   
 A analise será apresentada no “Detalhes do Pedido”, como abaixo:
  
-![Análise de risco](/images/checkout-cielo-analise-risco.png)
+![Análise de risco](source/images/checkout-cielo-analise-risco.png)
  
 Você pode visualizar o status do antifraude acessando o detalhe da compra, na aba Pedidos e clicando no (+)
  
-![Status Antifraude](/images/checkout-status-antifraude.png)
+![Status Antifraude](source/images/checkout-status-antifraude.png)
 
 ### Cartão de Débito
 
@@ -978,7 +979,7 @@ Todas as 3 URLs devem possuir as seguintes características:
 2. Em **Configurações da Loja**, Vá a sessão de **Pagamentos**
 3. Cadastre as URLS e escolhe o tipo de Notificação desejado
  
-![Cadastro de URLS](images/Checkout/urls.png)
+![Cadastro de URLS](source/images/Checkout/urls.png)
 
 ## Notificação: POST
 
@@ -991,7 +992,7 @@ Este fluxo é utilizado por lojas que ainda não realizam transações via API.
  
 Abaixo o Fluxo de uma Notificação POST
  
-![Fluxo N.POST](images/Checkout/npost.png)
+![Fluxo N.POST](source/images/Checkout/npost.png)
  
 **Retorno aguardado para o envio da notificação:** `HttpStatus = 200 (OK)` - Post recebido e processado com sucesso
  
@@ -999,7 +1000,7 @@ Abaixo o Fluxo de uma Notificação POST
  
 Caso o POST não seja recebido, é possível reenvia-lo manualmente, basta acessar o pedido em questão pelo Backoffice e clicar no Ícone de envio:
  
-![Reenvio de notificação](images/Checkout/reenvipost.png)
+![Reenvio de notificação](source/images/Checkout/reenvipost.png)
  
 Veja a descrição dos itens de notificação na sessão **"Conteúdo do POST de NOTIFICAÇÃO"**
 
@@ -1017,7 +1018,7 @@ Na Notificação de JSON, não há diferença entre o `POST de Notificação` e 
  
 Abaixo o Fluxo de uma Notificação JSON (Criação da transação + Mudança de status)
  
-![Fluxo N.JSON](images/Checkout/njson.png)
+![Fluxo N.JSON](source/images/Checkout/njson.png)
  
 **Conteúdo do POST de NOTIFICAÇÃO JSON:**
  
@@ -1078,7 +1079,7 @@ Veja a descrição dos itens de notificação na sessão **"Conteúdo do POST de
  
 Caso o POST não seja recebido, é possível reenvia-lo manualmente, basta acessar o pedido em questão pelo Backoffice e clicar no Ícone de envio:
  
-![Reenvio de notificação](images/Checkout/reenvipost.png)
+![Reenvio de notificação](source/images/Checkout/reenvipost.png)
 
 ## Conteúdo da Notificação
 
@@ -1208,7 +1209,7 @@ Existem dois métodos de parcelamento:
 
 Neste modo, o lojista controla o limite máximo de parcelas que a loja realizará pelo Backoffice Checkout. O Valor das parcelas é definido acessando a aba **Configurações** e alterando a sessão **Pagamentos**
  
- ![Seleção de Parcelas](images/Checkout/parcelamento.png)
+ ![Seleção de Parcelas](source/images/Checkout/parcelamento.png)
  
 **OBS:** O Check Box deve estar marcado para que o meio de pagamento seja exibido na tela transacional.
  
@@ -1388,7 +1389,7 @@ Uma maneira de realizar a recorrência dentro do Checkout é criar um botão rec
  
 Basta cadastrar o produto, incluindo um intervalo de cobrança e uma data para encerramento (Opcional), como no exemplo abaixo:
  
-![Botão recorrência](/images/checkout-botao-recorrencia.png)
+![Botão recorrência](source/images/checkout-botao-recorrencia.png)
  
 **ATENÇÃO:** Caso um botão seja utilizado após a “Data final” cadastrada, a transação apresentará um erro exibindo **Oppss** na tela transacional. A Data pode ser editada na tela de edição do botão dentro de “Detalhes do Produto”
 
@@ -1411,7 +1412,7 @@ A primeira transação da recorrência é uma transação normal, seguindo as re
  
 **ATENÇÃO:** O valor e data de cobrança das transações recorrentes serão sempre os mesmos da transação inicial. O agendamento passa a funcionar automaticamente a partir da data em que a primeira transação for autorizada.
  
-![Consultando transações](/images/checkout-consulta-recorrencia.png)
+![Consultando transações](source/images/checkout-consulta-recorrencia.png)
  
 Esta tela mostra a data que a 1° transação da recorrência foi autorizada e deverá ser capturada manualmente. **As demais transações da recorrência sempre serão capturadas automaticamente**, independente se primeira transação foi capturada ou cancelada. Se o Cliente tiver configurado Captura automática, a captura da recorrência também será automática.
  
@@ -1424,9 +1425,9 @@ O cancelamento da recorrência ocorre dentro do Backoffice do Checkout Cielo, ta
 1. Acessar uma transação de recorrência (marcada com o símbolo “Recorrente”)
 2. Entrar em Detalhes (o símbolo de “+”)
  
-![Pedido de recorrência](/images/checkout-cancelar-recorrencia.png)
+![Pedido de recorrência](source/images/checkout-cancelar-recorrencia.png)
 <br>
-![Cancelamento de recorrência](images/Checkout/pedidoreccance.png)
+![Cancelamento de recorrência](source/images/Checkout/pedidoreccance.png)
  
 Tela de detalhes da Recorrência
  
@@ -1460,4 +1461,3 @@ Após a leitura deste manual, caso ainda persistam dúvidas (técnicas ou não),
   * Opção 1 – *Suporte técnico;*
   * Opção 2 – *Credenciamento E-commerce.*
 * Email: [cieloecommerce@cielo.com.br](mailto:cieloecommerce@cielo.com.br)
-
