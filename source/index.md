@@ -810,6 +810,37 @@ Adicionando o botão na sua página HTML você deve copiar o código HTML do bot
  
 Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter a compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do [Backoffice Cielo Checkout](http://developercielo.github.io/Checkout-Backoffice/), e valerão os dados do cadastro.
 
+#### Caso de Uso
+
+Está é um exemplo de como usar a ferramenta de link / Qr code / Botão de pagamentos para elevar suas vendas! 
+
+Para facilitar a leitura, vamos chamar essas opções de "LQB".
+
+Primeiro, nos deixe explicar quais as diferenças entre essas 3 opções.  Em si, eles são 3 meios de acessar a nossa tela de pagamento sem necessariamente uma integração técnica com APIs etc. 
+
+* **Link** - é uma url encurtada que pode ser enviada via redes sociais. Muito prático para acesso via computadores!
+* **QR Code** - é a uma imagem que quando lida por um aparelho com leitor QR code (um APP no celular por exemplo), leva o comprador para a tela de pagamento. Ótimo para publicidade impressa!
+* **Botão** - é uma Imagem embutida em código HTML para ser usada em um site. Muito bom caso você possua um site, mas não quer lidar com a criação de carrinhos ou fluxos de pagamento. Coloque em seu site e pronto, o botão leva os compradores para a tela de pagamentos
+
+O LQB está disponível quando você registra um carrinho no backoffice do Checkout Cielo.
+Basta seguir o caminho abaixo:
+
+Acesso de lojista no site Cielo >  Vendas Online >  Checkout Cielo > ABA: Produtos >. Cadastrar produtos
+
+Pronto! Após cadastrar você já tem um LQB esperando para ser usado!
+
+Veja um exemplo de uso:
+
+* Link + Recorrência:
+
+A empresa PagBras realiza uma festa de aniversário com os funcionários todos os meses, regada a refrigerantes e salgadinhos, fornecidos pela própria companhia, que dizem, serem muito bons! 
+
+Um dia os funcionários decidiram realizar uma "vaquinha" e contribuir mensalmente para que a variedade de petiscos e bebidas fosse maior, assim podendo fazer festas temáticas como festas juninas e de natal por exemplo.
+
+O que eles fizeram? Sendo uma empresa antenada que não queria passar uma caixinha todos os meses para recolher a contribuição mensal, um dos funcionários criou uma recorrência via LQB, e em um grupo do Facebook da empresa, publicou o link de pagamentos. 
+
+Hoje os funcionários contribuem mensalmente sem ter que lembrar de pagar, uma vez que a Recorrência do Checkout Cielo realiza uma nova transação de cobrança todos os meses!
+
 ## Fluxos Meios de pagamento
 
 ### Cartão de Crédito
