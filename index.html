@@ -512,7 +512,7 @@ Abaixo listamos pontos que devem estar prontos antes da integração:</p>
 
 <h2 id="fluxo-de-integração">Fluxo de integração</h2>
 
-<p>Durante a integração com o Checkout Cielo, ma seguencia de troca de informações e redirecionamentos serão executados.
+<p>Durante a integração com o Checkout Cielo, uma seguencia de troca de informações e redirecionamentos serão executados para que a uma transação seja criada e executada.
 Veja o fluxo abaixo:</p>
 
 <p><strong>Fluxo de integração Checkout Cielo</strong> - Diagrama sequêncial
@@ -1767,6 +1767,41 @@ Esse tipo de integração é realizado via o cadastro de um conjunto de itens a 
 
 <p>Cada botão possui um código único que só permite comprar aquele determinado produto nas condições de preço e frete cadastrado. Portanto, um fraudador não consegue alterar nenhuma destas informações na hora de submeter a compra, pois o Checkout Cielo vai buscar todos os dados do produto no cadastro do <a href="http://developercielo.github.io/Checkout-Backoffice/">Backoffice Cielo Checkout</a>, e valerão os dados do cadastro.</p>
 
+<h4 id="caso-de-uso">Caso de Uso</h4>
+
+<p>Está é um exemplo de como usar a ferramenta de link / Qr code / Botão de pagamentos para elevar suas vendas! </p>
+
+<p>Para facilitar a leitura, vamos chamar essas opções de &ldquo;LQB&rdquo;.</p>
+
+<p>Primeiro, nos deixe explicar quais as diferenças entre essas 3 opções.  Em si, eles são 3 meios de acessar a nossa tela de pagamento sem necessariamente uma integração técnica com APIs etc. </p>
+
+<ul>
+<li><strong>Link</strong> - é uma url encurtada que pode ser enviada via redes sociais. Muito prático para acesso via computadores!</li>
+<li><strong>QR Code</strong> - é a uma imagem que quando lida por um aparelho com leitor QR code (um APP no celular por exemplo), leva o comprador para a tela de pagamento. Ótimo para publicidade impressa!</li>
+<li><strong>Botão</strong> - é uma Imagem embutida em código HTML para ser usada em um site. Muito bom caso você possua um site, mas não quer lidar com a criação de carrinhos ou fluxos de pagamento. Coloque em seu site e pronto, o botão leva os compradores para a tela de pagamentos</li>
+</ul>
+
+<p>O LQB está disponível quando você registra um carrinho no backoffice do Checkout Cielo.
+Basta seguir o caminho abaixo:</p>
+
+<p>Acesso de lojista no site Cielo &gt;  Vendas Online &gt;  Checkout Cielo &gt; ABA: Produtos &gt;. Cadastrar produtos</p>
+
+<p>Pronto! Após cadastrar você já tem um LQB esperando para ser usado!</p>
+
+<p>Veja um exemplo de uso:</p>
+
+<ul>
+<li>Link + Recorrência:</li>
+</ul>
+
+<p>A empresa PagBras realiza uma festa de aniversário com os funcionários todos os meses, regada a refrigerantes e salgadinhos, fornecidos pela própria companhia, que dizem, serem muito bons! </p>
+
+<p>Um dia os funcionários decidiram realizar uma &ldquo;vaquinha&rdquo; e contribuir mensalmente para que a variedade de petiscos e bebidas fosse maior, assim podendo fazer festas temáticas como festas juninas e de natal por exemplo.</p>
+
+<p>O que eles fizeram? Sendo uma empresa antenada que não queria passar uma caixinha todos os meses para recolher a contribuição mensal, um dos funcionários criou uma recorrência via LQB, e em um grupo do Facebook da empresa, publicou o link de pagamentos. </p>
+
+<p>Hoje os funcionários contribuem mensalmente sem ter que lembrar de pagar, uma vez que a Recorrência do Checkout Cielo realiza uma nova transação de cobrança todos os meses!</p>
+
 <h2 id="fluxos-meios-de-pagamento">Fluxos Meios de pagamento</h2>
 
 <h3 id="cartão-de-crédito">Cartão de Crédito</h3>
@@ -2859,7 +2894,9 @@ Alguns exemplos de negócios são: </p>
 
 <p>Exceto o objeto <code class="prettyprint">Payment</code> que contém um novo elemento específico para a recorrência chamado <code class="prettyprint">RecurrentPayment</code>, todos os outros objetos são iguais à integração com o Carrinho.</p>
 
-<p><strong>Requisição</strong></p>
+<blockquote>
+<p>REQUISIÇÃO</p>
+</blockquote>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"OrderNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12344"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"SoftDescriptor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nome que aparecerá na fatura"</span><span class="p">,</span><span class="w">
@@ -2924,6 +2961,10 @@ Alguns exemplos de negócios são: </p>
 
 <p>Se o tipo de produto for <code class="prettyprint">Bem Físico</code>, a <strong>API obriga o envio do tipo de frete</strong>. 
 Se no contrato técnico existir o nó da recorrência, fica obrigatório o tipo <code class="prettyprint">WithoutShipping</code>, caso contrário, a seguinte resposta será apresentada:</p>
+
+<blockquote>
+<p>RESPONSE</p>
+</blockquote>
 <pre><code class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The request is invalid."</span><span class="p">,</span><span class="w">
     </span><span class="s2">"modelState"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
